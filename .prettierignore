@@ -1,0 +1,9 @@
+pnpm-lock.yaml
+.next/
+.data/
+.samples/
+test-results/
+playwright-report/
+*.generated.ts
+*.generated.json
+next-env.d.ts
