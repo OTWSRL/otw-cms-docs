@@ -10,15 +10,16 @@ help. `cms generate` runs before every `dev` and `build`.
 
 ## The files
 
-| File                                                 | What it does                                              |
-| ---------------------------------------------------- | --------------------------------------------------------- |
-| `src/cms/site.generated.ts`                          | Imports the plugins in `cms.config.json` (and the brand). |
-| `src/app/(cms)/layout.tsx`                           | The admin's root layout, separate from the site's.        |
-| `src/app/(cms)/admin/[[...segments]]/page.tsx`       | Every admin screen, core and plugin, from one route.      |
-| `src/app/(cms)/admin/forbidden.tsx`, `not-found.tsx` | The admin's 403 and 404 pages.                            |
-| `src/app/(cms)/api/p/[...path]/route.ts`             | Every plugin API route and admin action.                  |
-| `src/app/(site)/page.tsx`                            | The home page, until the site writes its own.             |
-| `src/app/(site)/[...slug]/page.tsx`                  | Every plugin page on the site.                            |
+| File                                                 | What it does                                                                                                 |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `src/cms/site.generated.ts`                          | Imports the plugins in `cms.config.json` (and the brand).                                                    |
+| `src/app/(cms)/layout.tsx`                           | The admin's root layout, separate from the site's.                                                           |
+| `src/app/(cms)/admin/[[...segments]]/page.tsx`       | Every admin screen, core and plugin, from one route.                                                         |
+| `src/app/(cms)/admin/forbidden.tsx`, `not-found.tsx` | The admin's 403 and 404 pages.                                                                               |
+| `src/app/(cms)/api/p/[...path]/route.ts`             | Every plugin API route and admin action.                                                                     |
+| `src/instrumentation.ts`                             | Records requests for plugins that trace them. A site with its own keeps it; see [Tracing](/hosting/tracing). |
+| `src/app/(site)/page.tsx`                            | The home page, until the site writes its own.                                                                |
+| `src/app/(site)/[...slug]/page.tsx`                  | Every plugin page on the site.                                                                               |
 
 Each starts with this line:
 

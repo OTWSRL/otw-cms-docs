@@ -40,6 +40,7 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
           </nav>
         </header>
         <main className="site-main">{children}</main>
+        <Slot name="site.footer" props={{ user }} />
       </body>
     </html>
   )
@@ -57,6 +58,9 @@ What it does, line by line:
 - **`<Slot name="header.nav" />`** is where plugins add links to the main navigation, such as
   the shop's.
 - **The Admin link** shows only to people who can use the admin.
+- **`<Slot name="site.footer" props={{ user }} />`** ends the page, like WordPress's `wp_footer()`:
+  plugins put scripts and toolbars there, such as the [performance bar](/documentation/performance).
+  Keep it last in `<body>`.
 
 Change anything else: add a footer, a logo, a second navigation, fonts. It's the site's file.
 

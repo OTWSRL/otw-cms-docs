@@ -10,11 +10,13 @@ what goes in it.
 
 ## Slots the CMS offers
 
-| Slot                                                  | Where it is                                                 | Props      |
-| ----------------------------------------------------- | ----------------------------------------------------------- | ---------- |
-| [`admin.dashboard`](/reference/slots/admin.dashboard) | Widgets on the Dashboard                                    | `{ user }` |
-| [`admin.notices`](/reference/slots/admin.notices)     | The top of every admin screen                               | `{ user }` |
-| [`header.nav`](/reference/slots/header.nav)           | The site's main navigation, where the site's layout puts it | none       |
+| Slot                                                  | Where it is                                                 | Props                           |
+| ----------------------------------------------------- | ----------------------------------------------------------- | ------------------------------- |
+| [`admin.dashboard`](/reference/slots/admin.dashboard) | Widgets on the Dashboard                                    | `{ user }`                      |
+| [`admin.notices`](/reference/slots/admin.notices)     | The top of every admin screen                               | `{ user }`                      |
+| [`header.nav`](/reference/slots/header.nav)           | The site's main navigation, where the site's layout puts it | none                            |
+| [`admin.footer`](/reference/slots/admin.footer)       | After every admin screen, for scripts and toolbars          | `{ user }`                      |
+| [`site.footer`](/reference/slots/site.footer)         | The end of every page of the site, like `wp_footer`         | `{ user }`, which may be `null` |
 
 Plugins offer their own, such as Commerce's `commerce.admin.order` beside an order's details. All
 of them are listed under [Slots](/reference/slots) in the Code Reference.
