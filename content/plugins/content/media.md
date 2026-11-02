@@ -233,9 +233,21 @@ export function memoryStorage(): MediaStorage {
 }
 ```
 
+## In entries
+
+Types with the `thumbnail` feature, as Posts and Pages have, take a featured image: an image's id
+in `thumbnailId`, set in the edit screen's **Featured image** box or by `create()` and `update()`.
+The block editor's **Image** button puts images in the body. Both choose from the library in the
+same picker, with an Upload tab, and attach new uploads to the entry once it's saved.
+
+Templates receive the entry's featured image as `thumbnail`, and the images in its body as
+`media`, found in one query; see [Images](/themes/templates#images) for `Image`, which writes
+`srcset` from an image's sizes.
+
 ## The upload API
 
-`POST /api/p/core/media` takes one file, as a multipart form with the file in `file` and,
+`GET /api/p/core/media` lists the library for the picker, 40 files at a time: `kind`, `search`
+and `page` from 1, answering `{ items, total, pages }`. `POST /api/p/core/media` takes one file, as a multipart form with the file in `file` and,
 optionally, the entry it's for in `entry`. It's what **Media › Add New** sends each dropped file
 to, like WordPress's `async-upload.php`, and it acts as the signed-in person, from the site's own
 pages only. It answers `201` with the file, or an `{ error }`: `401` signed out, `403` without
@@ -250,5 +262,7 @@ pages only. It answers `201` with the file, or an `{ error }`: `401` signed out,
 - **Names can't collide.** Each file is claimed as it's written, so two uploads at once never
   overwrite each other, and names are lower case, so they can't differ by case alone.
 - **Files go after the delete commits**, so a delete that's rolled back leaves them.
-- Not yet: editing images (crop, rotate), making sizes again after they change, custom fields and
-  taxonomies on files, and a trash for media.
+- **A deleted image disappears from the site** rather than showing as broken, and a featured
+  image's delete clears it from its entries.
+- Not yet: editing images (crop, rotate), captions in image blocks, making sizes again after
+  they change, custom fields and taxonomies on files, and a trash for media.

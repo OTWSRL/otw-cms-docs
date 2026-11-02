@@ -47,19 +47,19 @@ export default definePlugin({
 })
 ```
 
-| Field          | What it is                                                                                                                            |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `labels`       | `singular` and `plural`, such as `Course` and `Courses`.                                                                              |
-| `plural`       | The plural in its capability names. Defaults to the name and an `s`; set it for others, as `people`, in `ContentTypes` too.           |
-| `public`       | Its published entries get pages on the site. Defaults to `false`.                                                                     |
-| `hierarchical` | Entries can have a parent of the same type, as pages do. Defaults to `false`.                                                         |
-| `supports`     | What its entries use: `title`, `body`, `excerpt`, `author`, `position`, `revisions`. Defaults to `title` and `body`, as in WordPress. |
-| `roles`        | Which roles get its capabilities, and at what level. Defaults to WordPress's for posts: Editor, Author and Contributor.               |
-| `showUi`       | It has list and edit screens in the admin. Defaults to `public`, as WordPress's `show_ui`.                                            |
-| `showInMenu`   | Its screens are in the menu, in the plugin's section. Defaults to `showUi`.                                                           |
-| `hasArchive`   | Its published entries are listed at `/{plural}`. Defaults to `false`.                                                                 |
-| `revisions`    | With the `revisions` feature, how many each entry keeps. Defaults to 25.                                                              |
-| `description`  | What the type is for.                                                                                                                 |
+| Field          | What it is                                                                                                                                                            |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `labels`       | `singular` and `plural`, such as `Course` and `Courses`.                                                                                                              |
+| `plural`       | The plural in its capability names. Defaults to the name and an `s`; set it for others, as `people`, in `ContentTypes` too.                                           |
+| `public`       | Its published entries get pages on the site. Defaults to `false`.                                                                                                     |
+| `hierarchical` | Entries can have a parent of the same type, as pages do. Defaults to `false`.                                                                                         |
+| `supports`     | What its entries use: `title`, `body`, `excerpt`, `author`, `position`, `revisions`, `thumbnail` (a featured image). Defaults to `title` and `body`, as in WordPress. |
+| `roles`        | Which roles get its capabilities, and at what level. Defaults to WordPress's for posts: Editor, Author and Contributor.                                               |
+| `showUi`       | It has list and edit screens in the admin. Defaults to `public`, as WordPress's `show_ui`.                                                                            |
+| `showInMenu`   | Its screens are in the menu, in the plugin's section. Defaults to `showUi`.                                                                                           |
+| `hasArchive`   | Its published entries are listed at `/{plural}`. Defaults to `false`.                                                                                                 |
+| `revisions`    | With the `revisions` feature, how many each entry keeps. Defaults to 25.                                                                                              |
+| `description`  | What the type is for.                                                                                                                                                 |
 
 A type whose plural isn't the name and an `s` declares it on both sides:
 `'crew.person': { plural: 'people' }` in `ContentTypes`, and `plural: 'people'` in the definition.
@@ -159,8 +159,9 @@ body's text; `after` and `before` bound the date. `orderBy: 'tree'` lists a hier
 WordPress lists pages, parents before their children, and returns each entry's depth in `depths`.
 
 Entries have a `title`, an `excerpt`, a `body`, an `authorId`, a `parentId`, a `position` for
-ordering by hand (WordPress's `menu_order`), and `publishedAt`, set when the entry is first
-published. A date in the past backdates it; one in the future is refused until scheduling comes.
+ordering by hand (WordPress's `menu_order`), a `thumbnailId` for types with featured images (an
+image in the [media library](/plugins/content/media); deleting the image clears it), and
+`publishedAt`, set when the entry is first published. A date in the past backdates it; one in the future is refused until scheduling comes.
 The `body` is a list of blocks, stored as JSON and rendered by React components, so stored content
 can't add markup of its own; see [The body](#the-body). Bad input throws a `ContentError` whose
 message is safe to show.
@@ -225,19 +226,22 @@ An entry's body is the block editor's document: ProseMirror's JSON, a list of bl
 is checked against the blocks the editor offers and rebuilt from what they allow, so a forged
 form can't store anything else.
 
-| Block     | JSON                                                                        |
-| --------- | --------------------------------------------------------------------------- |
-| Paragraph | `{ "type": "paragraph", "content": [text] }`                                |
-| Heading   | `{ "type": "heading", "attrs": { "level": 2 }, "content": [text] }`         |
-| Lists     | `bulletList` and `orderedList` (`attrs.start`), holding `listItem` blocks   |
-| Quote     | `{ "type": "blockquote", "content": [blocks] }`                             |
-| Code      | `{ "type": "codeBlock", "attrs": { "language": "ts" }, "content": [text] }` |
-| Separator | `{ "type": "horizontalRule" }`                                              |
+| Block     | JSON                                                                           |
+| --------- | ------------------------------------------------------------------------------ |
+| Paragraph | `{ "type": "paragraph", "content": [text] }`                                   |
+| Heading   | `{ "type": "heading", "attrs": { "level": 2 }, "content": [text] }`            |
+| Lists     | `bulletList` and `orderedList` (`attrs.start`), holding `listItem` blocks      |
+| Quote     | `{ "type": "blockquote", "content": [blocks] }`                                |
+| Code      | `{ "type": "codeBlock", "attrs": { "language": "ts" }, "content": [text] }`    |
+| Separator | `{ "type": "horizontalRule" }`                                                 |
+| Image     | `{ "type": "image", "attrs": { "id": "…", "src": "/uploads/…", "alt": "…" } }` |
 
 Text is `{ "type": "text", "text": "…", "marks": […] }`, with `bold`, `italic`, `strike`, `code`
 and `link` marks, and `{ "type": "hardBreak" }` for a line break. Links may only go to `http`,
 `https` and `mailto` addresses, or paths on the site: `isSafeHref()` is the check, in the editor,
-on save and when the body is shown.
+on save and when the body is shown. An image is a file in the media library, by its `id`, as
+WordPress's image block keeps it, with its alternative text and its address (a path on the site
+or a web address, never `javascript:` or `data:`), and optionally its `width` and `height`.
 
 On the site, the `Blocks` component from `@otw/next/site` renders a body. It's a server
 component, so it sends the browser no JavaScript:
