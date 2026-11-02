@@ -37,16 +37,25 @@ export default definePlugin({
       metadata: () => ({ title: 'Hello' }),
       component: () => <h1>{cms.settings.get('greeting.message')}</h1>,
     })
-    cms.slots.fill('admin.dashboard', {
-      component: () => <p>{cms.settings.get('greeting.message')}</p>,
-    })
   },
+})
+```
+
+```tsx filename="src/admin.tsx"
+import { defineAdmin } from '@otw/sdk'
+import greeting from './index'
+
+export default defineAdmin(greeting, (cms) => {
+  cms.slots.fill('admin.dashboard', {
+    component: () => <p>{cms.settings.get('greeting.message')}</p>,
+  })
 })
 ```
 
 ```ts filename="test/greeting.test.ts"
 import { createTestKernel, type TestKernel } from '@otw/testing'
 import { afterEach, describe, expect, it } from 'vitest'
+import greetingAdmin from '../src/admin'
 import greeting from '../src/index'
 
 let site: TestKernel | undefined
@@ -60,16 +69,22 @@ describe('greeting', () => {
     expect(await site.kernel.resolvePage('/goodbye')).toBeNull()
   })
 
-  it('says what the setting says', async () => {
-    site = await createTestKernel({ plugins: [greeting], settings: { 'greeting.message': 'Hi' } })
+  it('says what the setting says, on the Dashboard too', async () => {
+    site = await createTestKernel({
+      plugins: [greeting],
+      admin: [greetingAdmin],
+      settings: { 'greeting.message': 'Hi' },
+    })
     expect(site.kernel.setting('greeting.message')).toBe('Hi')
     expect(site.kernel.slot('admin.dashboard')).toHaveLength(1)
   })
 })
 ```
 
-`createTestKernel()` takes the plugins to load (with the plugins they need), and optionally fixed
-`settings`, the `active` plugins, and anything else the kernel accepts. It's **strict**: a plugin
+`createTestKernel()` takes the plugins to load (with the plugins they need), and optionally their
+admin entries (`admin`), as the admin and the API routes load them, fixed `settings`, the
+`active` plugins, and anything else the kernel accepts. Leave `admin` out to test the plugin as
+the site's pages see it. It's **strict**: a plugin
 that fails to set up throws, rather than being left out as on a live site, so a broken plugin
 fails its test.
 
@@ -91,7 +106,7 @@ fails its test.
 encode the body. Pass the `cookie` from `signIn()` to act as that user.
 
 ```ts filename="src/notes.ts"
-import { ActionError, definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otw/sdk'
 import { sql } from 'drizzle-orm'
 
 declare module '@otw/sdk' {
@@ -113,17 +128,26 @@ export default definePlugin({
   ],
   setup(cms) {
     cms.auth.capability('notes.write', { label: 'Write notes' })
-    cms.admin.action({
-      name: 'add',
-      capability: 'notes.write',
-      async handler({ form }) {
-        const body = String(form.get('body') ?? '').trim()
-        if (!body) throw new ActionError('Write something first.')
-        await cms.db.execute(sql`INSERT INTO notes_notes (body) VALUES (${body})`)
-        return { notice: 'Note added.' }
-      },
-    })
   },
+})
+```
+
+```ts filename="src/notes-admin.ts"
+import { ActionError, defineAdmin } from '@otw/sdk'
+import { sql } from 'drizzle-orm'
+import notes from './notes'
+
+export default defineAdmin(notes, (cms) => {
+  cms.admin.action({
+    name: 'add',
+    capability: 'notes.write',
+    async handler({ form }) {
+      const body = String(form.get('body') ?? '').trim()
+      if (!body) throw new ActionError('Write something first.')
+      await cms.db.execute(sql`INSERT INTO notes_notes (body) VALUES (${body})`)
+      return { notice: 'Note added.' }
+    },
+  })
 })
 ```
 
@@ -132,6 +156,7 @@ import { createTestKernel, TEST_ORIGIN, type TestKernel } from '@otw/testing'
 import { sql } from 'drizzle-orm'
 import { afterEach, expect, it } from 'vitest'
 import notes from '../src/notes'
+import notesAdmin from '../src/notes-admin'
 
 const ADD = '/api/p/notes/actions/add'
 let site: TestKernel | undefined
@@ -145,7 +170,7 @@ function outcome(site: TestKernel, response: Response) {
 }
 
 it('adds a note for someone who may write them', async () => {
-  site = await createTestKernel({ plugins: [notes] })
+  site = await createTestKernel({ plugins: [notes], admin: [notesAdmin] })
   const { cookie } = await site.signIn()
   const response = await site.request('POST', ADD, {
     cookie,
@@ -164,7 +189,7 @@ it('adds a note for someone who may write them', async () => {
 })
 
 it('explains a mistake on the form', async () => {
-  site = await createTestKernel({ plugins: [notes] })
+  site = await createTestKernel({ plugins: [notes], admin: [notesAdmin] })
   const { cookie } = await site.signIn()
   const response = await site.request('POST', ADD, { cookie, form: { body: ' ' } })
   expect(outcome(site, response).flash).toEqual({
@@ -174,7 +199,7 @@ it('explains a mistake on the form', async () => {
 })
 
 it('refuses people without the capability, and posts from other sites', async () => {
-  site = await createTestKernel({ plugins: [notes] })
+  site = await createTestKernel({ plugins: [notes], admin: [notesAdmin] })
   const customer = await site.signIn('customer')
   expect(
     (await site.request('POST', ADD, { cookie: customer.cookie, form: { body: 'x' } })).status,

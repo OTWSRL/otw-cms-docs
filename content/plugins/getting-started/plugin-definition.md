@@ -40,7 +40,7 @@ export default definePlugin({
 | `optional`    | No       | Plugins it works with when they're there. See [Dependencies](/plugins/getting-started/dependencies). |
 | `migrations`  | No       | Changes to the database, run once each. See [Migrations](/plugins/database/migrations).              |
 | `settings`    | No       | The plugin's settings. See [Settings](/plugins/admin/settings).                                      |
-| `setup`       | No       | Registers everything else. See [setup()](#setup) below.                                              |
+| `setup`       | No       | Registers what every part of the site needs. See [setup()](#setup) below.                            |
 
 ### The id
 
@@ -64,9 +64,11 @@ const icon = `data:image/svg+xml;base64,${btoa('<svg xmlns="http://www.w3.org/20
 
 ## setup()
 
-`setup(cms)` is where a plugin registers what it adds: hooks, routes, admin pages, slots, roles.
-It runs every time the site starts, after the plugins it depends on and after its own
-migrations. It may be `async`.
+`setup(cms)` is where a plugin registers what every part of the site needs: hooks, routes,
+services, site slots, roles and capabilities. It runs every time the site starts, after the
+plugins it depends on and after its own migrations. It may be `async`. Admin pages, actions,
+settings pages and admin slots go in the plugin's [admin entry](/plugins/admin#the-admin-entry),
+which runs after every plugin's `setup()`, only where the admin is.
 
 Its argument, `cms`, is the plugin's view of the CMS:
 

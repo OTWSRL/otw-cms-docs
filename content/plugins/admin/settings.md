@@ -79,7 +79,9 @@ export function registerSettings(cms: PluginContext) {
 }
 ```
 
-The plugin passes `settings` to `definePlugin()` and calls `registerSettings(cms)` in `setup()`.
+The plugin passes `settings` to `definePlugin()`, so every part of the site can read them, and
+calls `registerSettings(cms)` in its [admin entry](/plugins/admin#the-admin-entry): settings pages
+are part of the admin.
 
 ### Field types
 

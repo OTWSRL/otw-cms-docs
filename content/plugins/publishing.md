@@ -16,7 +16,8 @@ package, and `cms update` (or Dashboard › Updates) keeps it current.
   "description": "Sell gift cards and redeem them at checkout.",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./admin": "./src/admin.tsx"
   },
   "files": ["src"],
   "peerDependencies": {
@@ -30,7 +31,8 @@ package, and `cms update` (or Dashboard › Updates) keeps it current.
 ```
 
 - **Ship the TypeScript source.** Sites compile plugins along with themselves, so `exports` points
-  at `src/index.ts` and there's no build step. The site's `withCms()` tells Next.js which packages
+  at `src/index.ts`, and at the [admin entry](/plugins/admin#the-admin-entry) as `./admin`, and
+  there's no build step. The site's `withCms()` tells Next.js which packages
   to compile.
 - **The CMS's packages are peer dependencies**, and so are `react` and `drizzle-orm`: the site
   provides one copy that the CMS and every plugin share. Two copies would mean two React

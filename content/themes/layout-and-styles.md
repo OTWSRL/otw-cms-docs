@@ -50,7 +50,8 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
 What it does, line by line:
 
 - **`import '@/cms/site.generated'`** registers the site's plugins for this part of the app.
-  Keep it in the layout.
+  Keep it in the layout, and keep it `site.generated`: `admin.generated` would send the plugins'
+  admin code to every visitor.
 - **`dynamic = 'force-dynamic'`** renders pages on each request, because they read the database:
   settings, plugins and the signed-in user can change at any time.
 - **`generateMetadata`** makes the browser tab read "Shop · My Site" on a plugin's Shop page:

@@ -50,15 +50,23 @@ export default definePlugin({
   requires: { core: '^0.1.0' },
   setup(cms) {
     cms.traces.enable()
-    // Keep the admin's own requests, for a list of slow admin screens elsewhere in the plugin.
-    cms.slots.fill('admin.footer', {
-      component: ({ user }) => {
-        const id = cms.traces.currentId()
-        if (id && cms.auth.can(user, 'core.manage_plugins')) cms.traces.keep(id)
-        return null
-      },
-    })
   },
+})
+```
+
+```tsx filename="src/admin.tsx"
+import { defineAdmin } from '@otw/sdk'
+import slowPages from './index'
+
+export default defineAdmin(slowPages, (cms) => {
+  // Keep the admin's own requests, for a list of slow admin screens elsewhere in the plugin.
+  cms.slots.fill('admin.footer', {
+    component: ({ user }) => {
+      const id = cms.traces.currentId()
+      if (id && cms.auth.can(user, 'core.manage_plugins')) cms.traces.keep(id)
+      return null
+    },
+  })
 })
 ```
 

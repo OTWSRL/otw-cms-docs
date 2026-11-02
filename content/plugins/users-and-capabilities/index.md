@@ -15,7 +15,8 @@ there's no leftover `wp_user_roles` row to clean up.
 ## Declaring capabilities
 
 A capability is declared twice: its name on the `Capabilities` interface, for types, and its
-label and starting roles with `cms.auth.capability()` in `setup()`.
+label and starting roles with `cms.auth.capability()` in `setup()`, not in the admin entry: the
+site's pages and the API check capabilities too.
 
 ```ts filename="src/index.ts"
 import { definePlugin } from '@otw/sdk'

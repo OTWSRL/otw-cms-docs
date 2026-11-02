@@ -20,7 +20,8 @@ source.
   "version": "1.0.0",
   "type": "module",
   "exports": {
-    ".": "./src/index.tsx"
+    ".": "./src/index.tsx",
+    "./admin": "./src/admin.tsx"
   },
   "peerDependencies": {
     "@otw/admin-ui": "^0.1.0",
@@ -45,8 +46,10 @@ shares. The range on `@otw/sdk` also says which versions of the CMS the plugin w
 
 ## The plugin
 
+A plugin has two entries. The main one, `.`, runs everywhere: the site's pages, the API and the
+admin. The admin entry, `./admin`, has what only the admin shows.
+
 ```tsx filename="src/index.tsx"
-import { Postbox } from '@otw/admin-ui'
 import { definePlugin } from '@otw/sdk'
 
 // Settings are typed: declare the key and its type, then the field in `settings` below.
@@ -81,16 +84,24 @@ export default definePlugin({
       metadata: () => ({ title: 'Hello' }),
       component: () => <h1>{cms.settings.get('greeting.message')}</h1>,
     })
-
-    // A box on the admin's Dashboard.
-    cms.slots.fill('admin.dashboard', {
-      component: () => (
-        <Postbox id="greeting" title="Greeting">
-          <p>{cms.settings.get('greeting.message')}</p>
-        </Postbox>
-      ),
-    })
   },
+})
+```
+
+```tsx filename="src/admin.tsx"
+import { Postbox } from '@otw/admin-ui'
+import { defineAdmin } from '@otw/sdk'
+import greeting from './index'
+
+export default defineAdmin(greeting, (cms) => {
+  // A box on the admin's Dashboard.
+  cms.slots.fill('admin.dashboard', {
+    component: () => (
+      <Postbox id="greeting" title="Greeting">
+        <p>{cms.settings.get('greeting.message')}</p>
+      </Postbox>
+    ),
+  })
 })
 ```
 
@@ -104,9 +115,12 @@ What each part does:
 - **`requires: { core: '^0.1.0' }`** says which versions of the CMS it supports.
 - **`settings`** declares the field. The admin shows it under **Settings › Greeting** without
   any more code, because the plugin didn't place it on a page of its own.
-- **`setup(cms)`** runs when the site starts, with the plugin active. Everything the plugin adds
-  is registered here.
+- **`setup(cms)`** runs when the site starts, with the plugin active. What every part of the
+  site needs is registered here: pages, routes, settings readers, roles and capabilities.
 - **`cms.routes.page()`** adds a page to the site. See [Pages and API routes](/plugins/pages-and-routes).
+- **`defineAdmin()`** is the admin entry: admin screens, form actions, settings pages and admin
+  slots. It runs after every plugin's `setup()`, and only where the admin is, so its components
+  never reach the site's visitors. See [The admin entry](/plugins/admin#the-admin-entry).
 - **`cms.slots.fill()`** renders a component in a slot, here the Dashboard's
   `admin.dashboard`. See [Slots](/plugins/slots).
 
@@ -128,7 +142,8 @@ While you work on it, keep the plugin in a folder inside the site, such as `plug
 and install it from there: `npm install ./plugins/greeting`. Next.js compiles only what sits
 inside the site's folder.
 
-Restart `npm run dev`. The plugin appears on **Plugins › Installed Plugins**, inactive; click
+Restart `npm run dev`; it runs `cms generate`, which finds the admin entry in the package's
+`exports`. The plugin appears on **Plugins › Installed Plugins**, inactive; click
 **Activate**. Open `/hello`, then the Dashboard. Change the message under **Settings › Greeting**
 and both update.
 

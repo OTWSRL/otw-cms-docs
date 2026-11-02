@@ -73,7 +73,7 @@ export function registerActions(cms: PluginContext) {
 }
 ```
 
-Call `registerActions(cms)` from the plugin's `setup()`. Forms post to
+Call `registerActions(cms)` from the plugin's [admin entry](/plugins/admin#the-admin-entry). Forms post to
 `cms.admin.actionUrl('create')`, which is `/api/p/announcements/actions/create`.
 
 ## What the CMS checks first

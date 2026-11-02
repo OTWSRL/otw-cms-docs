@@ -23,12 +23,13 @@ of them are listed under [Slots](/reference/slots) in the Code Reference.
 
 ## Filling a slot
 
-`cms.slots.fill(name, { component, priority? })` in `setup()`. The component receives the slot's
-props, and can be `async`: it's a React Server Component, so it can query the database or call a
-service as it renders. Return `null` to show nothing.
+`cms.slots.fill(name, { component, priority? })`: the site's slots in `setup()`, the admin's
+(`admin.*`, and plugins' `{plugin}.admin.*`) in the plugin's
+[admin entry](/plugins/admin#the-admin-entry), which only the admin loads. The component
+receives the slot's props, and can be `async`: it's a React Server Component, so it can query the
+database or call a service as it renders. Return `null` to show nothing.
 
 ```tsx filename="src/index.tsx"
-import { Notice, Postbox } from '@otw/admin-ui'
 import { definePlugin } from '@otw/sdk'
 import type {} from '@otw/plugin-commerce'
 
@@ -39,27 +40,35 @@ export default definePlugin({
   setup(cms) {
     // A link in the site's navigation, after the shop's (priority 10).
     cms.slots.fill('header.nav', { component: () => <a href="/faq">FAQ</a>, priority: 20 })
-
-    // A notice for the people who handle orders, on every admin screen.
-    cms.slots.fill('admin.notices', {
-      component: ({ user }) =>
-        cms.auth.can(user, 'commerce.manage_orders') ? (
-          <Notice type="info">Orders placed after 2 pm ship the next working day.</Notice>
-        ) : null,
-    })
-
-    // A box on Commerce's order screen.
-    cms.slots.fill('commerce.admin.order', {
-      component: async ({ order }) => (
-        <Postbox id="shop-extras-packing" title="Packing">
-          <p>
-            {order.lines.reduce((sum, line) => sum + line.quantity, 0)} items to pack for order #
-            {order.number}.
-          </p>
-        </Postbox>
-      ),
-    })
   },
+})
+```
+
+```tsx filename="src/admin.tsx"
+import { Notice, Postbox } from '@otw/admin-ui'
+import { defineAdmin } from '@otw/sdk'
+import shopExtras from './index'
+
+export default defineAdmin(shopExtras, (cms) => {
+  // A notice for the people who handle orders, on every admin screen.
+  cms.slots.fill('admin.notices', {
+    component: ({ user }) =>
+      cms.auth.can(user, 'commerce.manage_orders') ? (
+        <Notice type="info">Orders placed after 2 pm ship the next working day.</Notice>
+      ) : null,
+  })
+
+  // A box on Commerce's order screen.
+  cms.slots.fill('commerce.admin.order', {
+    component: async ({ order }) => (
+      <Postbox id="shop-extras-packing" title="Packing">
+        <p>
+          {order.lines.reduce((sum, line) => sum + line.quantity, 0)} items to pack for order #
+          {order.number}.
+        </p>
+      </Postbox>
+    ),
+  })
 })
 ```
 
@@ -79,6 +88,9 @@ Declare it on `Slots` with its props, then render its fills where it belongs, wi
   cms.slots.get('events.event.after').map((Fill, index) => <Fill key={index} event={event} />)
 }
 ```
+
+Name a slot on your admin screens `{plugin}.admin.{name}`, like `commerce.admin.order`: that's
+how the CMS knows other plugins fill it from their admin entry.
 
 Call `get()` while rendering, not in `setup()`: plugins that load after yours haven't filled it
 yet during your setup. A site's own layout renders slots with the `<Slot>` component; see
