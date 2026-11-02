@@ -11,7 +11,8 @@ registering a type.
 
 A type with screens gets WordPress's list and edit screens in the admin, with the block editor,
 and the menu entries to reach them; see [Screens](#screens). [Taxonomies](/plugins/content/taxonomies)
-classify entries, as categories and tags do.
+classify entries, as categories and tags do, and [custom fields](/plugins/content/meta) give
+them typed values of their own.
 
 ## Registering a type
 
