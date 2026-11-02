@@ -51,6 +51,12 @@ The site's public address, such as `https://example.com`: no path, no trailing s
 **Settings › General › Site address**. Used for links that leave the site, and accepted as the
 site's own address by admin forms behind a proxy.
 
+### `MAIL_FROM`
+
+Who the site's email comes from, such as `My Site <hello@example.com>`. Overrides **Settings ›
+General › Send email from**. Unset and empty there, the mail plugin's own sender is used. See
+[Email](/plugins/mail).
+
 ### `SITE_LOCALE`
 
 How numbers and prices are formatted, such as `en-US` or `de-DE`. Overrides **Settings › General ›
@@ -126,3 +132,8 @@ Stripe's secret key, `sk_live_…` or `sk_test_…`. Until it's set, Stripe stay
 
 The signing secret of the Stripe webhook endpoint pointing at `/api/p/commerce-stripe/webhook`,
 `whsec_…`.
+
+### `MAIL_FILE_DIR`
+
+The folder **Mail to files** writes each email to, for development and tests. Default:
+`.data/mail`, in the site's directory.

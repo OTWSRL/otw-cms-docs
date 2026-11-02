@@ -16,6 +16,10 @@ shop manager can open the shop's pages but not the site's.
 | **Site address** | The site's public address, such as `https://example.com`, for links that leave the site: payment pages send buyers back to it. Leave it empty to use the address each visit arrives on. |
 | **Locale**       | How numbers and prices are formatted, such as `en-US` or `de-DE`. Defaults to `en-US`.                                                                                                  |
 
+**Send email from**, under Email, is who the site's email comes from, such as
+`My Site <hello@example.com>`. Leave it empty to use the mail plugin's own sender. A site needs a
+mail plugin to send email at all: without one, password resets and sign-ups can't reach anyone.
+
 Set **Site address** when the site runs behind a proxy or load balancer, or under more than one
 address: it makes links in emails and from payment providers point at the right place. See
 [Behind a reverse proxy](/hosting/reverse-proxy).
