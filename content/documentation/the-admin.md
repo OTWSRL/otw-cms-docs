@@ -13,6 +13,9 @@ The bar along the top shows the site's name, which links to the site itself, so 
 your changes. On the right, **Howdy, _your name_** opens your account menu, with your email and
 **Log Out**.
 
+When a screen takes more than a moment to open, a thin line runs along the top of the bar until
+it's there, so you know your click worked.
+
 ## The menu
 
 The menu lists what you may use, and nothing else: a shop manager sees the shop's screens but not

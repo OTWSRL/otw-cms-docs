@@ -140,22 +140,26 @@ export default defineAdmin(lms, (cms) => {
 })
 ```
 
-| Method                                | Like WordPress's                       | Does                                                                                        |
-| ------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `create(type, fields)`                | `wp_insert_post()`                     | Adds an entry. Every field is optional: it starts as an untitled draft.                     |
-| `update(id, changes)`                 | `wp_update_post()`                     | Changes the fields given. An entry in the trash must be restored first.                     |
-| `get(id)`                             | `get_post()`                           | The entry, or `null`.                                                                       |
-| `getBySlug(type, slug, { parentId })` | `get_page_by_path()`                   | The published or private entry with that slug, at the top or under a parent.                |
-| `list(query)`                         | `WP_Query`                             | A page of entries and how many match: by type, status, author, parent, ids, search or date. |
-| `count(type, { authorId })`           | `wp_count_posts()`                     | How many entries have each status, everyone's or one author's.                              |
-| `months(type)`                        | The "All dates" filter                 | The months that have entries, newest first.                                                 |
-| `trash(id)`, `restore(id)`            | `wp_trash_post()`, `wp_untrash_post()` | Into the trash, and back out as a draft.                                                    |
-| `delete(id)`                          | `wp_delete_post()`                     | Deletes for good. Its children move up to its parent.                                       |
+| Method                                | Like WordPress's                       | Does                                                                                                                                                                 |
+| ------------------------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `create(type, fields)`                | `wp_insert_post()`                     | Adds an entry. Every field is optional: it starts as an untitled draft.                                                                                              |
+| `update(id, changes)`                 | `wp_update_post()`                     | Changes the fields given. An entry in the trash must be restored first.                                                                                              |
+| `get(id)`                             | `get_post()`                           | The entry, or `null`.                                                                                                                                                |
+| `getBySlug(type, slug, { parentId })` | `get_page_by_path()`                   | The published or private entry with that slug, at the top or under a parent.                                                                                         |
+| `list(query)`                         | `WP_Query`                             | A page of entries and how many match: by type, status, author, parent, ids, search or date.                                                                          |
+| `count(type, { authorId })`           | `wp_count_posts()`                     | How many entries have each status, everyone's or one author's.                                                                                                       |
+| `months(type)`                        | The "All dates" filter                 | The months that have entries, newest first.                                                                                                                          |
+| `outline(type, { exclude, limit })`   | `wp_dropdown_pages()`                  | A hierarchical type's entries as a tree, for a Parent dropdown: each one's id, title and depth, in one query. `exclude` leaves out an entry and everything under it. |
+| `trash(id)`, `restore(id)`            | `wp_trash_post()`, `wp_untrash_post()` | Into the trash, and back out as a draft.                                                                                                                             |
+| `delete(id)`                          | `wp_delete_post()`                     | Deletes for good. Its children move up to its parent.                                                                                                                |
 
 `list()` returns everything but the trash unless asked, newest first by WordPress's post date
 (when it was published, or created if it never was). It also orders by `updated`, `title` and
-`position`, 20 to a page and at most 100. `search` finds every word in the title, excerpt or
-body's text; `after` and `before` bound the date. `orderBy: 'tree'` lists a hierarchical type as
+`position`, 20 to a page and at most 100. `search` finds entries whose title, excerpt or body
+has each word searched for, or a word beginning with it, in any case: `open` finds _opening_, but
+`pen` doesn't. That's narrower than WordPress's `LIKE '%pen%'`, and it reads an index of entries'
+words, so a search reads the entries that match rather than every entry. `after` and `before`
+bound the date. `orderBy: 'tree'` lists a hierarchical type as
 WordPress lists pages, parents before their children, and returns each entry's depth in `depths`.
 
 Entries have a `title`, an `excerpt`, a `body`, an `authorId`, a `parentId`, a `position` for

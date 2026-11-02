@@ -55,9 +55,10 @@ one is used), your password, and **Log Out Everywhere Else**, for a device you l
 
 ## Changing roles
 
-**Users › All Users** lists everyone. The links above the list filter it by role. To change roles,
-tick the people, choose the new role under **Change role to…**, and click **Change**. It changes
-all of them or none: if one can't change, nothing does, and the message says why.
+**Users › All Users** lists everyone, 20 to a page. The links above the list filter it by role,
+and **Search Users** finds people by their email address or name. To change roles, tick the
+people, choose the new role under **Change role to…**, and click **Change**. It changes all of
+them or none: if one can't change, nothing does, and the message says why.
 
 The site always keeps at least one administrator: the last one can't be given another role.
 
