@@ -47,18 +47,19 @@ export default definePlugin({
 })
 ```
 
-| Field          | What it is                                                                                                                  |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `labels`       | `singular` and `plural`, such as `Course` and `Courses`.                                                                    |
-| `plural`       | The plural in its capability names. Defaults to the name and an `s`; set it for others, as `people`, in `ContentTypes` too. |
-| `public`       | Its published entries get pages on the site. Defaults to `false`.                                                           |
-| `hierarchical` | Entries can have a parent of the same type, as pages do. Defaults to `false`.                                               |
-| `supports`     | What its entries use: `title`, `body`, `excerpt`, `author`, `position`. Defaults to `title` and `body`, as in WordPress.    |
-| `roles`        | Which roles get its capabilities, and at what level. Defaults to WordPress's for posts: Editor, Author and Contributor.     |
-| `showUi`       | It has list and edit screens in the admin. Defaults to `public`, as WordPress's `show_ui`.                                  |
-| `showInMenu`   | Its screens are in the menu, in the plugin's section. Defaults to `showUi`.                                                 |
-| `hasArchive`   | Its published entries are listed at `/{plural}`. Defaults to `false`.                                                       |
-| `description`  | What the type is for.                                                                                                       |
+| Field          | What it is                                                                                                                            |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `labels`       | `singular` and `plural`, such as `Course` and `Courses`.                                                                              |
+| `plural`       | The plural in its capability names. Defaults to the name and an `s`; set it for others, as `people`, in `ContentTypes` too.           |
+| `public`       | Its published entries get pages on the site. Defaults to `false`.                                                                     |
+| `hierarchical` | Entries can have a parent of the same type, as pages do. Defaults to `false`.                                                         |
+| `supports`     | What its entries use: `title`, `body`, `excerpt`, `author`, `position`, `revisions`. Defaults to `title` and `body`, as in WordPress. |
+| `roles`        | Which roles get its capabilities, and at what level. Defaults to WordPress's for posts: Editor, Author and Contributor.               |
+| `showUi`       | It has list and edit screens in the admin. Defaults to `public`, as WordPress's `show_ui`.                                            |
+| `showInMenu`   | Its screens are in the menu, in the plugin's section. Defaults to `showUi`.                                                           |
+| `hasArchive`   | Its published entries are listed at `/{plural}`. Defaults to `false`.                                                                 |
+| `revisions`    | With the `revisions` feature, how many each entry keeps. Defaults to 25.                                                              |
+| `description`  | What the type is for.                                                                                                                 |
 
 A type whose plural isn't the name and an `s` declares it on both sides:
 `'crew.person': { plural: 'people' }` in `ContentTypes`, and `plural: 'people'` in the definition.
@@ -375,6 +376,31 @@ export default defineAdmin(lms, (cms) => {
 Register them in the admin entry: the screens are the admin's, so their code stays out of the
 site's pages.
 
+## Revisions
+
+A type with the `revisions` feature, as Posts and Pages have, keeps what each save wrote: the
+title, body, excerpt and custom fields. A save that changed only the status keeps none, and the
+oldest go once an entry has its type's number, 25 unless it says.
+
+```ts filename="src/history.ts"
+import type { PluginContext } from '@otw/sdk'
+
+/** Puts a post back as it was before its last save, in the name of `userId`. */
+export async function undoLastSave(cms: PluginContext, postId: string, userId: string) {
+  const { revisions } = await cms.content.revisions(postId, { limit: 2 })
+  const before = revisions[1]
+  return before ? cms.content.restoreRevision(before.id, { by: userId }) : null
+}
+```
+
+- `create()` and `update()` take `{ by }`, the user a revision names; the edit screen passes the
+  signed-in user.
+- `revisions(entryId)` lists them newest first, the newest being the entry as it is;
+  `restoreRevision(id)` puts the entry back as one had it, as a save with its own revision.
+- **On the edit screen**, the Publish box shows how many there are with a Browse link, once
+  there are two. The revisions screen lists them, shows what one changed from the one before it,
+  field by field, and restores it, for those who may edit the entry.
+
 ## How it differs from WordPress
 
 - **Every type has capabilities of its own**, named after it. WordPress shares posts' unless a
@@ -389,5 +415,7 @@ site's pages.
 - **Slugs are unique in the database**, not only in PHP, so two saves at once can't share one.
 - **Columns load once per page**, not once per row.
 - **No edit locks; stale saves are refused instead**, and what was typed waits in the browser.
+- **Revisions are kept apart from entries**, and to a number: WordPress keeps every one in
+  `wp_posts` unless told otherwise.
 - Not yet: scheduled posts and emptying the trash after 30 days, which need a job queue, and
   custom statuses.
