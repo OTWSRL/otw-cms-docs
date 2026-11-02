@@ -9,9 +9,8 @@ lessons or recipes. Their entries are WordPress's posts. Every type's entries sh
 one set of rules for statuses, slugs, authors and capabilities, so a plugin gets them by
 registering a type.
 
-> [!NOTE]
-> The admin's list and edit screens for content types come next. Until then a plugin builds its
-> screens with [the admin components](/plugins/admin/components) and the API on this page.
+A type with screens gets WordPress's list and edit screens in the admin, with the block editor,
+and the menu entries to reach them; see [Screens](#screens).
 
 ## Registering a type
 
@@ -54,6 +53,8 @@ export default definePlugin({
 | `hierarchical` | Entries can have a parent of the same type, as pages do. Defaults to `false`.                                               |
 | `supports`     | What its entries use: `title`, `body`, `excerpt`, `author`, `position`. Defaults to `title` and `body`, as in WordPress.    |
 | `roles`        | Which roles get its capabilities, and at what level. Defaults to WordPress's for posts: Editor, Author and Contributor.     |
+| `showUi`       | It has list and edit screens in the admin. Defaults to `public`, as WordPress's `show_ui`.                                  |
+| `showInMenu`   | Its screens are in the menu, in the plugin's section. Defaults to `showUi`.                                                 |
 | `description`  | What the type is for.                                                                                                       |
 
 A type whose plural isn't the name and an `s` declares it on both sides:
@@ -135,25 +136,30 @@ export default defineAdmin(lms, (cms) => {
 })
 ```
 
-| Method                                | Like WordPress's                       | Does                                                                         |
-| ------------------------------------- | -------------------------------------- | ---------------------------------------------------------------------------- |
-| `create(type, fields)`                | `wp_insert_post()`                     | Adds an entry. Every field is optional: it starts as an untitled draft.      |
-| `update(id, changes)`                 | `wp_update_post()`                     | Changes the fields given. An entry in the trash must be restored first.      |
-| `get(id)`                             | `get_post()`                           | The entry, or `null`.                                                        |
-| `getBySlug(type, slug, { parentId })` | `get_page_by_path()`                   | The published or private entry with that slug, at the top or under a parent. |
-| `list(query)`                         | `WP_Query`                             | A page of entries and how many match: by type, status, author or parent.     |
-| `trash(id)`, `restore(id)`            | `wp_trash_post()`, `wp_untrash_post()` | Into the trash, and back out as a draft.                                     |
-| `delete(id)`                          | `wp_delete_post()`                     | Deletes for good. Its children move up to its parent.                        |
+| Method                                | Like WordPress's                       | Does                                                                                        |
+| ------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `create(type, fields)`                | `wp_insert_post()`                     | Adds an entry. Every field is optional: it starts as an untitled draft.                     |
+| `update(id, changes)`                 | `wp_update_post()`                     | Changes the fields given. An entry in the trash must be restored first.                     |
+| `get(id)`                             | `get_post()`                           | The entry, or `null`.                                                                       |
+| `getBySlug(type, slug, { parentId })` | `get_page_by_path()`                   | The published or private entry with that slug, at the top or under a parent.                |
+| `list(query)`                         | `WP_Query`                             | A page of entries and how many match: by type, status, author, parent, ids, search or date. |
+| `count(type, { authorId })`           | `wp_count_posts()`                     | How many entries have each status, everyone's or one author's.                              |
+| `months(type)`                        | The "All dates" filter                 | The months that have entries, newest first.                                                 |
+| `trash(id)`, `restore(id)`            | `wp_trash_post()`, `wp_untrash_post()` | Into the trash, and back out as a draft.                                                    |
+| `delete(id)`                          | `wp_delete_post()`                     | Deletes for good. Its children move up to its parent.                                       |
 
 `list()` returns everything but the trash unless asked, newest first by WordPress's post date
 (when it was published, or created if it never was). It also orders by `updated`, `title` and
-`position`, 20 to a page and at most 100.
+`position`, 20 to a page and at most 100. `search` finds every word in the title, excerpt or
+body's text; `after` and `before` bound the date. `orderBy: 'tree'` lists a hierarchical type as
+WordPress lists pages, parents before their children, and returns each entry's depth in `depths`.
 
 Entries have a `title`, an `excerpt`, a `body`, an `authorId`, a `parentId`, a `position` for
 ordering by hand (WordPress's `menu_order`), and `publishedAt`, set when the entry is first
 published. A date in the past backdates it; one in the future is refused until scheduling comes.
 The `body` is a list of blocks, stored as JSON and rendered by React components, so stored content
-can't add markup of its own. Bad input throws a `ContentError` whose message is safe to show.
+can't add markup of its own; see [The body](#the-body). Bad input throws a `ContentError` whose
+message is safe to show.
 
 ## Statuses
 
@@ -209,6 +215,137 @@ export function indexPosts(cms: PluginContext, index: (id: string, title: string
 }
 ```
 
+## The body
+
+An entry's body is the block editor's document: ProseMirror's JSON, a list of blocks. Every save
+is checked against the blocks the editor offers and rebuilt from what they allow, so a forged
+form can't store anything else.
+
+| Block     | JSON                                                                        |
+| --------- | --------------------------------------------------------------------------- |
+| Paragraph | `{ "type": "paragraph", "content": [text] }`                                |
+| Heading   | `{ "type": "heading", "attrs": { "level": 2 }, "content": [text] }`         |
+| Lists     | `bulletList` and `orderedList` (`attrs.start`), holding `listItem` blocks   |
+| Quote     | `{ "type": "blockquote", "content": [blocks] }`                             |
+| Code      | `{ "type": "codeBlock", "attrs": { "language": "ts" }, "content": [text] }` |
+| Separator | `{ "type": "horizontalRule" }`                                              |
+
+Text is `{ "type": "text", "text": "…", "marks": […] }`, with `bold`, `italic`, `strike`, `code`
+and `link` marks, and `{ "type": "hardBreak" }` for a line break. Links may only go to `http`,
+`https` and `mailto` addresses, or paths on the site: `isSafeHref()` is the check, in the editor,
+on save and when the body is shown.
+
+On the site, the `Blocks` component from `@otw/next/site` renders a body. It's a server
+component, so it sends the browser no JavaScript:
+
+```tsx filename="src/course-page.tsx"
+import type { Entry } from '@otw/sdk'
+import { Blocks } from '@otw/next/site'
+
+export function CoursePage({ course }: { course: Entry }) {
+  return (
+    <article>
+      <h1>{course.title}</h1>
+      <Blocks blocks={course.body} />
+    </article>
+  )
+}
+```
+
+## Screens
+
+A type with `showUi` gets WordPress's screens: Posts are at `/admin/posts`, and a plugin's type
+under the plugin, as `/admin/lms/courses`. "All Courses" and "Add New Course" come first in the
+plugin's section of the menu. Each needs the type's `edit` capability, and an entry's edit screen
+its `edit_` meta capability on that entry.
+
+- **The list** (`edit.php`) has views by status with their counts, Mine, a search box, the month
+  filter, sorting by title or date, and pages of 20. Pages and other hierarchical types are
+  listed as a tree. Row actions are Edit and Trash, or Restore and Delete Permanently in the
+  trash; bulk actions move to the trash, restore and delete, and Empty Trash clears it. Every
+  action is checked against each entry, whatever the screen offered.
+- **The edit screen** (`post.php`) has the title, the block editor, Excerpt, Slug and Author in
+  the main column, and the Publish box and Page Attributes in the sidebar. Contributors get
+  Submit for Review instead of Publish; changing the author needs `edit_others_`. An entry is
+  created on its first save, so an abandoned Add New leaves nothing behind.
+- **Saving over someone else's change** is refused: the form carries the entry's `updatedAt`,
+  and the save checks it. Nothing typed is lost: the editor keeps the title, excerpt and body in
+  the browser until they're saved, and offers them back, as WordPress's backup does.
+
+The editor's code is fetched only on edit screens: the other screens don't download it.
+
+## Columns, boxes and actions
+
+A plugin adds to any type's screens from its [admin entry](/plugins/admin): one type's, several,
+or every type's with `'*'`.
+
+```tsx filename="src/admin.tsx"
+import { defineAdmin } from '@otw/sdk'
+import lms from './index'
+
+declare module '@otw/sdk' {
+  interface Capabilities {
+    'lms.archive_courses': true
+  }
+}
+
+export default defineAdmin(lms, (cms) => {
+  // Like manage_{$post_type}_posts_columns. load() runs once for the page of entries shown.
+  cms.admin.column('lms.course', {
+    name: 'words',
+    label: 'Words',
+    after: 'title',
+    load: (entries) => new Map(entries.map((entry) => [entry.id, entry.excerpt.split(' ').length])),
+    render: (entry, words) => words.get(entry.id) ?? 0,
+  })
+
+  // Like add_meta_box(). Its fields are part of the entry's form.
+  cms.admin.metaBox('lms.course', {
+    name: 'level',
+    title: 'Level',
+    context: 'side',
+    component: () => (
+      <select name="lms.level" aria-label="Level">
+        <option>Beginner</option>
+        <option>Advanced</option>
+      </select>
+    ),
+    async save({ entry, form }) {
+      // Keep it in the plugin's own table; typed entry meta is on the way.
+      cms.logger.info('Course level saved', { course: entry.id, level: form.get('lms.level') })
+    },
+  })
+
+  cms.admin.rowAction('lms.course', {
+    name: 'lessons',
+    link: (entry) => ({ label: 'Lessons', url: cms.admin.url('/lessons') + `?course=${entry.id}` }),
+  })
+
+  cms.admin.bulkAction('lms.course', {
+    name: 'archive',
+    label: 'Archive',
+    capability: 'lms.archive_courses',
+    handler: ({ entries }) => `${entries.length} courses archived.`,
+  })
+})
+```
+
+- **`column(types, { name, label, after, load, render })`**: `load` gets the page of entries
+  and returns what `render` needs for each, so a list costs one query per column, not one per
+  row as WordPress's `manage_posts_custom_column` invites. `after` names the column it follows
+  (`title`, `author`, or another plugin's `pluginId.name`); by default it goes before the date.
+- **`metaBox(types, { name, title, context, order, component, save })`**: `component` receives
+  the entry (`null` on Add New), the type and the user. `save` runs once the entry is written,
+  in the same transaction, like a `save_post` handler; throw `ActionError` to refuse the save
+  with a message. Name fields after your plugin, as `lms.level`, so they don't clash.
+- **`rowAction(types, { name, link })`**: a link under each entry's title; return `null` to leave
+  it out for an entry or user.
+- **`bulkAction(types, { name, label, capability, handler })`**: a choice in Bulk actions. The
+  CMS checks `capability`; the handler gets the selected entries and returns the notice.
+
+Register them in the admin entry: the screens are the admin's, so their code stays out of the
+site's pages.
+
 ## How it differs from WordPress
 
 - **Every type has capabilities of its own**, named after it. WordPress shares posts' unless a
@@ -221,5 +358,7 @@ export function indexPosts(cms: PluginContext, index: (id: string, title: string
   status it had. WordPress asks only `edit_others_posts` there, so a role that may not edit
   published posts could edit one once it's trashed.
 - **Slugs are unique in the database**, not only in PHP, so two saves at once can't share one.
+- **Columns load once per page**, not once per row.
+- **No edit locks; stale saves are refused instead**, and what was typed waits in the browser.
 - Not yet: scheduled posts and emptying the trash after 30 days, which need a job queue, and
   custom statuses.

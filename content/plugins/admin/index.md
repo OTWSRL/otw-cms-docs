@@ -41,6 +41,10 @@ any plugin's services. The CMS holds each entry to its part:
 
 A call in the wrong one stops the plugin from starting, with a message that says where it goes.
 
+Entries of a [content type](/plugins/content) come with their screens: a type's list and edit
+screens, with the block editor, are the CMS's. Plugins add columns and boxes to them, rather than
+building their own.
+
 ## Adding a page
 
 `cms.admin.page()` adds a screen under `/admin/{pluginId}`. The plugin keeps its data in a table
