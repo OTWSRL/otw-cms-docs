@@ -59,13 +59,13 @@ export default definePlugin({
 })
 ```
 
-| Field       | What it is                                                                                                 |
-| ----------- | ---------------------------------------------------------------------------------------------------------- |
-| `name`      | Unique in the plugin. Others reach the page as `{pluginId}.{name}`, such as `recipes.recipe`.              |
-| `path`      | Where it's served. `:name` segments are parameters; `/` claims the home page.                              |
-| `load`      | Fetches the page's data from `params` and `searchParams`. Return `null` and the visitor gets a 404.        |
-| `metadata`  | The page's `<title>` and meta description.                                                                 |
-| `component` | Renders the page, with `data`, `params` and `searchParams`. It's a Server Component, so it may be `async`. |
+| Field       | What it is                                                                                                           |
+| ----------- | -------------------------------------------------------------------------------------------------------------------- |
+| `name`      | Unique in the plugin. Others reach the page as `{pluginId}.{name}`, such as `recipes.recipe`.                        |
+| `path`      | Where it's served. `:name` segments are parameters; `/` claims the home page.                                        |
+| `load`      | Fetches the page's data from `params` and `searchParams`, and `user()`. Return `null` and the visitor gets a 404.    |
+| `metadata`  | The page's `<title>` and meta description.                                                                           |
+| `component` | Renders the page, with `data`, `params`, `searchParams` and `user()`. It's a Server Component, so it may be `async`. |
 
 ### Paths
 
@@ -78,6 +78,45 @@ export default definePlugin({
   [a home page of its own](/themes/pages#the-home-page).
 - A site can move your pages to other paths, keeping their parameters, with `routes` in its
   `cms.config.json`. See [Moving plugin pages](/themes/pages#moving-plugin-pages).
+
+### Who's asking
+
+A page's `load` knows who's asking, as an API route's handler does:
+
+- **`context.user()`** is the signed-in user, or `null`. It's looked up the first time you ask,
+  once per request, so a page that never asks pays nothing. `metadata` and `component` get it
+  too.
+- **`context.requireUser()`** is the signed-in user; a signed-out visitor is sent to sign in, and
+  brought back to the page, query string and all, once they have, like WordPress's
+  `auth_redirect()`.
+- **Throw `ForbiddenError`** for someone who may not see the page: they get a 403.
+- **Throw `PageRedirect`** to send the visitor elsewhere on the site, an old address to its new
+  one, say, like `wp_safe_redirect()`. Paths on the site only.
+
+```tsx filename="src/saved.tsx"
+import { ForbiddenError, type PluginContext } from '@otw/sdk'
+
+export function registerSavedRecipes(cms: PluginContext) {
+  cms.routes.page({
+    name: 'saved',
+    path: '/recipes/saved',
+    load: async ({ requireUser }) => {
+      const user = await requireUser()
+      if (!cms.auth.can(user, 'core.read')) throw new ForbiddenError()
+      return { name: user.name || user.email }
+    },
+    metadata: () => ({ title: 'Your saved recipes' }),
+    component: ({ data }) => <h1>Saved by {data.name}</h1>,
+  })
+}
+```
+
+For a link rather than a redirect, such as "Sign in to save" on a page anyone can read,
+`cms.routes.signInUrl(returnTo)` is the sign-in page that comes back to `returnTo`, like
+`wp_login_url()`.
+
+Pages that depend on who's asking are never cached for everyone: the site's pages render on each
+request.
 
 ### Links between pages
 
