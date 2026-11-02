@@ -17,6 +17,9 @@ importers:
       '@otw/next':
         specifier: link:../nextjs-cms/packages/next
         version: link:../nextjs-cms/packages/next
+      '@otw/plugin-performance':
+        specifier: link:../otw-plugin-performance
+        version: link:../otw-plugin-performance
       '@otw/sdk':
         specifier: link:../nextjs-cms/packages/sdk
         version: link:../nextjs-cms/packages/sdk
@@ -90,9 +93,6 @@ importers:
       '@otw/plugin-commerce-stripe':
         specifier: link:../nextjs-cms/plugins/commerce-stripe
         version: link:../nextjs-cms/plugins/commerce-stripe
-      '@otw/plugin-performance':
-        specifier: link:../otw-plugin-performance
-        version: link:../otw-plugin-performance
       '@otw/testing':
         specifier: link:../nextjs-cms/packages/testing
         version: link:../nextjs-cms/packages/testing

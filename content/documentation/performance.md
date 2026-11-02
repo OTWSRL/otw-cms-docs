@@ -22,7 +22,9 @@ Two files make it work, and both come with every new site:
 
 - `src/instrumentation.ts`, which `cms generate` writes, records what the server does.
 - The site's layout renders `<Slot name="site.footer" props={{ user }} />`, where the bar goes on
-  the site. A site made before the bar existed adds that line to `src/app/(site)/layout.tsx`; see
+  the site (a prerendered layout uses a component instead; see
+  [Prerendered pages](#prerendered-pages)). A site made before the bar existed adds that line to
+  `src/app/(site)/layout.tsx`; see
   [Layout and styles](/themes/layout-and-styles).
 
 ## The bar
@@ -60,7 +62,42 @@ Opening the bar shows these tabs. Press **Escape** to close it.
   downloading, and building the page.
 - **Resources**: the files the page loaded, by type and size, the slowest first, and which came
   from the browser's cache.
-- **Navigations**: pages opened with the site's links, which load without reloading the page.
+- **Navigations**: pages opened with the site's links, which load without reloading the page:
+  how long each took to show from the click, and the router's request for it, unless it fetched
+  the page earlier, once a link to it was in view. The chip shows how many, and the last one's
+  time.
+
+## Prerendered pages
+
+A prerendered layout, built once and served as it is to everyone like this documentation's, has
+no request of its own to trace and doesn't know who's viewing, so it can't render slots. Put the
+bar in it as a component instead, last in `<body>`:
+
+```tsx filename="src/app/(docs)/layout.tsx"
+import { PrerenderedPerformanceBar } from '@otw/plugin-performance/prerendered'
+import type { ReactNode } from 'react'
+
+export default function DocsLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+        <PrerenderedPerformanceBar />
+      </body>
+    </html>
+  )
+}
+```
+
+There the bar shows the browser's side: TTFB, the Web Vitals, resources and navigations.
+**Server** says _prerendered_: serving the page ran none of the CMS's code.
+
+The page stays the same for everyone. Wherever the bar shows, in the admin for instance, it sets
+a cookie, `performance_bar`, and prerendered pages that find it ask the server whether you may
+see the bar. Visitors, who never have the cookie, get about a kilobyte of script that checks for
+it and stops; only people the server allows download the bar itself. Import it from
+`@otw/plugin-performance/prerendered`, not from the package itself, or every visitor downloads the
+whole bar.
 
 ## Recent requests
 

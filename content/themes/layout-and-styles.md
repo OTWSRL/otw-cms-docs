@@ -62,6 +62,13 @@ What it does, line by line:
   plugins put scripts and toolbars there, such as the [performance bar](/documentation/performance).
   Keep it last in `<body>`.
 
+A layout can be prerendered instead, for pages that read no database, like this documentation's:
+drop `force-dynamic`, `generateMetadata`'s settings and the slots. Slots need the database, which
+isn't there while the site builds, and they can depend on who's viewing, which a page built once
+for everyone can't know. A plugin that belongs on such pages offers a component to put in the
+layout instead, such as the
+[performance bar's](/documentation/performance#prerendered-pages).
+
 Change anything else: add a footer, a logo, a second navigation, fonts. It's the site's file.
 
 ## Styles

@@ -1,3 +1,4 @@
+import { PrerenderedPerformanceBar } from '@otw/plugin-performance/prerendered'
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import '@/cms/site.generated'
@@ -6,7 +7,8 @@ import { SiteFooter, SiteHeader } from '@/docs/ui/chrome'
 import '../docs.css'
 
 // The documentation's root layout, like a WordPress theme's header.php and footer.php. Pages read
-// Markdown and the generated reference, not the database, so they're prerendered at build.
+// Markdown and the generated reference, not the database, so they're prerendered at build: no
+// slots, which need both. The performance bar comes as a component instead.
 
 export const metadata: Metadata = {
   title: { default: 'OTW CMS Documentation', template: '%s · OTW CMS Documentation' },
@@ -24,6 +26,7 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
         <SiteHeader />
         {children}
         <SiteFooter version={cmsVersion()} />
+        <PrerenderedPerformanceBar />
       </body>
     </html>
   )
