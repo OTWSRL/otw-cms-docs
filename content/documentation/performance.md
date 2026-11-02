@@ -38,8 +38,11 @@ Google's Web Vitals thresholds. Click any of them for the details.
 | **TTFB**    | Time to first byte: how long the browser waited for the first byte of the page.             |
 | **FCP**     | First Contentful Paint: when the browser first drew some content.                           |
 | **LCP**     | Largest Contentful Paint: when the biggest element appeared. Good is under 2.5 seconds.     |
+| **Ready**   | When you could use the page: on screen, and hydrated by React. Good is under 3.8 seconds.   |
 | **CLS**     | Cumulative Layout Shift: how much the page moved as it loaded. Good is under 0.1.           |
 | **INP**     | Interaction to Next Paint, once you've clicked or typed: how long the page took to respond. |
+| **Size**    | The page's HTML and files, compressed as sent: what a first visit downloads.                |
+| **JS heap** | The page's JavaScript memory, in Chrome and Edge. It follows the page as you use it.        |
 | **Queries** | Database queries, and their total time. Yellow when the same query ran more than once.      |
 | **Hooks**   | How many action and filter handlers ran.                                                    |
 | **Memory**  | The server's memory when the response ended.                                                |
@@ -58,10 +61,10 @@ Opening the bar shows these tabs. Press **Escape** to close it.
 - **Hooks**: every action and filter that ran handlers, which plugins' handlers, and the time.
 - **Plugins**: how long each plugin's own code took: its queries, hook handlers, page loads and
   setup.
-- **Browser**: Web Vitals, and the page load step by step: connecting, waiting for the server,
+- **Browser**: Web Vitals, when the page was ready to use, and the page load step by step: connecting, waiting for the server,
   downloading, and building the page.
-- **Resources**: the files the page loaded, by type and size, the slowest first, and which came
-  from the browser's cache.
+- **Resources**: the page's size, compressed and unpacked, then the files it loaded, by type and
+  size, the slowest first, and which came from the browser's cache.
 - **Navigations**: pages opened with the site's links, which load without reloading the page:
   how long each took to show from the click, and the router's request for it, unless it fetched
   the page earlier, once a link to it was in view. The chip shows how many, and the last one's
@@ -113,6 +116,13 @@ kept.
 
 ## Good to know
 
+- **A page can't see its whole tab's memory.** JS heap is the page's JavaScript: what its code
+  allocates, and where a leak shows. The whole tab, with its images and the browser's own share,
+  is in Chrome's Task Manager (**Window › Task Manager**). Firefox and Safari don't tell a page
+  its memory, so the chip doesn't show there.
+- **`pnpm dev` isn't production.** Scripts aren't minified and each page compiles on its first
+  visit, so sizes and times are several times what visitors get. Measure with `pnpm build` and
+  `pnpm start`.
 - **Query values are never recorded**: the bar shows `WHERE email = $1`, not the email.
 - **Visitors' requests cost a little.** While the plugin is active, every request is recorded and
   dropped when it ends unless someone who can see the bar made it. Measured on a shop page:
