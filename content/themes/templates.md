@@ -74,6 +74,33 @@ was deleted isn't shown. `excerptOf(entry)` gives the excerpt, or the body's fir
 WordPress makes one. These, `Image` and the default `EntryTemplate` and `ArchiveTemplate` come
 from `@otw/next/site`.
 
+## The account pages
+
+`/account` and its pages (lost password, setting a password, confirming an email address) render
+in `AccountTemplate` from `@otw/next/site`. A site replaces it with `account` in its templates;
+`props.view` says which page it is (`sign-in`, `account`, `lost-password`, `reset`,
+`confirm-email`), and `props.actions` where each form posts:
+
+```tsx filename="src/cms/templates.tsx"
+import { AccountTemplate } from '@otw/next/site'
+import type { SiteTemplates } from '@otw/next'
+
+const templates: SiteTemplates = {
+  // The default pages, under a heading of the shop's own.
+  account: (props) => (
+    <div className="shop-account">
+      <p className="shop-account-kicker">Your shop account</p>
+      <AccountTemplate {...props} />
+    </div>
+  ),
+}
+
+export default templates
+```
+
+Its forms post the fields `email`, `password`, `name`, `current` and `token`, as the default's do,
+and the page's one-time message is `props.notice`.
+
 ## Images
 
 `Image` shows a file from the media library as `wp_get_attachment_image()` does: the size asked

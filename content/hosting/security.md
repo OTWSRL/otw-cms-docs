@@ -25,9 +25,15 @@ run.
 
 ## Sign-in
 
-The CMS limits failed sign-ins to five per email address every fifteen minutes. Limiting by IP
-address belongs in front of the site, in your proxy or firewall, where the visitor's real address
-is known.
+The CMS limits failed sign-ins to five per email address every fifteen minutes; changing an
+account's password or email address counts against the same limit. Limiting by IP address belongs
+in front of the site, in your proxy or firewall, where the visitor's real address is known.
+
+[Accounts](/documentation/accounts) never say whether an address has one: sign-up, lost password
+and their emails answer the same either way. Their links are random, kept only as hashes, work
+once for a day, and an address gets three such emails an hour at most. Setting a password from one
+ends every session; changing a password ends every other. Pages with a link's token in their
+address tell the browser not to send it to other sites.
 
 ## Backups
 

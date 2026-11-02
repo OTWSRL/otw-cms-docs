@@ -38,6 +38,10 @@ As WordPress's: the sizes images are copied to when they're uploaded, in pixels.
 A 0 leaves that side free; 0 by 0 turns the size off. New sizes apply to images uploaded from then
 on: images already in the library keep the copies they have.
 
+**Anyone can register**, under Membership, lets people sign up on the site at `/account`, as
+Customers; see [Accounts on the site](/documentation/accounts). It's off until you tick it, and
+needs a mail plugin.
+
 ## Settings from plugins
 
 Plugins add their own pages under Settings, and sections to other plugins' pages. Commerce adds:

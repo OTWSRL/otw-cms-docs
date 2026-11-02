@@ -12,13 +12,13 @@ screens need the **Add users and change roles** capability (`core.manage_users`)
 
 Every site has these, as WordPress does:
 
-| Role              | What it's for                                                                    |
-| ----------------- | -------------------------------------------------------------------------------- |
-| **Administrator** | Everything, on every screen, including what plugins add.                         |
-| **Editor**        | Every post and page, anyone's, and every file in the media library.              |
-| **Author**        | Their own posts, which they publish, and the files they upload.                  |
-| **Contributor**   | Their own posts, sent for review; no uploads.                                    |
-| **Customer**      | People who sign in to the site itself, such as a shop's buyers. No admin access. |
+| Role              | What it's for                                                                                                           |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **Administrator** | Everything, on every screen, including what plugins add.                                                                |
+| **Editor**        | Every post and page, anyone's, and every file in the media library.                                                     |
+| **Author**        | Their own posts, which they publish, and the files they upload.                                                         |
+| **Contributor**   | Their own posts, sent for review; no uploads.                                                                           |
+| **Customer**      | People who sign in to the site itself, such as a shop's buyers. No admin access. People who sign up on the site get it. |
 
 Plugins add their own. Commerce adds **Shop manager**, who can use the admin to manage products,
 orders and the shop's settings, but not plugins, users or the site's settings.
