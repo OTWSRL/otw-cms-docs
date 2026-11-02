@@ -38,10 +38,15 @@ one: the email does, to its owner. An address gets three emails an hour at most 
 
 Signed in, **/account** has:
 
-- **Name**, to change.
+- **Your details**: your name, and any fields plugins add, such as a newsletter choice.
 - **Email address**, changed in two steps: enter the new address and your password, then use the
   link emailed to the new address. Until then nothing changes, and when it does, the old address
   is told.
 - **Password**: your current one, then the new one. Your other sessions are signed out, and the
   account's address gets an email saying the password changed.
 - **Sign out**, and **Go to the admin** for those who may use it.
+
+Plugins add sections after it, too. A shop adds **Orders**, the orders placed with the account's address. They
+show once the address is confirmed, since anyone can type an address at checkout: an account
+made by signing up is confirmed already, and one an administrator added confirms by setting a
+new password from **Lost your password?**.

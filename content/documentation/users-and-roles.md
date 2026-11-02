@@ -37,6 +37,22 @@ it's activated again.
   change it themselves yet.
 - **Role**.
 
+## Editing a user
+
+Click a user's email address in **Users** to edit them, as WordPress's Edit User screen does:
+
+- **Role**, **Name** and **Email**. A new address takes effect at once; the old one gets an email
+  saying so, and the new one counts as unconfirmed until the person uses a link sent to it.
+- The fields plugins add, such as a student's level.
+- **Send Reset Link** emails them a link to set a new password.
+- **Log Out Everywhere** signs them out on every device.
+
+## Your profile
+
+**Users › Profile**, or **Edit Profile** under **Howdy** in the admin bar, is everyone's own:
+your name, the fields plugins give you, your email address (changed once a link sent to the new
+one is used), your password, and **Log Out Everywhere Else**, for a device you left signed in.
+
 ## Changing roles
 
 **Users › All Users** lists everyone. The links above the list filter it by role. To change roles,
