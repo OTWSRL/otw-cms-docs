@@ -10,7 +10,8 @@ one set of rules for statuses, slugs, authors and capabilities, so a plugin gets
 registering a type.
 
 A type with screens gets WordPress's list and edit screens in the admin, with the block editor,
-and the menu entries to reach them; see [Screens](#screens).
+and the menu entries to reach them; see [Screens](#screens). [Taxonomies](/plugins/content/taxonomies)
+classify entries, as categories and tags do.
 
 ## Registering a type
 
