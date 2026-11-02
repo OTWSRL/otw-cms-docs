@@ -57,6 +57,7 @@ export default definePlugin({
 | `roles`        | Which roles get its capabilities, and at what level. Defaults to WordPress's for posts: Editor, Author and Contributor.     |
 | `showUi`       | It has list and edit screens in the admin. Defaults to `public`, as WordPress's `show_ui`.                                  |
 | `showInMenu`   | Its screens are in the menu, in the plugin's section. Defaults to `showUi`.                                                 |
+| `hasArchive`   | Its published entries are listed at `/{plural}`. Defaults to `false`.                                                       |
 | `description`  | What the type is for.                                                                                                       |
 
 A type whose plural isn't the name and an `s` declares it on both sides:
@@ -275,6 +276,32 @@ its `edit_` meta capability on that entry.
   the browser until they're saved, and offers them back, as WordPress's backup does.
 
 The editor's code is fetched only on edit screens: the other screens don't download it.
+
+## On the site
+
+Public types' entries have pages, served by the site's catch-all route after plugins' own routes,
+as WordPress's rewrite rules have it:
+
+| What                  | Where                                 | Moved by the site's `routes` key |
+| --------------------- | ------------------------------------- | -------------------------------- |
+| A page                | Its path: `/about/team`               | (pages stay at the top)          |
+| A post                | `/:slug`, after pages ("Post name")   | `core.post.single`               |
+| A plugin type's entry | `/{name}/:slug`: `/course/basics`     | `lms.course.single`              |
+| A type's archive      | `/{plural}` with `hasArchive`         | `lms.course.archive`             |
+| A term's entries      | `/{taxonomy}/:slug`: `/category/news` | `core.category.term`             |
+
+- **Who sees what:** published entries are public; private ones only to those who may read them;
+  drafts and pending entries only in preview. Anything else is a 404, as in WordPress.
+- **Previews:** `previewUrl(entry)` is `/?preview={id}`, which shows the saved entry to those with
+  its `read_` capability, marked for search engines to skip. Save first: there's no autosave yet.
+- **The home page** lists the latest posts, unless Settings › Reading makes it a static page, with
+  another page for the posts.
+- **Addresses:** `permalinks(entries)` gives a page of entries' addresses at once (a page's path
+  takes its ancestors'); `termUrl(term)` and `archiveUrl(type)` give the rest. The admin's View
+  and Preview links use them.
+- **Templates:** `cms.content.template({ view, for, component, priority })` in `setup()` replaces
+  the default for a plugin's type or taxonomy; the highest priority wins, as the last
+  `template_include` filter does. The site's own [templates](/themes/templates) win over all.
 
 ## Columns, boxes and actions
 

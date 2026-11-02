@@ -30,7 +30,8 @@ routes before the CMS's catch-all.
 ## The home page
 
 Without a page of its own, the site's home page is the CMS's: whatever an active plugin puts at
-`/`, or "Your site is running" when none does. To write your own, replace
+`/`, or else what Settings › Reading chooses, the latest posts or a static page, in the site's
+[templates](/themes/templates). To write your own, replace
 `src/app/(site)/page.tsx` with your page, without the `@generated` line at the top; the CMS then
 leaves it alone.
 

@@ -91,6 +91,7 @@ are part of the admin.
 | `boolean` | A checkbox              | `boolean` | `default`                                               |
 | `select`  | A choice from `options` | `string`  | `options`, `default` (one of the options)               |
 | `secret`  | Never shown or stored   | `string`  | `env`, required: secrets only come from the environment |
+| `entry`   | A dropdown of entries   | `string`  | `contentType`, required: whose published entries, by id |
 
 Every type takes `label`, `description` and `env`. `validate` returns an error message to refuse a
 value, or `null` to accept it. The admin then saves nothing and says why at the top of the page,
