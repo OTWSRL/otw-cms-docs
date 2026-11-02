@@ -10,18 +10,18 @@ help. `cms generate` runs before every `dev` and `build`.
 
 ## The files
 
-| File                                                 | What it does                                                                                                                                                          |
-| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/cms/site.generated.ts`                          | Imports the plugins in `cms.config.json`, the brand, and the site's own [templates](/themes/templates) if `src/cms/templates.tsx` exists. The site's pages import it. |
-| `src/cms/admin.generated.ts`                         | The same, with the plugins' [admin entries](/plugins/admin#the-admin-entry). The admin and the API import it.                                                         |
-| `src/app/(cms)/layout.tsx`                           | The admin's root layout, separate from the site's.                                                                                                                    |
-| `src/app/(cms)/admin/[[...segments]]/page.tsx`       | Every admin screen, core and plugin, from one route.                                                                                                                  |
-| `src/app/(cms)/admin/forbidden.tsx`, `not-found.tsx` | The admin's 403 and 404 pages.                                                                                                                                        |
-| `src/app/(cms)/api/p/[...path]/route.ts`             | Every plugin API route and admin action.                                                                                                                              |
-| `src/app/(cms)/uploads/[...path]/route.ts`           | The media library's files, at `/uploads/…`, from the storage the plugins set up.                                                                                      |
-| `src/instrumentation.ts`                             | Records requests for plugins that trace them. A site with its own keeps it; see [Tracing](/hosting/tracing).                                                          |
-| `src/app/(site)/page.tsx`                            | The home page, until the site writes its own.                                                                                                                         |
-| `src/app/(site)/[...slug]/page.tsx`                  | Every plugin page on the site, then posts, pages and archives.                                                                                                        |
+| File                                                 | What it does                                                                                                                                                                                                                                                   |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/cms/site.generated.ts`                          | Imports the plugins in `cms.config.json` and the brand, and loads the site's own [templates](/themes/templates), if `src/cms/templates.tsx` exists, when a page first needs them. The site's pages import it, and so can scripts and tests that boot the site. |
+| `src/cms/admin.generated.ts`                         | The same, with the plugins' [admin entries](/plugins/admin#the-admin-entry). The admin and the API import it.                                                                                                                                                  |
+| `src/app/(cms)/layout.tsx`                           | The admin's root layout, separate from the site's.                                                                                                                                                                                                             |
+| `src/app/(cms)/admin/[[...segments]]/page.tsx`       | Every admin screen, core and plugin, from one route.                                                                                                                                                                                                           |
+| `src/app/(cms)/admin/forbidden.tsx`, `not-found.tsx` | The admin's 403 and 404 pages.                                                                                                                                                                                                                                 |
+| `src/app/(cms)/api/p/[...path]/route.ts`             | Every plugin API route and admin action.                                                                                                                                                                                                                       |
+| `src/app/(cms)/uploads/[...path]/route.ts`           | The media library's files, at `/uploads/…`, from the storage the plugins set up.                                                                                                                                                                               |
+| `src/instrumentation.ts`                             | Records requests for plugins that trace them. A site with its own keeps it; see [Tracing](/hosting/tracing).                                                                                                                                                   |
+| `src/app/(site)/page.tsx`                            | The home page, until the site writes its own.                                                                                                                                                                                                                  |
+| `src/app/(site)/[...slug]/page.tsx`                  | Every plugin page on the site, then posts, pages and archives.                                                                                                                                                                                                 |
 
 Each starts with this line:
 
@@ -34,7 +34,8 @@ The two `src/cms/*.generated.ts` modules are ignored by git, since they're rebui
 history shows when an update changed them.
 
 Keep the site's own files on `site.generated`. Next.js sends every client component a page imports
-to its visitors, and `admin.generated` brings the plugins' admin screens.
+to its visitors, and `admin.generated` brings the plugins' admin screens. The two share one server:
+the site's pages get the templates, and the admin gets the admin entries, whichever loaded first.
 
 ## Making one your own
 

@@ -22,7 +22,9 @@ templates win over a plugin's in WordPress.
 ## The site's templates
 
 Put them in `src/cms/templates.tsx`, by view, then by content type or taxonomy, or `*` for every
-one. `cms generate` finds the file and adds it to the site's module.
+one. `cms generate` finds the file and has the site's module import it when a page first needs a
+template. Templates render with the CMS, which only runs inside Next.js, so a script that boots
+the site from `site.generated.ts` doesn't load them.
 
 ```tsx filename="src/cms/templates.tsx"
 import { Blocks, EntryTemplate } from '@otw/next/site'
