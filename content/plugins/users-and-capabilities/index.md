@@ -49,7 +49,8 @@ export default definePlugin({
 ```
 
 - **`role(id, { label, capabilities })`** adds a role, like `add_role()`. Ids are plain
-  (`teacher`, `shop_manager`); each can be defined by one plugin.
+  (`teacher`, `shop_manager`); each can be defined by one plugin. Every role also starts with
+  `core.read`, WordPress's `read`.
 - **`capability(name, { label, roles })`** declares one of this plugin's capabilities, and the roles
   that start with it. The name must start with the plugin's id.
 - **`grant(role, capabilities)`** gives any role, including other plugins', more capabilities, like
@@ -80,16 +81,22 @@ signed-in user with `getCurrentUser()`; see [Using the CMS in your pages](/theme
 
 ## Capabilities the CMS defines
 
-| Capability             | Allows                                                                 | Who has it               |
-| ---------------------- | ---------------------------------------------------------------------- | ------------------------ |
-| `core.access_admin`    | Using the admin at all; every admin screen needs it as well as its own | Roles that use the admin |
-| `core.manage_plugins`  | Activating and deactivating plugins, and updating their databases      | Administrators           |
-| `core.manage_settings` | Settings › General, and settings pages without their own capability    | Administrators           |
-| `core.manage_users`    | Adding users and changing roles                                        | Administrators           |
-| `core.manage_updates`  | Updating the CMS and plugins                                           | Administrators           |
+| Capability             | Allows                                                                 | Who has it                 |
+| ---------------------- | ---------------------------------------------------------------------- | -------------------------- |
+| `core.access_admin`    | Using the admin at all; every admin screen needs it as well as its own | Roles that use the admin   |
+| `core.manage_plugins`  | Activating and deactivating plugins, and updating their databases      | Administrators             |
+| `core.manage_settings` | Settings › General, and settings pages without their own capability    | Administrators             |
+| `core.manage_users`    | Adding users and changing roles                                        | Administrators             |
+| `core.manage_updates`  | Updating the CMS and plugins                                           | Administrators             |
+| `core.read`            | Reading published entries and one's own, like WordPress's `read`       | Every role, unless revoked |
 
-The core roles are `administrator` and `customer`, which has no capabilities. Every capability
-on a site is listed under [Capabilities](/reference/capabilities) in the Code Reference.
+Content types declare capabilities of their own, such as `core.edit_posts` and `core.edit_pages`;
+see [Content types](/plugins/content).
+
+The core roles are `administrator`; WordPress's `editor`, `author` and `contributor`, who use
+the admin and write posts and pages as in WordPress; and `customer`, who has only `core.read`.
+Every capability on a site is listed under [Capabilities](/reference/capabilities) in the Code
+Reference.
 
 ## When a capability isn't declared
 

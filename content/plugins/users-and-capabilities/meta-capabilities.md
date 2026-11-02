@@ -8,6 +8,9 @@ A meta capability is a question about one object: may this user cancel _this_ or
 WordPress's `edit_post`, it **maps** the object to the plain capabilities it needs. Commerce
 allows cancelling an order only while it's pending, and then only to people who manage orders.
 
+Entries of a [content type](/plugins/content) come with WordPress's meta capabilities already
+mapped, such as `lms.edit_course`. Declare your own for anything else.
+
 ## Declaring one
 
 Declare its arguments on `MetaCapabilities`, then its `map` in `setup()`. The map receives the

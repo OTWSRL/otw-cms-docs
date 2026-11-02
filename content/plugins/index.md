@@ -19,6 +19,8 @@ A plugin is an npm package that exports a definition. In its `setup(cms)` it can
   [Settings](/plugins/admin/settings).
 - **Add roles and capabilities**, and decide who may act on what. See
   [Roles and capabilities](/plugins/users-and-capabilities).
+- **Register content types**, WordPress's post types, with capabilities for own, others' and
+  published entries. See [Content types](/plugins/content).
 - **Store data** in its own tables, with migrations. See [The database](/plugins/database).
 - **Extend other plugins** through their hooks, registries, services and slots, and **be
   extended** through its own. See [Hooks](/plugins/hooks).
