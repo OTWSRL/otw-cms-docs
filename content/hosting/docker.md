@@ -15,7 +15,7 @@ RUN npm ci && npm run build
 
 FROM node:24-slim
 WORKDIR /site
-ENV NODE_ENV=production CMS_DATA_DIR=/data/pglite
+ENV NODE_ENV=production CMS_DATA_DIR=/data/pglite CMS_UPLOADS_DIR=/data/uploads
 COPY --from=build /site /site
 VOLUME /data
 EXPOSE 3000
@@ -39,13 +39,14 @@ docker build -t my-site .
 docker run -d -p 3000:3000 -v my-site-data:/data --env-file .env my-site
 ```
 
-The volume holds the database. Keep it, and back it up.
+The volume holds the database and the media library's files. Keep it, and back it up.
 
 ## Several containers
 
 The embedded database belongs to one process, so for several containers:
 
-1. Set `DATABASE_URL` to a PostgreSQL server, and `CMS_MIGRATIONS=deploy`.
+1. Set `DATABASE_URL` to a PostgreSQL server, and `CMS_MIGRATIONS=deploy`. Uploads need a place
+   every container shares: a shared volume for `/data/uploads`, or a storage plugin.
 2. For each release, run `cms migrate` once, before the new containers start, for example as a
    one-off container: `docker run --rm --env-file .env my-site npx cms migrate --no-backup`.
 3. Then roll out the new containers.

@@ -62,6 +62,9 @@ release on its own:
    embedded database, which only one process can open, visitors get a few seconds of "being
    updated" while the releases swap.
 
+Uploads stay where they are, in `.data/uploads` (or `CMS_UPLOADS_DIR`), which every release
+shares; updates don't back them up, so include them in the server's own backups.
+
 If any step fails, the old release keeps serving and the backup is restored. The site's
 `package.json`, lockfile and managed route files are written back to its directory, so they
 match what runs. The last three releases are kept, for rolling back.
@@ -79,3 +82,4 @@ server can reach it, and starting an update still needs the `core.manage_updates
 
 `cms serve` runs one server. For several, use PostgreSQL, deploy each release with your usual
 tooling, and run `cms migrate` once per release; see [Database migrations](/hosting/migrations).
+Give them one place for uploads: a shared `CMS_UPLOADS_DIR`, or a storage plugin.

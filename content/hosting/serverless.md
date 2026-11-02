@@ -5,7 +5,7 @@ order: 4
 ---
 
 Serverless hosts run many short-lived copies of a site, with no lasting disk, and build it from
-its git repository. That decides three things.
+its git repository. That decides four things.
 
 ## 1. Use PostgreSQL
 
@@ -30,6 +30,13 @@ the backup: use your database host's.
 A serverless site's code is its repository, so updates are commits. Set up the update workflow,
 and **Dashboard › Updates** opens a pull request with the update; merging it deploys it. See
 [From the admin, on GitHub](/hosting/updates#from-the-admin-on-github).
+
+## 4. Keep uploads in object storage
+
+The media library keeps its files on the disk unless a plugin stores them elsewhere, and a
+serverless disk doesn't last: uploads would vanish. Use a storage plugin, such as one for S3 or R2,
+before people upload. Hosts also limit request bodies (Vercel's functions take 4.5 MB), which caps
+the size of an upload.
 
 ## Environment variables
 

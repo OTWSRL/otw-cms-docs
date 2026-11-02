@@ -20,6 +20,20 @@ Set **Site address** when the site runs behind a proxy or load balancer, or unde
 address: it makes links in emails and from payment providers point at the right place. See
 [Behind a reverse proxy](/hosting/reverse-proxy).
 
+## Settings › Media
+
+As WordPress's: the sizes images are copied to when they're uploaded, in pixels.
+
+| Setting                                                    | What it does                                                                                                            |
+| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **Thumbnail size**                                         | Width and height, 150 by 150. **Crop thumbnail to exact dimensions** cuts them square; otherwise they keep their shape. |
+| **Medium size**                                            | The largest width and height, 300 by 300.                                                                               |
+| **Large size**                                             | The largest width and height, 1024 by 1024.                                                                             |
+| **Organize my uploads into month- and year-based folders** | Files go in `2026/11/` folders, as their addresses show. On by default.                                                 |
+
+A 0 leaves that side free; 0 by 0 turns the size off. New sizes apply to images uploaded from then
+on: images already in the library keep the copies they have.
+
 ## Settings from plugins
 
 Plugins add their own pages under Settings, and sections to other plugins' pages. Commerce adds:

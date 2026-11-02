@@ -29,6 +29,20 @@ When migrations run: `startup` (the default), as the site starts, for one server
 through `cms migrate` in the deploy step, for several servers and serverless. See
 [Database migrations](/hosting/migrations).
 
+## Uploads
+
+### `CMS_UPLOADS_DIR`
+
+Where the media library keeps its files. Default: `.data/uploads`, in the site's directory. A
+plugin that keeps uploads elsewhere, such as S3, makes it unused. Keep it, and back it up, with the
+database: `cms serve` gives every release this one folder.
+
+### `CMS_MAX_UPLOAD_MB`
+
+The largest file one upload may be, in megabytes, as PHP's `upload_max_filesize` limits WordPress.
+Default: `64`. A proxy in front may limit request bodies too: raise nginx's `client_max_body_size`
+to match.
+
 ## The site
 
 ### `SITE_URL`
