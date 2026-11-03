@@ -16,12 +16,12 @@ import type {
   TypeDefinition,
 } from '../../src/docs/reference-types.ts'
 
-const SCOPE = '@otw/'
-const SDK = '@otw/sdk'
+const SCOPE = '@otwdesign/'
+const SDK = '@otwdesign/sdk'
 /** Read for their extension points and the types others refer to, but not an API to document. */
-const INTERNAL = new Set(['@otw/core', '@otw/cli'])
+const INTERNAL = new Set(['@otwdesign/core', '@otwdesign/cli'])
 
-/** The interfaces on `@otw/sdk` that plugins extend, and the kind of entry each declares. */
+/** The interfaces on `@otwdesign/sdk` that plugins extend, and the kind of entry each declares. */
 const EXTENSION_INTERFACES: Readonly<Record<string, ExtensionKind>> = {
   Actions: 'action',
   Filters: 'filter',
@@ -65,7 +65,7 @@ interface InstalledPackage {
   version: string
   description: string
   dir: string
-  /** Import path to the file its types come from, such as `@otw/next/site` → src/site/index.ts. */
+  /** Import path to the file its types come from, such as `@otwdesign/next/site` → src/site/index.ts. */
   entries: Map<string, string>
   bin?: string
 }
@@ -104,7 +104,7 @@ function entriesOf(name: string, dir: string, manifest: Manifest): Map<string, s
 }
 
 /**
- * The `@otw/*` packages the site depends on, and theirs, wherever the package manager put them.
+ * The `@otwdesign/*` packages the site depends on, and theirs, wherever the package manager put them.
  * Published packages ship their TypeScript source, so linked and installed ones read the same.
  */
 export function findPackages(siteRoot: string): InstalledPackage[] {
@@ -312,7 +312,7 @@ class Extractor {
             const kind = EXTENSION_INTERFACES[statement.name.text]
             if (kind) add(statement, kind)
           }
-          // declare module '@otw/sdk' { interface Actions { … } }
+          // declare module '@otwdesign/sdk' { interface Actions { … } }
           if (
             ts.isModuleDeclaration(statement) &&
             ts.isStringLiteral(statement.name) &&
@@ -611,7 +611,7 @@ export function parseCliUsage(usage: string): CliCommand[] {
 }
 
 function cliUsage(packages: InstalledPackage[]): string {
-  const cli = packages.find((pkg) => pkg.name === '@otw/cli')
+  const cli = packages.find((pkg) => pkg.name === '@otwdesign/cli')
   if (!cli?.bin) return ''
   return execFileSync(process.execPath, [cli.bin, '--help'], { encoding: 'utf8' }).trim()
 }

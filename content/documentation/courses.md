@@ -11,10 +11,10 @@ their own. With [Commerce](/documentation/plugins) active, courses can be sold i
 ## Installing it
 
 ```bash
-npm install @otw/plugin-lms
+npm install @otwdesign/plugin-lms
 ```
 
-Add `"@otw/plugin-lms"` to `cms.config.json`, rebuild, and activate **Courses** on the Plugins
+Add `"@otwdesign/plugin-lms"` to `cms.config.json`, rebuild, and activate **Courses** on the Plugins
 screen. To sell courses, have Commerce installed and active too; Courses works without it, for
 free courses.
 
@@ -136,13 +136,13 @@ when someone enrolls, completes a lesson or completes a course, inside the same 
 certificates plugin, for example:
 
 ```ts filename="src/index.ts"
-import { definePlugin } from '@otw/sdk'
-import type {} from '@otw/plugin-lms'
+import { definePlugin } from '@otwdesign/sdk'
+import type {} from '@otwdesign/plugin-lms'
 
 export default definePlugin({
   id: 'certificates',
   version: '1.0.0',
-  requires: { core: '^0.1.0', lms: '^0.1.0' },
+  requires: { core: '^1.0.0', lms: '^1.0.0' },
   setup(cms) {
     cms.hooks.addAction('lms.course.completed', async ({ enrollment, course }) => {
       const learner = await cms.users.get(enrollment.userId)

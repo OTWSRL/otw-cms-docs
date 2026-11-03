@@ -21,9 +21,9 @@ package, and `cms update` (or Dashboard › Updates) keeps it current.
   },
   "files": ["src"],
   "peerDependencies": {
-    "@otw/admin-ui": "^0.1.0",
-    "@otw/plugin-commerce": "^0.1.0",
-    "@otw/sdk": "^0.1.0",
+    "@otwdesign/admin-ui": "^1.0.0",
+    "@otwdesign/plugin-commerce": "^1.0.0",
+    "@otwdesign/sdk": "^1.0.0",
     "drizzle-orm": ">=0.45.0",
     "react": "^19.0.0"
   }
@@ -43,7 +43,7 @@ package, and `cms update` (or Dashboard › Updates) keeps it current.
 
 ## Saying which versions you support
 
-The range on `@otw/sdk` says which versions of the CMS the plugin works with. `cms update` reads it
+The range on `@otwdesign/sdk` says which versions of the CMS the plugin works with. `cms update` reads it
 before changing anything. It moves each plugin to its newest version that supports the CMS the
 site is moving to, and if a plugin has no such version, it stops and names the plugin ("doesn't
 support core 0.2.0; it would be switched off") rather than update anyway. Peer ranges on other
@@ -54,10 +54,10 @@ Keep three things in step:
 | Where                                       | Says                                         |
 | ------------------------------------------- | -------------------------------------------- |
 | `requires.core` in the definition           | The CMS versions the plugin loads on.        |
-| The `@otw/sdk` peer dependency              | The same range, for `cms update` and npm.    |
+| The `@otwdesign/sdk` peer dependency        | The same range, for `cms update` and npm.    |
 | `requires` and the plugin peer dependencies | The versions of other plugins it works with. |
 
-A plugin with no peer dependency on `@otw/sdk` still updates, within its caret range, but the
+A plugin with no peer dependency on `@otwdesign/sdk` still updates, within its caret range, but the
 update marks it "compatibility unknown".
 
 ## Versioning

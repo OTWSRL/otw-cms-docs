@@ -31,13 +31,13 @@ receives the slot's props, and can be `async`: it's a React Server Component, so
 database or call a service as it renders. Return `null` to show nothing.
 
 ```tsx filename="src/index.tsx"
-import { definePlugin } from '@otw/sdk'
-import type {} from '@otw/plugin-commerce'
+import { definePlugin } from '@otwdesign/sdk'
+import type {} from '@otwdesign/plugin-commerce'
 
 export default definePlugin({
   id: 'shop-extras',
   version: '1.0.0',
-  requires: { core: '^0.1.0', commerce: '^0.1.0' },
+  requires: { core: '^1.0.0', commerce: '^1.0.0' },
   setup(cms) {
     // A link in the site's navigation, after the shop's (priority 10).
     cms.slots.fill('header.nav', { component: () => <a href="/faq">FAQ</a>, priority: 20 })
@@ -46,8 +46,8 @@ export default definePlugin({
 ```
 
 ```tsx filename="src/admin.tsx"
-import { Notice, Postbox } from '@otw/admin-ui'
-import { defineAdmin } from '@otw/sdk'
+import { Notice, Postbox } from '@otwdesign/admin-ui'
+import { defineAdmin } from '@otwdesign/sdk'
 import shopExtras from './index'
 
 export default defineAdmin(shopExtras, (cms) => {

@@ -31,7 +31,7 @@ export const courses = pgTable('lms_courses', {
 ```
 
 ```ts filename="src/queries.ts"
-import type { PluginContext } from '@otw/sdk'
+import type { PluginContext } from '@otwdesign/sdk'
 import { and, asc, eq } from 'drizzle-orm'
 import { courses } from './schema'
 
@@ -62,10 +62,10 @@ your code and for any plugin your code calls: services, and the handlers of the 
 So everything that happens because of one change commits together, or not at all.
 
 ```ts filename="src/enrol.ts"
-import type { PluginContext } from '@otw/sdk'
+import type { PluginContext } from '@otwdesign/sdk'
 import { sql } from 'drizzle-orm'
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface Actions {
     /** A learner was enrolled in a course. */
     'lms.enrolled': { email: string; courseId: string }

@@ -54,7 +54,7 @@ WordPress's **Add New** does, needs a plugin directory, which doesn't exist yet.
 
 ```json filename="cms.config.json"
 {
-  "plugins": ["@otw/plugin-commerce", "@otw/plugin-commerce-stripe", "@acme/forum"]
+  "plugins": ["@otwdesign/plugin-commerce", "@otwdesign/plugin-commerce-stripe", "@acme/forum"]
 }
 ```
 

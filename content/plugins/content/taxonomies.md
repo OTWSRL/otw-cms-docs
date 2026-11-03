@@ -16,9 +16,9 @@ taxonomy both called `topic`. Add it to the `Taxonomies` interface, which types 
 names.
 
 ```ts filename="src/index.ts"
-import { definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otwdesign/sdk'
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface ContentTypes {
     'lms.course': true
   }
@@ -30,7 +30,7 @@ declare module '@otw/sdk' {
 export default definePlugin({
   id: 'lms',
   version: '1.0.0',
-  requires: { core: '^0.1.0' },
+  requires: { core: '^1.0.0' },
   setup(cms) {
     cms.content.type('course', { labels: { singular: 'Course', plural: 'Courses' }, public: true })
     cms.content.taxonomy('topic', {
@@ -104,7 +104,7 @@ default term can't be deleted, by anyone. Core's are WordPress's names: `core.ma
 `list()` filters entries by terms, a hierarchical taxonomy's terms with their children:
 
 ```ts filename="src/news.ts"
-import type { PluginContext } from '@otw/sdk'
+import type { PluginContext } from '@otwdesign/sdk'
 
 /** The latest published posts in a category, its subcategories included. */
 export async function latestIn(cms: PluginContext, slug: string) {

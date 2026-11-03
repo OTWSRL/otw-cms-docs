@@ -73,11 +73,11 @@ Anyone can call the same URL, so:
 3. **Answer quickly** with a 2xx, and keep the work small.
 
 ```ts filename="src/webhook.ts"
-import { HttpError, type PluginContext } from '@otw/sdk'
+import { HttpError, type PluginContext } from '@otwdesign/sdk'
 import { sql } from 'drizzle-orm'
 import { createHmac, timingSafeEqual } from 'node:crypto'
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface Settings {
     /** Signs the shipping provider's webhook requests. */
     'shipping.webhookSecret': string

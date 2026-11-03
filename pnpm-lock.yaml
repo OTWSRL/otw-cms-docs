@@ -11,19 +11,19 @@ importers:
       '@electric-sql/pglite':
         specifier: ^0.5.13
         version: 0.5.14
-      '@otw/admin-ui':
+      '@otwdesign/admin-ui':
         specifier: link:../nextjs-cms/packages/admin-ui
         version: link:../nextjs-cms/packages/admin-ui
-      '@otw/next':
+      '@otwdesign/next':
         specifier: link:../nextjs-cms/packages/next
         version: link:../nextjs-cms/packages/next
-      '@otw/plugin-lms':
+      '@otwdesign/plugin-lms':
         specifier: link:../otw-plugin-lms
         version: link:../otw-plugin-lms
-      '@otw/plugin-performance':
+      '@otwdesign/plugin-performance':
         specifier: link:../otw-plugin-performance
         version: link:../otw-plugin-performance
-      '@otw/sdk':
+      '@otwdesign/sdk':
         specifier: link:../nextjs-cms/packages/sdk
         version: link:../nextjs-cms/packages/sdk
       drizzle-orm:
@@ -87,16 +87,16 @@ importers:
       '@opentelemetry/sdk-trace':
         specifier: ^2.12.0
         version: 2.12.0(@opentelemetry/api@1.9.1)
-      '@otw/cli':
+      '@otwdesign/cli':
         specifier: link:../nextjs-cms/packages/cli
         version: link:../nextjs-cms/packages/cli
-      '@otw/plugin-commerce':
+      '@otwdesign/plugin-commerce':
         specifier: link:../nextjs-cms/plugins/commerce
         version: link:../nextjs-cms/plugins/commerce
-      '@otw/plugin-commerce-stripe':
+      '@otwdesign/plugin-commerce-stripe':
         specifier: link:../nextjs-cms/plugins/commerce-stripe
         version: link:../nextjs-cms/plugins/commerce-stripe
-      '@otw/testing':
+      '@otwdesign/testing':
         specifier: link:../nextjs-cms/packages/testing
         version: link:../nextjs-cms/packages/testing
       '@playwright/test':

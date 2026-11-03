@@ -1,4 +1,4 @@
-import { PrerenderedPerformanceBar } from '@otw/plugin-performance/prerendered'
+import { PrerenderedPerformanceBar } from '@otwdesign/plugin-performance/prerendered'
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import '@/cms/site.generated'

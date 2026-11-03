@@ -14,9 +14,9 @@ Each setting has a key starting with the plugin's id, a type on the `Settings` i
 field in the definition's `settings`:
 
 ```ts filename="src/settings.ts"
-import type { PluginContext, SettingDefinitions } from '@otw/sdk'
+import type { PluginContext, SettingDefinitions } from '@otwdesign/sdk'
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface Settings {
     /** Show the newest announcement in a bar on every page. */
     'announcements.bar': boolean

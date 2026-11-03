@@ -79,7 +79,7 @@ test('the package reference lists exports with their signatures', async ({ page 
   await expect(
     page.getByText('function definePlugin(definition: PluginDefinition): PluginDefinition'),
   ).toBeVisible()
-  await expect(page.getByText("import { definePlugin } from '@otw/sdk'")).toBeVisible()
+  await expect(page.getByText("import { definePlugin } from '@otwdesign/sdk'")).toBeVisible()
 })
 
 test('search finds handbook pages and reference entries', async ({ page }) => {

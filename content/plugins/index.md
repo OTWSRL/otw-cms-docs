@@ -31,7 +31,7 @@ The ideas are WordPress's: actions and filters, roles and capabilities, admin pa
 pages, activation. The details change where TypeScript and Next.js do better:
 
 - **Everything is typed.** A plugin declares its hooks, settings and capabilities on
-  `@otw/sdk`'s interfaces, so another plugin that hooks in gets autocompletion and type errors
+  `@otwdesign/sdk`'s interfaces, so another plugin that hooks in gets autocompletion and type errors
   instead of typos found in production.
 - **Dependencies are enforced.** A plugin says which plugins and which versions it needs; the CMS
   loads them first and won't activate it without them.

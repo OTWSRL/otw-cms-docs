@@ -21,7 +21,7 @@ export default function CliPage() {
           ]}
         />
         <header className="docs-header">
-          <p className="kind-badge">@otw/cli</p>
+          <p className="kind-badge">@otwdesign/cli</p>
           <h1>
             The <code>cms</code> command
           </h1>

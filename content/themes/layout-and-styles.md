@@ -10,7 +10,7 @@ order: 1
 pages and plugin pages included. A new site's is short:
 
 ```tsx filename="src/app/(site)/layout.tsx"
-import { getCurrentUser, getKernel, Slot } from '@otw/next/site'
+import { getCurrentUser, getKernel, Slot } from '@otwdesign/next/site'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import type { ReactNode } from 'react'

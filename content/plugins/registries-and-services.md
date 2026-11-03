@@ -19,14 +19,14 @@ plugins build on each other:
 checkout, so adding one is all a payment plugin needs to appear there:
 
 ```ts filename="src/index.ts"
-import { definePlugin } from '@otw/sdk'
-import type {} from '@otw/plugin-commerce'
+import { definePlugin } from '@otwdesign/sdk'
+import type {} from '@otwdesign/plugin-commerce'
 
 export default definePlugin({
   id: 'bank-transfer',
   version: '1.0.0',
   name: 'Bank transfer',
-  requires: { core: '^0.1.0', commerce: '^0.1.0' },
+  requires: { core: '^1.0.0', commerce: '^1.0.0' },
   setup(cms) {
     cms.registries.get('commerce.gateways').add({
       id: 'bank-transfer',
@@ -48,8 +48,8 @@ registers its own kind of item, and Commerce prices it, checks it out and fires
 `commerce.order.paid` with it, without knowing what a course is:
 
 ```ts filename="src/courses.ts"
-import type { PluginContext } from '@otw/sdk'
-import type {} from '@otw/plugin-commerce'
+import type { PluginContext } from '@otwdesign/sdk'
+import type {} from '@otwdesign/plugin-commerce'
 
 interface Course {
   id: string
@@ -93,8 +93,8 @@ To offer a registry of your own, see [Your own extension points](/plugins/hooks/
 `cms.services.get(name)` returns another plugin's service, typed by its declaration:
 
 ```ts filename="src/report.ts"
-import type { PluginContext } from '@otw/sdk'
-import type {} from '@otw/plugin-commerce'
+import type { PluginContext } from '@otwdesign/sdk'
+import type {} from '@otwdesign/plugin-commerce'
 
 export async function pendingOrdersSummary(cms: PluginContext): Promise<string> {
   const commerce = cms.services.get('commerce')

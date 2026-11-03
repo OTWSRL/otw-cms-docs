@@ -13,13 +13,13 @@ when it does, like WordPress's `add_action()`.
 receives its **payload**. The handler may be `async`; the code that fired the action waits for it.
 
 ```ts filename="src/index.ts"
-import { definePlugin } from '@otw/sdk'
-import type {} from '@otw/plugin-commerce'
+import { definePlugin } from '@otwdesign/sdk'
+import type {} from '@otwdesign/plugin-commerce'
 
 export default definePlugin({
   id: 'order-alerts',
   version: '1.0.0',
-  requires: { core: '^0.1.0', commerce: '^0.1.0' },
+  requires: { core: '^1.0.0', commerce: '^1.0.0' },
   setup(cms) {
     cms.hooks.addAction('commerce.order.paid', async ({ order }) => {
       cms.logger.info('Order paid', { order: order.number, total: order.total })
@@ -45,8 +45,8 @@ Most actions fire inside the database transaction of the change they announce: C
 through `cms.db` writes in that transaction, so its rows commit with the order, or not at all.
 
 ```ts filename="src/enrol.ts"
-import type { PluginContext } from '@otw/sdk'
-import type {} from '@otw/plugin-commerce'
+import type { PluginContext } from '@otwdesign/sdk'
+import type {} from '@otwdesign/plugin-commerce'
 import { sql } from 'drizzle-orm'
 
 export function enrolBuyers(cms: PluginContext) {

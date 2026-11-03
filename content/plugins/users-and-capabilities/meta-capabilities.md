@@ -18,7 +18,7 @@ user and the object, and returns the capabilities the user needs, every one of t
 to refuse everyone, administrators included (WordPress's `do_not_allow`).
 
 ```ts filename="src/index.ts"
-import { definePlugin, type User } from '@otw/sdk'
+import { definePlugin, type User } from '@otwdesign/sdk'
 
 export interface Course {
   id: string
@@ -26,7 +26,7 @@ export interface Course {
   published: boolean
 }
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface Capabilities {
     /** Create courses and edit your own. */
     'lms.edit_courses': true
@@ -42,7 +42,7 @@ declare module '@otw/sdk' {
 export default definePlugin({
   id: 'lms',
   version: '1.0.0',
-  requires: { core: '^0.1.0' },
+  requires: { core: '^1.0.0' },
   setup(cms) {
     cms.auth.capability('lms.edit_courses', { label: 'Edit courses' })
     cms.auth.capability('lms.edit_others_courses', { label: "Edit others' courses" })
@@ -88,8 +88,8 @@ Commerce lets people mark an order paid by hand only for its own "Pay later" ord
 transfer plugin, whose orders are also paid by hand, extends that for its orders:
 
 ```ts filename="src/bank-transfer.ts"
-import type { PluginContext } from '@otw/sdk'
-import type {} from '@otw/plugin-commerce'
+import type { PluginContext } from '@otwdesign/sdk'
+import type {} from '@otwdesign/plugin-commerce'
 
 export function allowMarkingPaid(cms: PluginContext) {
   cms.auth.extendCapability('commerce.mark_order_paid', (required, _user, order) =>

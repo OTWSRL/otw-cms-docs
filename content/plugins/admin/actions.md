@@ -22,7 +22,7 @@ export const announcements = pgTable('announcements_items', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 })
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface Capabilities {
     /** Add and delete announcements. */
     'announcements.manage': true
@@ -31,7 +31,7 @@ declare module '@otw/sdk' {
 ```
 
 ```ts filename="src/actions.ts"
-import { ActionError, type PluginContext } from '@otw/sdk'
+import { ActionError, type PluginContext } from '@otwdesign/sdk'
 import { eq } from 'drizzle-orm'
 import { announcements } from './schema'
 
@@ -118,7 +118,7 @@ the rest.
 ## One-button forms
 
 For a button that posts on its own, such as **Delete** in a row's actions, use `FormButton` from
-`@otw/admin-ui`: it renders a small form with hidden fields.
+`@otwdesign/admin-ui`: it renders a small form with hidden fields.
 
 ```tsx
 <FormButton action={cms.admin.actionUrl('delete')} fields={{ id: item.id }} variant="delete">

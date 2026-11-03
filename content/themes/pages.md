@@ -8,7 +8,7 @@ Any page a site needs that no plugin provides, it adds itself, as a Next.js page
 `src/app/(site)/`. It renders inside the site's layout, like plugin pages.
 
 ```tsx filename="src/app/(site)/about/page.tsx"
-import { getKernel } from '@otw/next/site'
+import { getKernel } from '@otwdesign/next/site'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = { title: 'About us' }
@@ -36,8 +36,8 @@ Without a page of its own, the site's home page is the CMS's: whatever an active
 leaves it alone.
 
 ```tsx filename="src/app/(site)/page.tsx"
-import { getKernel } from '@otw/next/site'
-import type {} from '@otw/plugin-commerce'
+import { getKernel } from '@otwdesign/next/site'
+import type {} from '@otwdesign/plugin-commerce'
 import Link from 'next/link'
 
 export default async function Home() {
@@ -75,7 +75,7 @@ touching the plugin, with `routes` in `cms.config.json`, by each page's qualifie
 
 ```json filename="cms.config.json"
 {
-  "plugins": ["@otw/plugin-commerce"],
+  "plugins": ["@otwdesign/plugin-commerce"],
   "routes": {
     "commerce.product": "/p/:slug",
     "commerce.shop": "/store"

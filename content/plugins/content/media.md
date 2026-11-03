@@ -30,8 +30,8 @@ Each upload is a `MediaItem`:
 `upload()` takes the file's name and its bytes, as `media_handle_upload()` does:
 
 ```ts filename="src/covers.ts"
-import type { PluginContext } from '@otw/sdk'
-import { MediaError } from '@otw/sdk'
+import type { PluginContext } from '@otwdesign/sdk'
+import { MediaError } from '@otwdesign/sdk'
 
 /** Adds a course's cover from a form's file, uploaded to the course. `null` if it's not allowed. */
 export async function addCover(cms: PluginContext, courseId: string, file: File, userId: string) {
@@ -79,7 +79,7 @@ is `file_type`, `too_large`, `invalid_input` or `not_found`.
 | `limit`, `offset`  | Up to 100 a page; 20 unless you say                               |
 
 ```ts filename="src/gallery.ts"
-import type { MediaItem, PluginContext } from '@otw/sdk'
+import type { MediaItem, PluginContext } from '@otwdesign/sdk'
 
 /** A course's images, oldest first, for its gallery. */
 export async function gallery(cms: PluginContext, courseId: string): Promise<MediaItem[]> {
@@ -115,7 +115,7 @@ photo's EXIF orientation and keep none of its metadata, such as where it was tak
 its own with `imageSize()`, like `add_image_size()`; it's named under the plugin:
 
 ```ts filename="src/index.ts"
-import { definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otwdesign/sdk'
 
 export default definePlugin({
   id: 'lms',
@@ -146,7 +146,7 @@ programs. The `media.mimes` filter changes it, like `upload_mimes`. Removing a t
 a type you add is checked by its extension only, so add only types that can't run in a browser:
 
 ```ts filename="src/types.ts"
-import type { PluginContext } from '@otw/sdk'
+import type { PluginContext } from '@otwdesign/sdk'
 
 const ARCHIVES = new Set(['zip', 'gz|gzip', 'tar', '7z', 'rar'])
 
@@ -200,7 +200,7 @@ conditional writes (`If-None-Match: *`) do it. Storage that keeps files in memor
 tests:
 
 ```ts filename="test/memory-storage.ts"
-import type { MediaStorage } from '@otw/sdk'
+import type { MediaStorage } from '@otwdesign/sdk'
 
 /** Files in a Map, served from /uploads, for tests. */
 export function memoryStorage(): MediaStorage {

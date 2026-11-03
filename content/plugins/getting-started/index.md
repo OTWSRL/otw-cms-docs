@@ -24,14 +24,14 @@ source.
     "./admin": "./src/admin.tsx"
   },
   "peerDependencies": {
-    "@otw/admin-ui": "^0.1.0",
-    "@otw/sdk": "^0.1.0",
+    "@otwdesign/admin-ui": "^1.0.0",
+    "@otwdesign/sdk": "^1.0.0",
     "react": "^19.0.0"
   },
   "devDependencies": {
-    "@otw/admin-ui": "^0.1.0",
-    "@otw/sdk": "^0.1.0",
-    "@otw/testing": "^0.1.0",
+    "@otwdesign/admin-ui": "^1.0.0",
+    "@otwdesign/sdk": "^1.0.0",
+    "@otwdesign/testing": "^1.0.0",
     "@types/react": "^19.3.0",
     "react": "^19.3.0",
     "typescript": "~6.0.3",
@@ -41,7 +41,7 @@ source.
 ```
 
 The CMS's packages are **peer dependencies**: the site provides one copy that every plugin
-shares. The range on `@otw/sdk` also says which versions of the CMS the plugin works with; see
+shares. The range on `@otwdesign/sdk` also says which versions of the CMS the plugin works with; see
 [Publishing](/plugins/publishing).
 
 ## The plugin
@@ -50,10 +50,10 @@ A plugin has two entries. The main one, `.`, runs everywhere: the site's pages, 
 admin. The admin entry, `./admin`, has what only the admin shows.
 
 ```tsx filename="src/index.tsx"
-import { definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otwdesign/sdk'
 
 // Settings are typed: declare the key and its type, then the field in `settings` below.
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface Settings {
     /** What the greeting page and the Dashboard widget say. */
     'greeting.message': string
@@ -66,7 +66,7 @@ export default definePlugin({
   name: 'Greeting',
   description: 'Says hello on a page of its own and on the Dashboard.',
   icon: 'megaphone',
-  requires: { core: '^0.1.0' },
+  requires: { core: '^1.0.0' },
   settings: {
     'greeting.message': {
       type: 'text',
@@ -89,8 +89,8 @@ export default definePlugin({
 ```
 
 ```tsx filename="src/admin.tsx"
-import { Postbox } from '@otw/admin-ui'
-import { defineAdmin } from '@otw/sdk'
+import { Postbox } from '@otwdesign/admin-ui'
+import { defineAdmin } from '@otwdesign/sdk'
 import greeting from './index'
 
 export default defineAdmin(greeting, (cms) => {
@@ -107,12 +107,12 @@ export default defineAdmin(greeting, (cms) => {
 
 What each part does:
 
-- **`declare module '@otw/sdk'`** adds the setting's key and type to the CMS's `Settings`
+- **`declare module '@otwdesign/sdk'`** adds the setting's key and type to the CMS's `Settings`
   interface. From then on `cms.settings.get('greeting.message')` is typed `string | undefined`,
   in this plugin and in any plugin that reads it.
 - **`id`** names the plugin everywhere: its settings start with `greeting.`, its admin pages
   live under `/admin/greeting`. See [The plugin definition](/plugins/getting-started/plugin-definition).
-- **`requires: { core: '^0.1.0' }`** says which versions of the CMS it supports.
+- **`requires: { core: '^1.0.0' }`** says which versions of the CMS it supports.
 - **`settings`** declares the field. The admin shows it under **Settings › Greeting** without
   any more code, because the plugin didn't place it on a page of its own.
 - **`setup(cms)`** runs when the site starts, with the plugin active. What every part of the
@@ -149,6 +149,6 @@ and both update.
 
 ## Next
 
-- [Test it](/plugins/testing) with `@otw/testing`.
+- [Test it](/plugins/testing) with `@otwdesign/testing`.
 - Learn the rest of [the plugin definition](/plugins/getting-started/plugin-definition).
 - Hook into other plugins with [actions and filters](/plugins/hooks).

@@ -60,7 +60,7 @@ export const announcements = pgTable('announcements_items', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 })
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface Capabilities {
     /** Add and delete announcements. */
     'announcements.manage': true
@@ -69,7 +69,7 @@ declare module '@otw/sdk' {
 ```
 
 ```tsx filename="src/index.tsx"
-import { definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otwdesign/sdk'
 import { sql } from 'drizzle-orm'
 
 export default definePlugin({
@@ -77,7 +77,7 @@ export default definePlugin({
   version: '1.0.0',
   name: 'Announcements',
   icon: 'megaphone',
-  requires: { core: '^0.1.0' },
+  requires: { core: '^1.0.0' },
   migrations: [
     {
       id: '0001_items',
@@ -97,8 +97,8 @@ export default definePlugin({
 ```
 
 ```tsx filename="src/admin.tsx"
-import { FormButton, FormField, FormTable, ListTable, SubmitButton } from '@otw/admin-ui'
-import { defineAdmin } from '@otw/sdk'
+import { FormButton, FormField, FormTable, ListTable, SubmitButton } from '@otwdesign/admin-ui'
+import { defineAdmin } from '@otwdesign/sdk'
 import { desc } from 'drizzle-orm'
 import announcementsPlugin from './index'
 import { announcements } from './schema'

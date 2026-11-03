@@ -42,12 +42,12 @@ Nothing is recorded until an active plugin calls `enable()`. Then every request 
 kept only if a plugin keeps it. Keep only what someone will look at.
 
 ```tsx filename="src/index.tsx"
-import { definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otwdesign/sdk'
 
 export default definePlugin({
   id: 'slow-pages',
   version: '1.0.0',
-  requires: { core: '^0.1.0' },
+  requires: { core: '^1.0.0' },
   setup(cms) {
     cms.traces.enable()
   },
@@ -55,7 +55,7 @@ export default definePlugin({
 ```
 
 ```tsx filename="src/admin.tsx"
-import { defineAdmin } from '@otw/sdk'
+import { defineAdmin } from '@otwdesign/sdk'
 import slowPages from './index'
 
 export default defineAdmin(slowPages, (cms) => {
@@ -78,7 +78,7 @@ to one of the kinds above, or leave it out.
 
 ```ts filename="src/search.ts"
 import { trace } from '@opentelemetry/api'
-import type { PluginContext } from '@otw/sdk'
+import type { PluginContext } from '@otwdesign/sdk'
 
 export function registerSearch(cms: PluginContext) {
   cms.routes.page({
@@ -119,8 +119,8 @@ and `inRequest(path, fn)` runs any code as one and returns its trace id.
 
 ```ts filename="test/search.test.ts"
 import { trace } from '@opentelemetry/api'
-import { definePlugin } from '@otw/sdk'
-import { createTestKernel } from '@otw/testing'
+import { definePlugin } from '@otwdesign/sdk'
+import { createTestKernel } from '@otwdesign/testing'
 import { expect, it } from 'vitest'
 import { registerSearch } from '../src/search'
 

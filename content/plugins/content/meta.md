@@ -14,9 +14,9 @@ Declare each field's value type on the `EntryMeta` interface, then register it i
 key starts with the plugin's id, and `types` says which content types have it.
 
 ```ts filename="src/index.ts"
-import { definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otwdesign/sdk'
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface ContentTypes {
     'lms.course': true
   }
@@ -31,7 +31,7 @@ declare module '@otw/sdk' {
 export default definePlugin({
   id: 'lms',
   version: '1.0.0',
-  requires: { core: '^0.1.0' },
+  requires: { core: '^1.0.0' },
   setup(cms) {
     cms.content.type('course', { labels: { singular: 'Course', plural: 'Courses' }, public: true })
     const types = ['lms.course'] as const
@@ -67,7 +67,7 @@ An entry's `meta` holds its fields, typed by `EntryMeta`. A field it has no valu
 default.
 
 ```ts filename="src/featured.ts"
-import type { PluginContext } from '@otw/sdk'
+import type { PluginContext } from '@otwdesign/sdk'
 
 /** Features a course, and lists the featured ones. */
 export async function feature(cms: PluginContext, id: string) {
@@ -96,7 +96,7 @@ A meta box with `fields` instead of a component shows them as a form table, and 
 them with the entry, as a settings section does for settings. Register it in the admin entry:
 
 ```ts filename="src/admin.tsx"
-import { defineAdmin } from '@otw/sdk'
+import { defineAdmin } from '@otwdesign/sdk'
 import lms from './index'
 
 export default defineAdmin(lms, (cms) => {

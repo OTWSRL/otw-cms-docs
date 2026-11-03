@@ -21,9 +21,9 @@ name is qualified with the plugin's id: `course` in the `lms` plugin is `lms.cou
 the `ContentTypes` interface too, which types its capability names.
 
 ```ts filename="src/index.ts"
-import { definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otwdesign/sdk'
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface ContentTypes {
     'lms.course': true
   }
@@ -33,7 +33,7 @@ export default definePlugin({
   id: 'lms',
   version: '1.0.0',
   name: 'Courses',
-  requires: { core: '^0.1.0' },
+  requires: { core: '^1.0.0' },
   setup(cms) {
     cms.auth.role('teacher', { label: 'Teacher', capabilities: ['core.access_admin'] })
     cms.content.type('course', {
@@ -121,7 +121,7 @@ Like every grant, they aren't stored: deactivate the plugin, and they go with it
 site's pages.
 
 ```tsx filename="src/admin.tsx"
-import { ActionError, defineAdmin, ForbiddenError } from '@otw/sdk'
+import { ActionError, defineAdmin, ForbiddenError } from '@otwdesign/sdk'
 import lms from './index'
 
 export default defineAdmin(lms, (cms) => {
@@ -214,7 +214,7 @@ save's transaction, so what a handler writes is kept or rolled back with the ent
 that throws is logged without stopping the save.
 
 ```ts filename="src/search.ts"
-import type { PluginContext } from '@otw/sdk'
+import type { PluginContext } from '@otwdesign/sdk'
 
 /** Keeps a search index of published posts. */
 export function indexPosts(cms: PluginContext, index: (id: string, title: string) => void) {
@@ -247,12 +247,12 @@ on save and when the body is shown. An image is a file in the media library, by 
 WordPress's image block keeps it, with its alternative text and its address (a path on the site
 or a web address, never `javascript:` or `data:`), and optionally its `width` and `height`.
 
-On the site, the `Blocks` component from `@otw/next/site` renders a body. It's a server
+On the site, the `Blocks` component from `@otwdesign/next/site` renders a body. It's a server
 component, so it sends the browser no JavaScript:
 
 ```tsx filename="src/course-page.tsx"
-import type { Entry } from '@otw/sdk'
-import { Blocks } from '@otw/next/site'
+import type { Entry } from '@otwdesign/sdk'
+import { Blocks } from '@otwdesign/next/site'
 
 export function CoursePage({ course }: { course: Entry }) {
   return (
@@ -318,10 +318,10 @@ A plugin adds to any type's screens from its [admin entry](/plugins/admin): one 
 or every type's with `'*'`.
 
 ```tsx filename="src/admin.tsx"
-import { defineAdmin } from '@otw/sdk'
+import { defineAdmin } from '@otwdesign/sdk'
 import lms from './index'
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface Capabilities {
     'lms.archive_courses': true
   }
@@ -391,7 +391,7 @@ title, body, excerpt and custom fields. A save that changed only the status keep
 oldest go once an entry has its type's number, 25 unless it says.
 
 ```ts filename="src/history.ts"
-import type { PluginContext } from '@otw/sdk'
+import type { PluginContext } from '@otwdesign/sdk'
 
 /** Puts a post back as it was before its last save, in the name of `userId`. */
 export async function undoLastSave(cms: PluginContext, postId: string, userId: string) {

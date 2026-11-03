@@ -19,9 +19,9 @@ label and starting roles with `cms.auth.capability()` in `setup()`, not in the a
 site's pages and the API check capabilities too.
 
 ```ts filename="src/index.ts"
-import { definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otwdesign/sdk'
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface Capabilities {
     /** Create, edit and publish courses. */
     'lms.manage_courses': true
@@ -34,7 +34,7 @@ export default definePlugin({
   id: 'lms',
   version: '1.0.0',
   name: 'Courses',
-  requires: { core: '^0.1.0' },
+  requires: { core: '^1.0.0' },
   setup(cms) {
     // A role of its own, which may use the admin.
     cms.auth.role('teacher', { label: 'Teacher', capabilities: ['core.access_admin'] })

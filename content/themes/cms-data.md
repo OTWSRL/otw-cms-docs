@@ -5,7 +5,7 @@ order: 3
 ---
 
 Layouts and pages are React Server Components, so they read from the CMS directly. Everything
-comes from `@otw/next/site`.
+comes from `@otwdesign/next/site`.
 
 | Import             | What it gives you                                               |
 | ------------------ | --------------------------------------------------------------- |
@@ -25,12 +25,12 @@ const currency = kernel.setting('commerce.currency') // typed, once Commerce's t
 ```
 
 Settings are typed by the `Settings` interface. Load a plugin's types to read its settings, with
-`import type {} from '@otw/plugin-commerce'`.
+`import type {} from '@otwdesign/plugin-commerce'`.
 
 ## The signed-in user
 
 ```tsx filename="src/app/(site)/account-link.tsx"
-import { getCurrentUser, getKernel } from '@otw/next/site'
+import { getCurrentUser, getKernel } from '@otwdesign/next/site'
 import Link from 'next/link'
 
 export async function AccountLink() {
@@ -58,8 +58,8 @@ export async function AccountLink() {
 A theme can use the same services plugins do, after checking the plugin is active:
 
 ```tsx filename="src/app/(site)/featured.tsx"
-import { getKernel } from '@otw/next/site'
-import type {} from '@otw/plugin-commerce'
+import { getKernel } from '@otwdesign/next/site'
+import type {} from '@otwdesign/plugin-commerce'
 
 export async function FeaturedProduct({ slug }: { slug: string }) {
   const kernel = await getKernel()

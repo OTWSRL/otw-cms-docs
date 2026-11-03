@@ -24,7 +24,7 @@ Add `brand` to the site's `cms.config.json`, then rebuild:
 
 ```json filename="cms.config.json"
 {
-  "plugins": ["@otw/plugin-commerce"],
+  "plugins": ["@otwdesign/plugin-commerce"],
   "brand": {
     "name": "Acme Sites",
     "url": "https://acme.example",
@@ -45,7 +45,7 @@ The build stops with an explanation if a field isn't valid, such as a link that 
 
 ## What stays the same
 
-The names developers see don't change: the `@otw/*` packages, the `cms` command, the `CMS_*`
+The names developers see don't change: the `@otwdesign/*` packages, the `cms` command, the `CMS_*`
 environment variables and the database's tables. A white-labelled WordPress keeps its `wp_` tables
 too. The site's own title is separate from the brand: it's set under
 [Settings › General](/documentation/settings).

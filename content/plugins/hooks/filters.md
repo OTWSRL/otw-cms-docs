@@ -16,13 +16,13 @@ Commerce passes every cart's totals through `commerce.cart.totals` before checko
 plugin adds an adjustment:
 
 ```ts filename="src/index.ts"
-import { definePlugin } from '@otw/sdk'
-import type {} from '@otw/plugin-commerce'
+import { definePlugin } from '@otwdesign/sdk'
+import type {} from '@otwdesign/plugin-commerce'
 
 export default definePlugin({
   id: 'bulk-discount',
   version: '1.0.0',
-  requires: { core: '^0.1.0', commerce: '^0.1.0' },
+  requires: { core: '^1.0.0', commerce: '^1.0.0' },
   setup(cms) {
     cms.hooks.addFilter('commerce.cart.totals', (totals, { lines }) => {
       const items = lines.reduce((sum, line) => sum + line.quantity, 0)

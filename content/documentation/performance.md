@@ -12,10 +12,10 @@ with the browser's side too.
 ## Installing it
 
 ```bash
-npm install @otw/plugin-performance
+npm install @otwdesign/plugin-performance
 ```
 
-Add `"@otw/plugin-performance"` to `cms.config.json`, rebuild, and activate **Performance** on the
+Add `"@otwdesign/plugin-performance"` to `cms.config.json`, rebuild, and activate **Performance** on the
 Plugins screen. A new site can start with it: `npm create otw-cms@latest my-site -- --plugins performance`.
 
 Two files make it work, and both come with every new site:
@@ -77,7 +77,7 @@ no request of its own to trace and doesn't know who's viewing, so it can't rende
 bar in it as a component instead, last in `<body>`:
 
 ```tsx filename="src/app/(docs)/layout.tsx"
-import { PrerenderedPerformanceBar } from '@otw/plugin-performance/prerendered'
+import { PrerenderedPerformanceBar } from '@otwdesign/plugin-performance/prerendered'
 import type { ReactNode } from 'react'
 
 export default function DocsLayout({ children }: { children: ReactNode }) {
@@ -99,7 +99,7 @@ The page stays the same for everyone. Wherever the bar shows, in the admin for i
 a cookie, `performance_bar`, and prerendered pages that find it ask the server whether you may
 see the bar. Visitors, who never have the cookie, get about a kilobyte of script that checks for
 it and stops; only people the server allows download the bar itself. Import it from
-`@otw/plugin-performance/prerendered`, not from the package itself, or every visitor downloads the
+`@otwdesign/plugin-performance/prerendered`, not from the package itself, or every visitor downloads the
 whole bar.
 
 ## Recent requests

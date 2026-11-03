@@ -10,7 +10,7 @@ order screen, all through extension points Commerce declared.
 
 ## Declaring them
 
-Extension points are declared on `@otw/sdk`'s interfaces with TypeScript's declaration merging.
+Extension points are declared on `@otwdesign/sdk`'s interfaces with TypeScript's declaration merging.
 One interface per kind:
 
 | Interface          | Declares                                     | Used with                                  |
@@ -29,7 +29,7 @@ types do. Give each one a doc comment: it becomes the description in the
 [Code Reference](/reference) and in other developers' editors.
 
 ```ts filename="src/types.ts"
-import type { RegistryItem } from '@otw/sdk'
+import type { RegistryItem } from '@otwdesign/sdk'
 
 export interface Event {
   id: string
@@ -48,7 +48,7 @@ export interface EventsService {
   upcoming(): Promise<Event[]>
 }
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface Actions {
     /** An event was published and is now on the site. */
     'events.event.published': { event: Event }
@@ -78,7 +78,7 @@ The owning plugin defines its registries, provides its service, and fires its ho
 belong:
 
 ```tsx filename="src/index.tsx"
-import { definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otwdesign/sdk'
 import type { Event } from './types'
 
 export * from './types'
@@ -90,7 +90,7 @@ const calendar: Event[] = [
 export default definePlugin({
   id: 'events',
   version: '1.0.0',
-  requires: { core: '^0.1.0' },
+  requires: { core: '^1.0.0' },
   setup(cms) {
     const providers = cms.registries.define('events.ticket_providers')
 
@@ -133,14 +133,14 @@ publishes an event: `await cms.hooks.doAction('events.event.published', { event 
 A plugin that extends Events requires it, loads its types, and uses the extension points:
 
 ```ts filename="src/tickets.ts"
-import { definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otwdesign/sdk'
 // From its own package this is: import type {} from '@acme/plugin-events'
 import type {} from './types'
 
 export default definePlugin({
   id: 'tickets',
   version: '1.0.0',
-  requires: { core: '^0.1.0', events: '^1.0.0' },
+  requires: { core: '^1.0.0', events: '^1.0.0' },
   setup(cms) {
     cms.registries.get('events.ticket_providers').add({
       id: 'tickets',

@@ -45,9 +45,14 @@ describe('extractReference', () => {
   it('reads every @otw package the site depends on, and theirs', () => {
     const names = reference.packages.map((pkg) => pkg.name)
     expect(names).toEqual(
-      expect.arrayContaining(['@otw/sdk', '@otw/next', '@otw/core', '@otw/plugin-commerce']),
+      expect.arrayContaining([
+        '@otwdesign/sdk',
+        '@otwdesign/next',
+        '@otwdesign/core',
+        '@otwdesign/plugin-commerce',
+      ]),
     )
-    expect(reference.packages.find((pkg) => pkg.name === '@otw/core')?.documented).toBe(false)
+    expect(reference.packages.find((pkg) => pkg.name === '@otwdesign/core')?.documented).toBe(false)
   })
 
   it('finds plugins’ extension points, where they’re fired, and the types they carry', () => {
@@ -55,7 +60,7 @@ describe('extractReference', () => {
     expect(paid).toMatchObject({
       kind: 'action',
       type: '{ order: Order }',
-      source: { package: '@otw/plugin-commerce' },
+      source: { package: '@otwdesign/plugin-commerce' },
     })
     expect(paid.usages.map((usage) => usage.call)).toContain('doAction')
     expect(paid.types.map((type) => type.name)).toContain('Order')
@@ -74,11 +79,11 @@ describe('extractReference', () => {
   })
 
   it('documents exported functions with their signatures and members', () => {
-    const sdk = reference.packages.find((pkg) => pkg.name === '@otw/sdk')!
+    const sdk = reference.packages.find((pkg) => pkg.name === '@otwdesign/sdk')!
     const definePlugin = sdk.symbols.find((symbol) => symbol.name === 'definePlugin')!
     expect(definePlugin).toMatchObject({
       kind: 'function',
-      entry: '@otw/sdk',
+      entry: '@otwdesign/sdk',
       signature: 'function definePlugin(definition: PluginDefinition): PluginDefinition',
     })
     const plugin = sdk.symbols.find((symbol) => symbol.name === 'PluginDefinition')!
@@ -86,9 +91,9 @@ describe('extractReference', () => {
       expect.arrayContaining(['id', 'version', 'setup']),
     )
     const slot = reference.packages
-      .find((pkg) => pkg.name === '@otw/next')!
+      .find((pkg) => pkg.name === '@otwdesign/next')!
       .symbols.find((s) => s.name === 'Slot')!
-    expect(slot).toMatchObject({ kind: 'component', entry: '@otw/next/site' })
+    expect(slot).toMatchObject({ kind: 'component', entry: '@otwdesign/next/site' })
   })
 
   it('takes the commands from the CLI’s own help, and the variables the code reads', () => {

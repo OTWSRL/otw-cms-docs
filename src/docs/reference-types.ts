@@ -1,5 +1,5 @@
 /**
- * The Code Reference: what scripts/build-reference.ts reads from the installed `@otw/*` packages'
+ * The Code Reference: what scripts/build-reference.ts reads from the installed `@otwdesign/*` packages'
  * source, the way developer.wordpress.org's reference is parsed from WordPress's.
  */
 export interface Reference {
@@ -10,7 +10,7 @@ export interface Reference {
   env: EnvVar[]
 }
 
-/** The typed extension points plugins declare on `@otw/sdk`, one kind per interface. */
+/** The typed extension points plugins declare on `@otwdesign/sdk`, one kind per interface. */
 export type ExtensionKind =
   | 'action'
   | 'filter'
@@ -66,7 +66,7 @@ export interface ApiMember {
 export interface ApiSymbol {
   name: string
   kind: SymbolKind
-  /** The import path it's exported from, such as `@otw/next/site`. */
+  /** The import path it's exported from, such as `@otwdesign/next/site`. */
   entry: string
   signature: string
   description: string

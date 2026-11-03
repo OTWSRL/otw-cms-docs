@@ -100,9 +100,9 @@ export function findExtension(kind: ExtensionKind, name: string): ExtensionPoint
   return reference.extensions.find((point) => point.kind === kind && point.name === name)
 }
 
-/** `@otw/next` → `next`, for URLs. */
+/** `@otwdesign/next` → `next`, for URLs. */
 export function packageSlug(name: string): string {
-  return name.replace(/^@otw\//, '')
+  return name.replace(/^@otwdesign\//, '')
 }
 
 export function documentedPackages(): PackageApi[] {
@@ -123,7 +123,7 @@ export function symbolUrl(pkg: Pick<PackageApi, 'name'>, symbol: Pick<ApiSymbol,
 
 /** The version every page cites: the CMS's own, from the SDK. */
 export function cmsVersion(): string {
-  return reference.packages.find((pkg) => pkg.name === '@otw/sdk')?.version ?? ''
+  return reference.packages.find((pkg) => pkg.name === '@otwdesign/sdk')?.version ?? ''
 }
 
 /** How a call reads on a reference page: "Fired in", "Hooked in" and so on. */
@@ -199,7 +199,7 @@ export function referenceLinker(): ReferenceLinker {
   for (const pkg of documentedPackages()) {
     for (const symbol of pkg.symbols) {
       // The SDK's names win where two packages export the same one.
-      if (!links.has(symbol.name) || pkg.name === '@otw/sdk')
+      if (!links.has(symbol.name) || pkg.name === '@otwdesign/sdk')
         links.set(symbol.name, symbolUrl(pkg, symbol))
     }
   }

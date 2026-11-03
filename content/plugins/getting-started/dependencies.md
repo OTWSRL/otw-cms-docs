@@ -15,13 +15,13 @@ optional integrations from running against versions they don't support.
 CMS itself as `core`:
 
 ```ts filename="src/index.ts"
-import { definePlugin } from '@otw/sdk'
-import type {} from '@otw/plugin-commerce'
+import { definePlugin } from '@otwdesign/sdk'
+import type {} from '@otwdesign/plugin-commerce'
 
 export default definePlugin({
   id: 'gift-cards',
   version: '1.0.0',
-  requires: { core: '^0.1.0', commerce: '^0.1.0' },
+  requires: { core: '^1.0.0', commerce: '^1.0.0' },
   setup(cms) {
     const commerce = cms.services.get('commerce')
     cms.logger.info('Selling in', { currency: commerce.currency })
@@ -29,7 +29,7 @@ export default definePlugin({
 })
 ```
 
-The empty `import type {} from '@otw/plugin-commerce'` loads Commerce's declarations, so the
+The empty `import type {} from '@otwdesign/plugin-commerce'` loads Commerce's declarations, so the
 `commerce` service, its hooks and its registries are typed here. It costs nothing at runtime.
 
 With `requires`:
@@ -37,7 +37,7 @@ With `requires`:
 - Commerce loads and sets up before Gift Cards, so its services and registries exist.
 - Gift Cards can't be activated while Commerce is inactive, and Commerce can't be deactivated
   while Gift Cards is active. The Plugins screen explains why.
-- If the installed Commerce is outside `^0.1.0`, or fails to load, Gift Cards is left out, with
+- If the installed Commerce is outside `^1.0.0`, or fails to load, Gift Cards is left out, with
   the reason.
 
 Ranges are [semver ranges](https://github.com/npm/node-semver#ranges), as npm uses them.
@@ -49,14 +49,14 @@ integration in `cms.when()`: it runs only if that plugin is active, loaded first
 range.
 
 ```ts filename="src/index.ts"
-import { definePlugin } from '@otw/sdk'
-import type {} from '@otw/plugin-commerce'
+import { definePlugin } from '@otwdesign/sdk'
+import type {} from '@otwdesign/plugin-commerce'
 
 export default definePlugin({
   id: 'newsletter',
   version: '1.0.0',
-  requires: { core: '^0.1.0' },
-  optional: { commerce: '^0.1.0' },
+  requires: { core: '^1.0.0' },
+  optional: { commerce: '^1.0.0' },
   async setup(cms) {
     // Works alone; subscribes buyers when the shop is active too.
     await cms.when('commerce', () => {
@@ -69,7 +69,7 @@ export default definePlugin({
 ```
 
 If the optional plugin is active but its version is outside the range, the integration stays off
-and the Dashboard shows a warning: `"newsletter" supports "commerce" ^0.1.0 but found 2.0.0;
+and the Dashboard shows a warning: `"newsletter" supports "commerce" ^1.0.0 but found 2.0.0;
 integration disabled`.
 
 `cms.when()` only accepts plugins named in `requires` or `optional`; any other id throws, so a
@@ -90,6 +90,6 @@ listed in it, and the admin menu's plugin sections follow it.
 ## The CMS's version
 
 `requires.core` is checked against the CMS's version. Use a caret range on the version you built
-against (`^0.1.0`); when a new major version of the CMS changes something your plugin uses, the
+against (`^1.0.0`); when a new major version of the CMS changes something your plugin uses, the
 range keeps it from loading on a CMS it would break on. For npm, say the same in the package's
-peer dependency on `@otw/sdk`; see [Publishing](/plugins/publishing).
+peer dependency on `@otwdesign/sdk`; see [Publishing](/plugins/publishing).

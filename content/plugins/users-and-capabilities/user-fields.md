@@ -13,9 +13,9 @@ author's bio. Each is registered with a type and checked on every save, exactly 
 ## Registering a field
 
 ```ts filename="src/index.ts"
-import { definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otwdesign/sdk'
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface UserMeta {
     'lms.bio': string
     'lms.level': string
@@ -60,7 +60,7 @@ Keys start with the plugin's id. The types and their options are custom fields':
 ## Reading and writing
 
 ```ts filename="src/levels.ts"
-import type { PluginContext } from '@otw/sdk'
+import type { PluginContext } from '@otwdesign/sdk'
 
 /** Moves a student up a level, as a course's completion might. */
 export async function levelUp(cms: PluginContext, userId: string) {
@@ -93,7 +93,7 @@ shows only what's theirs: an address anyone can type at checkout is matched to a
 once its owner has proved it.
 
 ```tsx filename="src/account.tsx"
-import type { PluginContext } from '@otw/sdk'
+import type { PluginContext } from '@otwdesign/sdk'
 
 /** The student's courses, on their account page. */
 export function addCoursesSection(cms: PluginContext) {

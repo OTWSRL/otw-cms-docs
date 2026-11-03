@@ -27,8 +27,8 @@ template. Templates render with the CMS, which only runs inside Next.js, so a sc
 the site from `site.generated.ts` doesn't load them.
 
 ```tsx filename="src/cms/templates.tsx"
-import { Blocks, EntryTemplate } from '@otw/next/site'
-import type { SiteTemplates } from '@otw/next'
+import { Blocks, EntryTemplate } from '@otwdesign/next/site'
+import type { SiteTemplates } from '@otwdesign/next'
 
 const templates: SiteTemplates = {
   single: {
@@ -74,18 +74,18 @@ and `pageUrl(page)` for paging. Settings › Reading sets how many entries a pag
 `Blocks` renders a body; pass it `media` and its images get their sizes, and an image whose file
 was deleted isn't shown. `excerptOf(entry)` gives the excerpt, or the body's first 55 words, as
 WordPress makes one. These, `Image` and the default `EntryTemplate` and `ArchiveTemplate` come
-from `@otw/next/site`.
+from `@otwdesign/next/site`.
 
 ## The account pages
 
 `/account` and its pages (lost password, setting a password, confirming an email address) render
-in `AccountTemplate` from `@otw/next/site`. A site replaces it with `account` in its templates;
+in `AccountTemplate` from `@otwdesign/next/site`. A site replaces it with `account` in its templates;
 `props.view` says which page it is (`sign-in`, `account`, `lost-password`, `reset`,
 `confirm-email`), and `props.actions` where each form posts:
 
 ```tsx filename="src/cms/templates.tsx"
-import { AccountTemplate } from '@otw/next/site'
-import type { SiteTemplates } from '@otw/next'
+import { AccountTemplate } from '@otwdesign/next/site'
+import type { SiteTemplates } from '@otwdesign/next'
 
 const templates: SiteTemplates = {
   // The default pages, under a heading of the shop's own.
@@ -111,8 +111,8 @@ height so the page doesn't jump, and every size of the same shape in `srcset`, s
 smaller file. It's lazy unless it's `priority`, as the first image a visitor sees should be:
 
 ```tsx filename="src/cms/templates.tsx"
-import { Blocks, Image } from '@otw/next/site'
-import type { SiteTemplates } from '@otw/next'
+import { Blocks, Image } from '@otwdesign/next/site'
+import type { SiteTemplates } from '@otwdesign/next'
 
 const templates: SiteTemplates = {
   single: {

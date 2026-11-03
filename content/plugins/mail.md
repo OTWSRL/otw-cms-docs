@@ -12,7 +12,7 @@ and every plugin sends through it.
 ## Sending
 
 ```ts filename="src/receipts.ts"
-import type { PluginContext } from '@otw/sdk'
+import type { PluginContext } from '@otwdesign/sdk'
 
 /** Emails a receipt; false when it couldn't be sent, which the caller can say. */
 export function sendReceipt(cms: PluginContext, to: string, orderNumber: string) {
@@ -58,9 +58,9 @@ for the log. Provide it in `setup()`; only one plugin may. Here, one that posts 
 over HTTP:
 
 ```ts filename="src/index.ts"
-import { definePlugin, type OutgoingMail } from '@otw/sdk'
+import { definePlugin, type OutgoingMail } from '@otwdesign/sdk'
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface Settings {
     /** The email service's API token, from MAIL_API_TOKEN only. */
     'mail-api.token': string
@@ -71,7 +71,7 @@ export default definePlugin({
   id: 'mail-api',
   version: '1.0.0',
   name: 'Mail API',
-  requires: { core: '^0.1.0' },
+  requires: { core: '^1.0.0' },
   settings: {
     'mail-api.token': { type: 'secret', label: 'API token', env: 'MAIL_API_TOKEN' },
   },
@@ -109,7 +109,7 @@ With no mail plugin, nothing is sent. The server log says so, with the recipient
 outside production it logs the text too, so you can follow a link while you build. In production
 it never does: an email's text can hold a password reset link.
 
-**Mail to files** (`@otw/plugin-mail-file`) is a transport for development and tests: it writes
+**Mail to files** (`@otwdesign/plugin-mail-file`) is a transport for development and tests: it writes
 each email to a folder as a JSON file, `.data/mail` or
 [`MAIL_FILE_DIR`](/hosting/environment-variables#mail_file_dir), as a mail catcher such as
 Mailpit shows them. Never activate it on a live site: nothing reaches anyone.

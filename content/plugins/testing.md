@@ -1,10 +1,10 @@
 ---
 title: Testing
-description: Test a plugin against a real database with @otw/testing. Boot it, render its pages, post to its actions as a signed-in user, and reboot after changes.
+description: Test a plugin against a real database with @otwdesign/testing. Boot it, render its pages, post to its actions as a signed-in user, and reboot after changes.
 order: 9
 ---
 
-`@otw/testing` boots the CMS with your plugin on a fresh, in-memory PostgreSQL (PGlite), with
+`@otwdesign/testing` boots the CMS with your plugin on a fresh, in-memory PostgreSQL (PGlite), with
 every migration applied. Tests run against the real kernel and the real database, so they catch
 what mocks would miss: a query that doesn't match the migrated table, a hook that never fires, a
 capability nobody granted.
@@ -14,9 +14,9 @@ Add it, and a test runner such as [Vitest](https://vitest.dev), as development d
 ## A first test
 
 ```tsx filename="src/index.tsx"
-import { definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otwdesign/sdk'
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface Settings {
     /** What the greeting page says. */
     'greeting.message': string
@@ -26,7 +26,7 @@ declare module '@otw/sdk' {
 export default definePlugin({
   id: 'greeting',
   version: '1.0.0',
-  requires: { core: '^0.1.0' },
+  requires: { core: '^1.0.0' },
   settings: {
     'greeting.message': { type: 'text', label: 'Message', default: 'Hello, world!' },
   },
@@ -42,7 +42,7 @@ export default definePlugin({
 ```
 
 ```tsx filename="src/admin.tsx"
-import { defineAdmin } from '@otw/sdk'
+import { defineAdmin } from '@otwdesign/sdk'
 import greeting from './index'
 
 export default defineAdmin(greeting, (cms) => {
@@ -53,7 +53,7 @@ export default defineAdmin(greeting, (cms) => {
 ```
 
 ```ts filename="test/greeting.test.ts"
-import { createTestKernel, type TestKernel } from '@otw/testing'
+import { createTestKernel, type TestKernel } from '@otwdesign/testing'
 import { afterEach, describe, expect, it } from 'vitest'
 import greetingAdmin from '../src/admin'
 import greeting from '../src/index'
@@ -106,10 +106,10 @@ fails its test.
 encode the body. Pass the `cookie` from `signIn()` to act as that user.
 
 ```ts filename="src/notes.ts"
-import { definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otwdesign/sdk'
 import { sql } from 'drizzle-orm'
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface Capabilities {
     /** Leave notes for the team. */
     'notes.write': true
@@ -119,7 +119,7 @@ declare module '@otw/sdk' {
 export default definePlugin({
   id: 'notes',
   version: '1.0.0',
-  requires: { core: '^0.1.0' },
+  requires: { core: '^1.0.0' },
   migrations: [
     {
       id: '0001_notes',
@@ -133,7 +133,7 @@ export default definePlugin({
 ```
 
 ```ts filename="src/notes-admin.ts"
-import { ActionError, defineAdmin } from '@otw/sdk'
+import { ActionError, defineAdmin } from '@otwdesign/sdk'
 import { sql } from 'drizzle-orm'
 import notes from './notes'
 
@@ -152,7 +152,7 @@ export default defineAdmin(notes, (cms) => {
 ```
 
 ```ts filename="test/notes.test.ts"
-import { createTestKernel, TEST_ORIGIN, type TestKernel } from '@otw/testing'
+import { createTestKernel, TEST_ORIGIN, type TestKernel } from '@otwdesign/testing'
 import { sql } from 'drizzle-orm'
 import { afterEach, expect, it } from 'vitest'
 import notes from '../src/notes'
@@ -222,7 +222,7 @@ sides: that your handler runs when theirs fires, and that your registry items sh
 lists.
 
 ```ts
-import commerce from '@otw/plugin-commerce'
+import commerce from '@otwdesign/plugin-commerce'
 
 const site = await createTestKernel({ plugins: [commerce, myPlugin] })
 const shop = site.kernel.service('commerce')

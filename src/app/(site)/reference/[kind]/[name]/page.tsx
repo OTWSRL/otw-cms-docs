@@ -98,7 +98,7 @@ export default async function ExtensionPage({ params }: PageProps<'/reference/[k
 
         <h2>Usage</h2>
         <Code code={exampleFor(point)} lang="tsx" />
-        {point.source.package !== '@otw/sdk' && (
+        {point.source.package !== '@otwdesign/sdk' && (
           <p>
             Declared by <code>{point.source.package}</code>: import its types with{' '}
             <code>{`import type {} from '${point.source.package}'`}</code>, and list the plugin in{' '}

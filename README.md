@@ -50,16 +50,16 @@ Raw HTML in Markdown is dropped, so everything on a page is escaped.
 ## The Code Reference
 
 `scripts/build-reference.ts` runs before `dev`, `build` and `typecheck`. It reads the installed
-`@otw/*` packages' source (they ship TypeScript) and writes `src/docs/reference.generated.json`:
+`@otwdesign/*` packages' source (they ship TypeScript) and writes `src/docs/reference.generated.json`:
 
-- every extension point plugins declare on `@otw/sdk` (actions, filters, slots, registries,
+- every extension point plugins declare on `@otwdesign/sdk` (actions, filters, slots, registries,
   services, settings, capabilities, meta capabilities), with its type, its doc comment, the types
   it uses, and every call that fires, hooks, fills or checks it;
 - every export of the documented packages, with its signature, members and doc comment;
 - the `cms` command's help, and every environment variable the code reads.
 
 So the reference always describes the versions in `package.json`. Commerce, Stripe and
-`@otw/testing` are development dependencies only so their source can be read; the site doesn't
+`@otwdesign/testing` are development dependencies only so their source can be read; the site doesn't
 activate them.
 
 ## What the tests hold the docs to

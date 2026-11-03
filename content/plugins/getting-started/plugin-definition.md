@@ -9,7 +9,7 @@ TypeScript; the CMS checks the definition when the site starts and leaves a plug
 invalid one out, with the reason on the Plugins screen.
 
 ```ts filename="src/index.ts"
-import { definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otwdesign/sdk'
 
 export default definePlugin({
   id: 'events',
@@ -17,8 +17,8 @@ export default definePlugin({
   name: 'Events',
   description: 'Event listings with dates and venues.',
   icon: 'calendar',
-  requires: { core: '^0.1.0' },
-  optional: { commerce: '^0.1.0' },
+  requires: { core: '^1.0.0' },
+  optional: { commerce: '^1.0.0' },
   migrations: [],
   settings: {},
   setup(cms) {
@@ -100,4 +100,4 @@ was registered: adding a hook or a route later throws "Cannot register … after
 
 A plugin whose `setup()` or migrations throw is left out, and so is every plugin that requires
 it. The site starts without them, and the Plugins screen shows the error. In tests,
-`@otw/testing` turns this off so the test fails instead; see [Testing](/plugins/testing).
+`@otwdesign/testing` turns this off so the test fails instead; see [Testing](/plugins/testing).

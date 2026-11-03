@@ -26,8 +26,8 @@ export default function ReferenceIndex() {
 
         <h2>Extension points</h2>
         <p>
-          Plugins declare these on <code>@otw/sdk</code> with TypeScript declaration merging, so
-          every name and payload is typed. See <Link href="/plugins/hooks">Hooks</Link> in the
+          Plugins declare these on <code>@otwdesign/sdk</code> with TypeScript declaration merging,
+          so every name and payload is typed. See <Link href="/plugins/hooks">Hooks</Link> in the
           Plugin Handbook.
         </p>
         <table className="reference-table">

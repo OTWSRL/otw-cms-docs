@@ -10,7 +10,7 @@ order: 5
 site's own layout, so it looks like the rest of the site.
 
 ```tsx filename="src/index.tsx"
-import { definePlugin } from '@otw/sdk'
+import { definePlugin } from '@otwdesign/sdk'
 
 interface Recipe {
   slug: string
@@ -25,7 +25,7 @@ const recipes: Recipe[] = [
 export default definePlugin({
   id: 'recipes',
   version: '1.0.0',
-  requires: { core: '^0.1.0' },
+  requires: { core: '^1.0.0' },
   setup(cms) {
     cms.routes.page({
       name: 'index',
@@ -94,7 +94,7 @@ A page's `load` knows who's asking, as an API route's handler does:
   one, say, like `wp_safe_redirect()`. Paths on the site only.
 
 ```tsx filename="src/saved.tsx"
-import { ForbiddenError, type PluginContext } from '@otw/sdk'
+import { ForbiddenError, type PluginContext } from '@otwdesign/sdk'
 
 export function registerSavedRecipes(cms: PluginContext) {
   cms.routes.page({
@@ -130,8 +130,8 @@ for the page if it moved it. Any plugin's pages can be reached this way.
 `Request` and returns a `Response`.
 
 ```ts filename="src/api.ts"
-import type { PluginContext } from '@otw/sdk'
-import { HttpError } from '@otw/sdk'
+import type { PluginContext } from '@otwdesign/sdk'
+import { HttpError } from '@otwdesign/sdk'
 
 export function registerApi(cms: PluginContext) {
   // GET /api/p/recipes/search?q=egg
@@ -185,9 +185,9 @@ can call them, so the handler decides who may do what.
   looked up the first time you ask, so handlers that don't need it pay nothing.
 
 ```ts filename="src/favourites.ts"
-import { HttpError, type PluginContext } from '@otw/sdk'
+import { HttpError, type PluginContext } from '@otwdesign/sdk'
 
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface Capabilities {
     /** Keep a list of favourite recipes. */
     'recipes.save_favourites': true

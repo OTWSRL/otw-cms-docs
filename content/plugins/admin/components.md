@@ -1,13 +1,13 @@
 ---
 title: Components
-description: Build admin screens from @otw/admin-ui. List tables, form tables, buttons, notices and boxes in WordPress's markup, ready for phones.
+description: Build admin screens from @otwdesign/admin-ui. List tables, form tables, buttons, notices and boxes in WordPress's markup, ready for phones.
 order: 2
 ---
 
-`@otw/admin-ui` renders WordPress's admin markup and class names (`wp-list-table`,
+`@otwdesign/admin-ui` renders WordPress's admin markup and class names (`wp-list-table`,
 `form-table`, `button-primary`, `notice-warning`, `postbox`), which the admin's stylesheet
 styles. Screens built from it look like the rest of the admin, work on phones, and keep up as the
-admin changes. Add it as a peer dependency, like `@otw/sdk`.
+admin changes. Add it as a peer dependency, like `@otwdesign/sdk`.
 
 | Component                            | What it is                                                                         |
 | ------------------------------------ | ---------------------------------------------------------------------------------- |
@@ -24,12 +24,12 @@ admin changes. Add it as a peer dependency, like `@otw/sdk`.
 | `AdminIcon`                          | One of the admin's icons.                                                          |
 
 Every component and its props are in the Code Reference under
-[`@otw/admin-ui`](/reference/packages/admin-ui).
+[`@otwdesign/admin-ui`](/reference/packages/admin-ui).
 
 ## A list with filters and bulk actions
 
 ```tsx filename="src/orders-list.tsx"
-import { Button, ListTable, TableNav, Views } from '@otw/admin-ui'
+import { Button, ListTable, TableNav, Views } from '@otwdesign/admin-ui'
 
 interface Ticket {
   id: string
@@ -103,7 +103,14 @@ column's `label`. Numeric columns align right with even-width figures.
 ## An edit screen
 
 ```tsx filename="src/edit-ticket.tsx"
-import { EditColumns, FormField, FormTable, Notice, Postbox, SubmitButton } from '@otw/admin-ui'
+import {
+  EditColumns,
+  FormField,
+  FormTable,
+  Notice,
+  Postbox,
+  SubmitButton,
+} from '@otwdesign/admin-ui'
 
 export function EditTicket({ subject, saveUrl }: { subject: string; saveUrl: string }) {
   return (

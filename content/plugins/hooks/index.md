@@ -19,10 +19,10 @@ and [slots](/plugins/slots). Every kind is listed, with its type and where it's 
 ## Hooks are typed
 
 In WordPress a hook is a string, and a typo fails silently. Here each hook is declared, with its
-payload's type, on an interface in `@otw/sdk`:
+payload's type, on an interface in `@otwdesign/sdk`:
 
 ```ts
-declare module '@otw/sdk' {
+declare module '@otwdesign/sdk' {
   interface Actions {
     'commerce.order.paid': { order: Order }
   }
@@ -31,7 +31,7 @@ declare module '@otw/sdk' {
 
 So `cms.hooks.addAction('commerce.order.paid', ({ order }) => …)` knows `order` is an `Order`,
 and a misspelled hook name is a type error. Import the declaring plugin's types once, with
-`import type {} from '@otw/plugin-commerce'`, to see its hooks. To declare your own, see
+`import type {} from '@otwdesign/plugin-commerce'`, to see its hooks. To declare your own, see
 [Your own extension points](/plugins/hooks/extension-points).
 
 ## Priority

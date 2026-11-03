@@ -9,7 +9,7 @@ column from old data. A plugin lists its migrations in its definition; the CMS r
 in order, and records it so it never runs again.
 
 ```ts filename="src/migrations.ts"
-import type { Migration } from '@otw/sdk'
+import type { Migration } from '@otwdesign/sdk'
 import { sql } from 'drizzle-orm'
 
 export const migrations: Migration[] = [
