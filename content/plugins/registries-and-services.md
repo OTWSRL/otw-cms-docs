@@ -73,6 +73,11 @@ export function sellCourses(cms: PluginContext) {
 }
 ```
 
+The [Courses plugin](/documentation/courses) is the full version. It prices courses only inside its
+own checkout, which runs the `commerce` service's `checkout()` for the signed-in learner, so its
+`commerce.order.created` handler knows whose order it is, and its `commerce.order.paid` handler
+enrolls them in the same transaction as the payment.
+
 ### Rules
 
 - `get()` throws if the registry isn't defined, so **require** its owner, or put the code in
