@@ -11,9 +11,6 @@ with the browser's side too.
 
 ## Installing it
 
-> [!NOTE]
-> Performance isn't on npm yet, so it can't be installed for now.
-
 ```bash
 npm install @otwdesign/plugin-performance
 ```

@@ -23,16 +23,16 @@ A new site has no plugins unless you ask for them. Name them with `--plugins`, s
 commas:
 
 ```bash
-npm create otw-cms@latest my-site -- --plugins @acme/forum,@acme/events
+npm create otw-cms@latest my-site -- --plugins performance,@acme/forum
 ```
 
-Each name is a plugin's npm package. A short name such as `lms` means one of the CMS's own,
-`@otwdesign/plugin-lms`. You can add plugins later too; see
+Each name is a plugin's npm package. A short name means one of the CMS's own: `performance` is
+`@otwdesign/plugin-performance`. You can add plugins later too; see
 [Installing a plugin](/documentation/plugins#installing-a-plugin).
 
 > [!NOTE]
-> The CMS's own plugins (Commerce, Stripe, Courses, Performance and Mail to files) aren't on npm
-> yet, so they can't be installed for now.
+> Of the CMS's own plugins, only [Performance](/documentation/performance) is on npm so far.
+> Commerce, Stripe, Courses and Mail to files can't be installed yet.
 
 ## All the options
 

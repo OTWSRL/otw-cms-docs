@@ -120,7 +120,8 @@ How often `cms serve` checks for updates, in milliseconds. Default: twelve hours
 Plugins document the variables they read. The CMS's own:
 
 > [!NOTE]
-> The CMS's own plugins aren't on npm yet; the variables below apply once they are.
+> Commerce, Stripe and Mail to files aren't on npm yet; their variables below apply once they
+> are.
 
 ### `COMMERCE_CURRENCY`
 

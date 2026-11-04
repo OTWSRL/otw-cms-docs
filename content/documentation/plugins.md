@@ -9,8 +9,8 @@ Plugins** lists every plugin installed on the site, active ones highlighted, and
 the **Activate and deactivate plugins** capability (`core.manage_plugins`) switch them on and off.
 
 > [!NOTE]
-> The CMS's own plugins (Commerce, Stripe, Courses, Performance and Mail to files) aren't on npm
-> yet. These docs use them as examples, but they can't be installed for now.
+> Of the CMS's own plugins, only Performance is on npm so far. These docs use the others
+> (Commerce, Stripe, Courses and Mail to files) as examples, but they can't be installed yet.
 
 ## Activating and deactivating
 
@@ -58,7 +58,7 @@ WordPress's **Add New** does, needs a plugin directory, which doesn't exist yet.
 
 ```json filename="cms.config.json"
 {
-  "plugins": ["@acme/forum", "@acme/events"]
+  "plugins": ["@otwdesign/plugin-performance", "@acme/forum"]
 }
 ```
 
