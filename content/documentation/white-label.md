@@ -24,7 +24,7 @@ Add `brand` to the site's `cms.config.json`, then rebuild:
 
 ```json filename="cms.config.json"
 {
-  "plugins": ["@otwdesign/plugin-commerce"],
+  "plugins": ["@otwdesign/plugin-lms"],
   "brand": {
     "name": "Acme Sites",
     "url": "https://acme.example",

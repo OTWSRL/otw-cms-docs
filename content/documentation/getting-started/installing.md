@@ -23,21 +23,25 @@ A new site has no plugins unless you ask for them. Name them with `--plugins`, s
 commas:
 
 ```bash
-npm create otw-cms@latest my-shop -- --plugins commerce,commerce-stripe
+npm create otw-cms@latest my-school -- --plugins lms,performance
 ```
 
-`commerce` and `commerce-stripe` are the CMS's own shop and its Stripe payments. Any other name is
-taken as an npm package, so third-party plugins install the same way:
-`--plugins commerce,@acme/forum`. You can add plugins later too; see
+`lms` and `performance` are the CMS's own Courses and Performance plugins, and `mail-file` writes
+emails to files during development. Any other name is taken as an npm package, so third-party
+plugins install the same way: `--plugins lms,@acme/forum`. You can add plugins later too; see
 [Installing a plugin](/documentation/plugins#installing-a-plugin).
+
+> [!NOTE]
+> Commerce and Stripe, the CMS's own shop and its card payments, aren't on npm yet, so they
+> can't be installed for now.
 
 ## All the options
 
-| Option             | What it does                                                                     |
-| ------------------ | -------------------------------------------------------------------------------- |
-| `--plugins <list>` | Plugins to install, comma-separated: `commerce`, `commerce-stripe`, or packages. |
-| `--no-install`     | Write the files without installing dependencies.                                 |
-| `--link <dir>`     | Use the CMS packages from a checkout of the CMS, to try unreleased changes.      |
+| Option             | What it does                                                                         |
+| ------------------ | ------------------------------------------------------------------------------------ |
+| `--plugins <list>` | Plugins to install, comma-separated: `lms`, `performance`, `mail-file`, or packages. |
+| `--no-install`     | Write the files without installing dependencies.                                     |
+| `--link <dir>`     | Use the CMS packages from a checkout of the CMS, to try unreleased changes.          |
 
 ## What you get
 

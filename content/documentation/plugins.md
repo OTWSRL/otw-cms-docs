@@ -8,6 +8,10 @@ Plugins add a site's features: a shop, payment methods, courses, forums. **Plugi
 Plugins** lists every plugin installed on the site, active ones highlighted, and lets people with
 the **Activate and deactivate plugins** capability (`core.manage_plugins`) switch them on and off.
 
+> [!NOTE]
+> Commerce and Stripe, the CMS's own shop and its card payments, aren't on npm yet. These docs use
+> them as examples, but they can't be installed for now.
+
 ## Activating and deactivating
 
 Click **Activate** or **Deactivate** under a plugin's name. The change applies at once: there's
@@ -54,7 +58,7 @@ WordPress's **Add New** does, needs a plugin directory, which doesn't exist yet.
 
 ```json filename="cms.config.json"
 {
-  "plugins": ["@otwdesign/plugin-commerce", "@otwdesign/plugin-commerce-stripe", "@acme/forum"]
+  "plugins": ["@otwdesign/plugin-lms", "@otwdesign/plugin-performance", "@acme/forum"]
 }
 ```
 

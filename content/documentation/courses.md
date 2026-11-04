@@ -79,6 +79,10 @@ use plain markup with `lms-` class names, styled by the site's own stylesheet; s
 
 ## Selling courses
 
+> [!NOTE]
+> Commerce isn't on npm yet, so for now courses are open, free or closed; paid courses wait for
+> Commerce's release.
+
 With Commerce active, a course set to **Paid** with a price is bought from its own page:
 
 1. The learner signs in, chooses how to pay, and clicks **Buy**. Commerce places the order with

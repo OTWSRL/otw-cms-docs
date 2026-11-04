@@ -119,6 +119,9 @@ How often `cms serve` checks for updates, in milliseconds. Default: twelve hours
 
 Plugins document the variables they read. The CMS's own:
 
+> [!NOTE]
+> Commerce and Stripe aren't on npm yet; their variables below apply once they are.
+
 ### `COMMERCE_CURRENCY`
 
 The shop's currency, as a three-letter code such as `EUR`. Overrides **Settings › Shop ›
