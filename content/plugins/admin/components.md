@@ -22,6 +22,9 @@ admin changes. Add it as a peer dependency, like `@otwdesign/sdk`.
 | `Postbox`                            | A box with a title bar, as on the Dashboard and edit screens.                      |
 | `EditColumns`                        | An edit screen's two columns: the main form, and boxes on the side.                |
 | `AdminIcon`                          | One of the admin's icons.                                                          |
+| `DismissButton`                      | The × on a notice built by hand, hiding it for this page view.                     |
+| `RowToggle`                          | The "Show more details" button that opens a row on phones, for tables by hand.     |
+| `buttonClass()`, `cx()`              | Class names: a button variant's, for elements styled by hand; and joining several. |
 
 Every component and its props are in the Code Reference under
 [`@otwdesign/admin-ui`](/reference/packages/admin-ui).

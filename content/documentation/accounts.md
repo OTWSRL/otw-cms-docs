@@ -14,6 +14,11 @@ Sign-ups are off until you tick **Anyone can register** under **Settings › Gen
 as in WordPress. They also need a mail plugin, since every sign-up is confirmed by email: without
 one, the Register form doesn't show.
 
+> [!NOTE]
+> The CMS has no mail plugin on npm yet, so sign-ups, **Lost password** and **Send Reset Link** need one
+> made for the site: a small plugin that hands the site's email to your provider. See
+> [Email](/plugins/mail) in the Plugin Handbook.
+
 Someone who signs up gives their name and email address, and gets an email with a link to set
 their password. The account works once they use it, so every account's address is one its owner
 reads. New accounts get the **Customer** role: no admin access.

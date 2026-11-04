@@ -90,7 +90,7 @@ Restart `npm run dev`, or rebuild, to apply it. Then:
 - The new path must keep the page's parameters (`:slug` above). If it doesn't, the plugin that
   owns the page fails to load, and the Plugins screen says why.
 - A name that matches no page, such as a typo, is a warning on the Dashboard.
-- `/admin`, `/api` and `/_next` can't be used.
+- `/admin`, `/api`, `/uploads` and `/_next` can't be used.
 
 `cms generate` checks the names and paths when the site starts or builds. Commerce's pages are
 `commerce.shop`, `commerce.product` and `commerce.order-received`.

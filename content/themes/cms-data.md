@@ -27,6 +27,20 @@ const currency = kernel.setting('commerce.currency') // typed, once Commerce's t
 Settings are typed by the `Settings` interface. Load a plugin's types to read its settings, with
 `import type {} from '@otwdesign/plugin-commerce'`.
 
+The CMS's own, which plugins read the same way:
+
+| Setting              | What it is                                                                                          |
+| -------------------- | --------------------------------------------------------------------------------------------------- |
+| `site.title`         | The site's name, from Settings › General.                                                           |
+| `site.url`           | The public address, for links that leave the site; empty means each request's own. `SITE_URL` wins. |
+| `site.locale`        | Formats numbers and prices, such as `en-US`. `SITE_LOCALE` wins.                                    |
+| `reading.*`          | Settings › Reading: what the home page shows, the posts page, and how many entries a page lists.    |
+| `media.*`            | Settings › Media: the image sizes, and year and month folders.                                      |
+| `mail.from`          | Who the site's email comes from. `MAIL_FROM` wins.                                                  |
+| `users.can_register` | Whether anyone can sign up on the site.                                                             |
+
+Each one's type and description are in the Code Reference under [Settings](/reference/settings).
+
 ## The signed-in user
 
 ```tsx filename="src/app/(site)/account-link.tsx"
@@ -82,18 +96,28 @@ in the [Code Reference](/reference/services).
 
 ## Slots
 
-`<Slot name="…" />` renders what plugins put in a slot, in their priority order. The CMS's site
-slot is `header.nav`, for the main navigation; plugins may offer others. A slot with props takes
-them as `props`:
+`<Slot name="…" />` renders what plugins put in a slot, in their priority order. The site's layout
+renders the CMS's two site slots; plugins may offer others. A slot with props takes them as
+`props`:
+
+- `header.nav`, the main navigation's links.
+- `site.footer`, the end of every page, as WordPress's `wp_footer`. It gets the signed-in person,
+  or `null`, so a plugin such as Performance can show something only to administrators.
 
 ```tsx
 <Slot name="header.nav" />
+<Slot name="site.footer" props={{ user }} />
 ```
+
+A layout without `site.footer` hides what plugins put there. `account.sections` is a site slot too,
+but the CMS's account page renders it, after its own sections, so a layout doesn't.
 
 The slots a site can render are listed under [Slots](/reference/slots); the ones starting with
 `admin.` belong to the admin.
 
 ## The brand
 
-`kernel.brand` is the CMS's name, link and logo, from `cms.config.json`, for a site that credits
-the CMS, such as "Powered by …" in its footer. See [White label](/documentation/white-label).
+`kernel.brand` is the CMS's name, link and logo, from `brand` in `cms.config.json`, for a site that
+credits the CMS, such as "Powered by …" in its footer: `name`, `url` (where the name links) and
+`logo` (a path on the site or an https URL). Without a brand, the name is "OTW CMS" and the other
+two are unset. See [White label](/documentation/white-label).

@@ -40,7 +40,8 @@ including managed ones such as Neon, Supabase, RDS or Cloud SQL.
   server; where the host backs up for you (most managed PostgreSQL does), run
   `cms migrate --no-backup` instead.
 
-Updates made with `cms serve` back up the same way before they migrate. These backups are a safety
+Updates made with `cms serve` back up before they migrate too: PostgreSQL to the same
+`.data/backups/`, and the embedded database to `.cms/backups/`, which keeps the newest three. These backups are a safety
 net for updates. Keep regular backups as well: snapshot the embedded folder while the site is
 stopped, or use your PostgreSQL host's backups.
 

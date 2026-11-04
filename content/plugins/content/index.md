@@ -64,6 +64,10 @@ export default definePlugin({
 A type whose plural isn't the name and an `s` declares it on both sides:
 `'crew.person': { plural: 'people' }` in `ContentTypes`, and `plural: 'people'` in the definition.
 
+`cms.content.types()` lists every registered type, core's and plugins', in the order they were
+registered, and `getType(name)` finds one, like WordPress's `get_post_types()` and
+`get_post_type_object()`: for a plugin that works with any type, such as a sitemap or a search.
+
 ## Posts and pages
 
 The CMS registers WordPress's two types, and its roles for writing them:
@@ -404,7 +408,8 @@ export async function undoLastSave(cms: PluginContext, postId: string, userId: s
 - `create()` and `update()` take `{ by }`, the user a revision names; the edit screen passes the
   signed-in user.
 - `revisions(entryId)` lists them newest first, the newest being the entry as it is;
-  `restoreRevision(id)` puts the entry back as one had it, as a save with its own revision.
+  `getRevision(id)` finds one; `restoreRevision(id)` puts the entry back as one had it, as a save
+  with its own revision.
 - **On the edit screen**, the Publish box shows how many there are with a Browse link, once
   there are two. The revisions screen lists them, shows what one changed from the one before it,
   field by field, and restores it, for those who may edit the entry.

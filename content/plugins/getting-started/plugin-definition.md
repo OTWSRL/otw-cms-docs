@@ -49,14 +49,16 @@ The id is the plugin's namespace. Its settings, hooks, capabilities and registri
 its API routes under `/api/p/{id}`. Pick it once: changing it is like publishing a new plugin.
 
 A few ids are taken by the CMS: `core`, `admin`, `api`, `login`, `logout`, `setup`, `plugins`,
-`settings` and `users`.
+`settings`, `users`, `updates`, `posts`, `pages` and `media`.
 
 ### The icon
 
-The icon is a built-in name: `admin`, `dashboard`, `plugins`, `users`, `settings`, `cart`,
+The icon is a built-in name: `admin`, `dashboard`, `post`, `plugins`, `users`, `settings`, `cart`,
 `products`, `payments`, `chart`, `book`, `groups`, `media`, `page`, `tools`, `megaphone` or
 `calendar`. Or it's an SVG of your own, as a base64 data URI, as WordPress's `add_menu_page()`
 accepts. The admin draws it as a mask in the menu's colours, so only its shape counts.
+`ADMIN_ICON_NAMES` lists the built-in names, and `isAdminIcon()` tells whether a value is one of them
+or a data URI the admin accepts, for a plugin that lets its users pick an icon.
 
 ```ts
 const icon = `data:image/svg+xml;base64,${btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">…</svg>')}`

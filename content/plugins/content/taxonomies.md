@@ -56,6 +56,9 @@ export default definePlugin({
 | `defaultTerm`     | The term an entry gets when it has none, such as "Uncategorized". It's created when first needed.                 |
 | `roles`           | Which roles get its capabilities. Defaults to WordPress's: editors manage terms; authors and contributors assign. |
 
+`cms.content.taxonomies()` lists the registered taxonomies, or with a type, those classifying it,
+and `getTaxonomy(name)` finds one, like WordPress's `get_object_taxonomies()` and `get_taxonomy()`.
+
 ## Categories and tags
 
 | Taxonomy        | Kind         | Default term  | Who may add terms                                   |

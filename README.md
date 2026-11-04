@@ -2,7 +2,7 @@
 
 The documentation site for OTW CMS, like wordpress.org's: a user guide, the Plugin and Theme
 Handbooks, hosting, and a Code Reference read from the CMS's source. It runs on OTW CMS itself,
-with no plugins.
+with the Performance plugin.
 
 ```sh
 pnpm install
@@ -58,9 +58,9 @@ Raw HTML in Markdown is dropped, so everything on a page is escaped.
 - every export of the documented packages, with its signature, members and doc comment;
 - the `cms` command's help, and every environment variable the code reads.
 
-So the reference always describes the versions in `package.json`. Commerce, Stripe and
-`@otwdesign/testing` are development dependencies only so their source can be read; the site doesn't
-activate them.
+So the reference always describes the versions in `package.json`. Commerce, Stripe, Courses (the
+LMS) and `@otwdesign/testing` are installed only so their source can be read; the site activates
+only Performance, as `cms.config.json` says.
 
 ## What the tests hold the docs to
 

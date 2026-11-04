@@ -21,6 +21,9 @@ since it's the proxy.
 nginx:
 
 ```nginx
+# nginx refuses request bodies over 1 MB unless told otherwise; match CMS_MAX_UPLOAD_MB.
+client_max_body_size 64m;
+
 location / {
   proxy_pass http://127.0.0.1:3000;
   proxy_set_header Host $host;

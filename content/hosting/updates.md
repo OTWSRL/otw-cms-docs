@@ -64,6 +64,11 @@ runs `cms update --commit` and opens a pull request with the result; merging it 
 update, and the deploy's `build:deploy` runs the migrations. The workflow also runs every week on
 its own; remove its `schedule` to only run it when asked.
 
+To run it yourself, open the workflow under the repository's **Actions** tab and click **Run
+workflow**. It takes two inputs: **packages**, the plugins to update or `core` (empty updates
+everything), and **plugins_only**, which leaves the CMS itself where it is. They're `cms update`'s
+package names and `--plugins-only`.
+
 `CMS_GITHUB_WORKFLOW` and `CMS_GITHUB_REF` name a different workflow file or branch, when the
 defaults (`cms-update.yml` on `main`) don't fit.
 

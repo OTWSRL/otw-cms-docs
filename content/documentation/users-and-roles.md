@@ -20,6 +20,9 @@ Every site has these, as WordPress does:
 | **Contributor**   | Their own posts, sent for review; no uploads.                                                                           |
 | **Customer**      | People who sign in to the site itself, such as a shop's buyers. No admin access. People who sign up on the site get it. |
 
+What each one may do with posts and pages is under
+[Posts and pages › Who can do what](/documentation/posts-and-pages#who-can-do-what).
+
 Plugins add their own. Commerce adds **Shop manager**, who can use the admin to manage products,
 orders and the shop's settings, but not plugins, users or the site's settings.
 
@@ -33,8 +36,8 @@ it's activated again.
 
 - **Email** (required): what they sign in with.
 - **Name**: how the admin greets them.
-- **Password** (required): at least 10 characters. Send it to them in a safe way; they can't
-  change it themselves yet.
+- **Password** (required): at least 10 characters. Send it to them in a safe way; they can change
+  it on [their profile](#your-profile).
 - **Role**.
 
 ## Editing a user

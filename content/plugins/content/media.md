@@ -95,6 +95,7 @@ export async function gallery(cms: PluginContext, courseId: string): Promise<Med
 
 `get(id)` finds one, `getMany(ids)` several in one query, `update(id, changes)` changes its title,
 alt text, caption, description or entry, and `delete(id)` deletes it with all its files.
+`months()` lists the months that have uploads, newest first, as `2026-11`, for a `month` filter.
 
 ## Image sizes
 
@@ -128,7 +129,8 @@ export default definePlugin({
 ```
 
 Sizes are made when an image is uploaded. Images uploaded before a size was added, or before
-Settings › Media changed, keep the sizes they had.
+Settings › Media changed, keep the sizes they had. `imageSizes()` lists the sizes new uploads get,
+core's as Settings › Media has them and then plugins', like `wp_get_registered_image_subsizes()`.
 
 ## File types
 

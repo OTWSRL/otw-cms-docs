@@ -13,7 +13,7 @@ Getting a site running takes three steps:
 
 ## What you need
 
-- **Node.js 24 or newer** on the computer or server that runs the site.
+- **Node.js 22.18 or newer** on the computer or server that runs the site.
 - **A package manager**: npm comes with Node.js; pnpm, Yarn and Bun work too.
 - **A database**, for production only. Without one, the site uses an embedded database stored in a
   folder beside it, which is right for trying the CMS and for small sites on one server. For

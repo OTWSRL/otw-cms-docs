@@ -62,6 +62,11 @@ WordPress's **Add New** does, needs a plugin directory, which doesn't exist yet.
 }
 ```
 
+A plugin's pages on the site have the addresses it gives them. To use others, such as `/forum`
+in your own language, the site renames them with `routes` in `cms.config.json`, without changing
+the plugin; see [Moving plugin pages](/themes/pages#moving-plugin-pages). A name that matches no
+page shows as a warning on the Dashboard.
+
 ## Updates
 
 When a newer version of a plugin is out and the site can update itself, the plugin's row says

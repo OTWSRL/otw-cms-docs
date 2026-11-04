@@ -46,6 +46,26 @@ yourself: after updating, compare it with a new site's.
 The home page is the exception. Writing your own is expected (see
 [the home page](/themes/pages#the-home-page)), so `cms generate` doesn't warn about it.
 
+The site's catch-all page is two exports from `@otwdesign/next/site`: `SitePage`, which answers
+every address (a plugin's page, the account pages, then posts, pages and archives), and
+`generateSiteMetadata`, which gives each one its title and description. A page of your own calls
+them, so it can add to what they do without redoing it:
+
+```tsx filename="src/app/(site)/[...slug]/page.tsx"
+import type { Metadata } from 'next'
+import { generateSiteMetadata, SitePage, type SiteRouteProps } from '@otwdesign/next/site'
+
+export const dynamic = 'force-dynamic'
+
+export async function generateMetadata(props: SiteRouteProps): Promise<Metadata> {
+  return { ...(await generateSiteMetadata(props)), openGraph: { siteName: 'Acme' } }
+}
+
+export default function Page(props: SiteRouteProps) {
+  return <SitePage {...props} />
+}
+```
+
 ## When a version stops managing a file
 
 When an update replaces a managed file with others, `cms generate` removes the old one, as long as

@@ -71,7 +71,7 @@ export default definePlugin({
 
 - Paths start with `/`. A segment starting with `:` matches any one segment and is passed in
   `params`. Static segments beat parameters, so `/recipes/new` wins over `/recipes/:slug`.
-- `/admin`, `/api` and `/_next` belong to the CMS and Next.js; a page can't use them.
+- `/admin`, `/api`, `/uploads` and `/_next` belong to the CMS and Next.js; a page can't use them.
 - Two pages that would answer the same URLs clash, and the second plugin fails to set up with the
   reason. Start paths with something your plugin owns.
 - A page at `/` is the site's home page, unless the site has
