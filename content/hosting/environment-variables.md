@@ -23,6 +23,14 @@ uses the embedded database. See [Databases](/hosting/database).
 Where the embedded database lives. Default: `.data/pglite`, in the site's directory. Ignored when
 `DATABASE_URL` is set.
 
+### `CMS_SHARED_BUFFERS`
+
+How much memory the embedded database keeps for its cache, PostgreSQL's `shared_buffers`, such as
+`32MB`. Default: `16MB`, rather than PostgreSQL's 128 MB, which the embedded database would hold
+however small the site. A large embedded database whose lists and counts slow down can raise it;
+see [Databases](/hosting/database#memory). Ignored when `DATABASE_URL` is set: a PostgreSQL server
+has its own setting.
+
 ### `CMS_MIGRATIONS`
 
 When migrations run: `startup` (the default), as the site starts, for one server; or `deploy`, only
@@ -81,6 +89,12 @@ active, and turns off activating them in the admin. Unset, the admin manages act
 ### `PORT`
 
 The port the site listens on: `next start`'s, and `cms serve`'s public port. Default: 3000.
+
+### `CMS_STANDALONE`
+
+`1` while building makes Next.js write a standalone server, `.next/standalone`: the server and
+only the files it uses, which runs with `node server.js`. The site's [Dockerfile](/hosting/docker)
+sets it. A site that sets Next.js's `output` itself keeps its own.
 
 ## Updates
 

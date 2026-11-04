@@ -19,6 +19,18 @@ or wherever `CMS_DATA_DIR` points. There's nothing to install or configure.
 - **Keep the folder.** It _is_ the database. In containers, put it on a volume.
 - **Not on serverless hosts**, whose file systems don't last between requests.
 
+### Memory
+
+The embedded database runs inside the site's server process. In a container, a small site's
+server used about 210 MB with it, against about 70 MB with PostgreSQL.
+
+- **Its cache** is 16 MB, set by [`CMS_SHARED_BUFFERS`](/hosting/environment-variables#cms_shared_buffers),
+  which suits a site whose database fits in it. In a 130 MB database, finding one entry was as
+  fast as with PostgreSQL's default of 128 MB, but scanning a long list or counting entries took
+  about three times as long. A large embedded database can raise it, or move to PostgreSQL.
+- **Creating the database** takes about 700 MB for a moment. The site does it in a short-lived
+  process of its own on its first start, so the server doesn't keep that memory.
+
 ## PostgreSQL
 
 Set `DATABASE_URL` to a connection string, and the site uses that server:

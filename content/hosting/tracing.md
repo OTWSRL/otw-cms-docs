@@ -19,7 +19,8 @@ export { register } from '@otwdesign/next/instrumentation'
 ```
 
 It installs an OpenTelemetry tracer that records nothing until an active plugin calls
-`cms.traces.enable()`. There's nothing to configure.
+`cms.traces.enable()`. There's nothing to configure. OpenTelemetry's SDK, about 25 MB of the
+server's memory, loads only then: a site with no plugin that records requests never loads it.
 
 ## What it costs
 
