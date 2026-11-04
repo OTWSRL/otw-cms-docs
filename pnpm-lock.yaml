@@ -91,11 +91,11 @@ importers:
         specifier: link:../nextjs-cms/packages/cli
         version: link:../nextjs-cms/packages/cli
       '@otwdesign/plugin-commerce':
-        specifier: link:../nextjs-cms/plugins/commerce
-        version: link:../nextjs-cms/plugins/commerce
+        specifier: link:../otw-plugin-commerce
+        version: link:../otw-plugin-commerce
       '@otwdesign/plugin-commerce-stripe':
-        specifier: link:../nextjs-cms/plugins/commerce-stripe
-        version: link:../nextjs-cms/plugins/commerce-stripe
+        specifier: link:../otw-plugin-commerce-stripe
+        version: link:../otw-plugin-commerce-stripe
       '@otwdesign/testing':
         specifier: link:../nextjs-cms/packages/testing
         version: link:../nextjs-cms/packages/testing
