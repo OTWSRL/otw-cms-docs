@@ -427,6 +427,9 @@ export async function undoLastSave(cms: PluginContext, postId: string, userId: s
   published posts could edit one once it's trashed.
 - **Slugs are unique in the database**, not only in PHP, so two saves at once can't share one.
 - **Columns load once per page**, not once per row.
+- **Counts are kept, not counted.** `count()` and `months()` read totals a database trigger keeps
+  as entries change, where WordPress caches `wp_count_posts()` and runs the months query each
+  time. A plugin that writes `cms_entries` with its own SQL keeps them right too.
 - **No edit locks; stale saves are refused instead**, and what was typed waits in the browser.
 - **Revisions are kept apart from entries**, and to a number: WordPress keeps every one in
   `wp_posts` unless told otherwise.

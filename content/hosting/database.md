@@ -15,7 +15,12 @@ or wherever `CMS_DATA_DIR` points. There's nothing to install or configure.
 
 - **One process at a time.** The embedded database belongs to the process that opened it; a lock
   file stops a second server, or `cms migrate` beside a running site. So it suits a site on one
-  server, not several.
+  server, not several. The lock records its process's id and when it started, so a container
+  that restarts, and hands the same ids out again, takes it over rather than finding it held.
+- **It looks after itself.** A PostgreSQL server's autovacuum keeps the statistics its query
+  planner relies on, and clears out old row versions. The embedded database runs no background
+  processes, so the site's server does the same: 30 seconds after it starts, then every five
+  minutes, it analyzes and vacuums the tables that changed enough, by autovacuum's rules.
 - **Keep the folder.** It _is_ the database. In containers, put it on a volume.
 - **Not on serverless hosts**, whose file systems don't last between requests.
 
