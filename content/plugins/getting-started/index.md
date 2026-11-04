@@ -140,7 +140,8 @@ npm install @acme/plugin-greeting
 
 While you work on it, keep the plugin in a folder inside the site, such as `plugins/greeting`,
 and install it from there: `npm install ./plugins/greeting`. Next.js compiles only what sits
-inside the site's folder.
+inside the site's folder. A plugin with a repository of its own turns this around: the repository
+holds the plugin and a [development site](/plugins/testing#a-development-site) that installs it.
 
 Restart `npm run dev`; it runs `cms generate`, which finds the admin entry in the package's
 `exports`. The plugin appears on **Plugins › Installed Plugins**, inactive; click

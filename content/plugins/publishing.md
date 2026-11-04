@@ -14,12 +14,20 @@ package, and `cms update` (or Dashboard › Updates) keeps it current.
   "name": "@acme/plugin-gift-cards",
   "version": "1.0.0",
   "description": "Sell gift cards and redeem them at checkout.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acme/plugin-gift-cards.git"
+  },
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
     "./admin": "./src/admin.tsx"
   },
   "files": ["src"],
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "@otwdesign/admin-ui": "^1.0.0",
     "@otwdesign/plugin-commerce": "^1.0.0",
@@ -40,13 +48,18 @@ package, and `cms update` (or Dashboard › Updates) keeps it current.
 - **Plugins you require are peer dependencies too**, with the range you support, matching
   `requires` in the definition.
 - **Everything else is a normal dependency**, such as a payment provider's SDK.
+- **A scoped package is private on npm unless it says otherwise.** `publishConfig.access` makes
+  `npm publish` publish it publicly; leave it out for a paid plugin on a private registry.
+- **`repository`** links the package on npm to its source, and npm's
+  [provenance](https://docs.npmjs.com/generating-provenance-statements) checks it.
 
 ## Saying which versions you support
 
-The range on `@otwdesign/sdk` says which versions of the CMS the plugin works with. `cms update` reads it
+The range on `@otwdesign/sdk` (or on `@otwdesign/next`, for a plugin that needs only that) says
+which versions of the CMS the plugin works with. `cms update` reads it
 before changing anything. It moves each plugin to its newest version that supports the CMS the
 site is moving to, and if a plugin has no such version, it stops and names the plugin ("doesn't
-support core 0.2.0; it would be switched off") rather than update anyway. Peer ranges on other
+support core 2.0.0; it would be switched off") rather than update anyway. Peer ranges on other
 plugins work the same way: a plugin another one still needs in an older version is held back.
 
 Keep three things in step:
@@ -73,11 +86,75 @@ Use [semver](https://semver.org), counting your extension points as API:
 
 ## Releasing
 
+By hand:
+
 1. Run your tests, against the lowest and the newest CMS versions you support.
-2. Bump the version, and update `version` in the definition to match.
+2. Bump the version in `package.json`, and `version` in the definition to match: the Plugins screen
+   shows the definition's.
 3. `npm publish`.
 
 Sites see the new version on their next update check.
+
+### With Changesets and GitHub Actions
+
+The CMS's own plugins release this way, with no npm token anywhere, and
+[Performance](https://github.com/OTWSRL/otw-plugin-performance) is a complete example to copy.
+
+- **Each change that should reach npm comes with a changeset**: run `pnpm changeset`, pick the
+  bump, and write the line for the changelog. Commit the file with the change.
+- **The version in the definition follows `package.json`.** `changeset version` bumps only
+  `package.json`, so a short script copies the new version into the definition, and a test fails
+  if the two ever differ:
+
+  ```json
+  {
+    "scripts": {
+      "changeset": "changeset",
+      "version-packages": "changeset version && node scripts/sync-plugin-version.mjs",
+      "release": "changeset publish"
+    }
+  }
+  ```
+
+- **Changesets counts only the packages the workspace lists.** When the plugin is the
+  repository's root and its [development site](/plugins/testing#a-development-site) sits in
+  `site/`, `pnpm-workspace.yaml` lists both, `.` and `site`.
+- **A release workflow runs after CI passes on `main`.** While changesets are waiting, it opens a
+  "Version Packages" pull request with the bump and the changelog; merging that pull request
+  publishes. Performance's
+  [`release.yml`](https://github.com/OTWSRL/otw-plugin-performance/blob/main/.github/workflows/release.yml)
+  does it in four jobs, and only the one that publishes may ask GitHub for an identity token.
+  It also checks out the CMS beside the plugin, because Performance is developed against a
+  checkout of the CMS; a plugin that takes the CMS from npm leaves those steps out.
+
+npm's [trusted publishing](https://docs.npmjs.com/trusted-publishers) replaces the token: npm
+trusts a publish from your repository's workflow. To set it up:
+
+1. Publish the first version by hand. A trusted publisher is set on a package that already exists.
+2. On npmjs.com, in the package's settings, add GitHub Actions as its trusted publisher: the
+   repository's owner and name, and the workflow's file name, `release.yml`. Allow `npm publish`,
+   not only staged publishing, which Changesets doesn't use. Save the connection.
+3. In the workflow, the publishing job needs `permissions: id-token: write`, npm 11.5.1 or newer
+   (`npm install --global npm@11`), and `registry-url: https://registry.npmjs.org` on
+   `actions/setup-node`.
+4. In the repository's settings, under Actions › General, allow GitHub Actions to create and
+   approve pull requests, for the Version Packages pull request.
+
+A refused publish is explained only in npm's detailed log, so set `NPM_CONFIG_LOGLEVEL: verbose`
+on the publishing step.
+
+## How sites install it
+
+A site adds a published plugin with its package manager and lists it in `cms.config.json`; see
+[Installing a plugin](/documentation/plugins#installing-a-plugin). A new site can start with it:
+
+```bash
+npm create otw-cms@latest my-site -- --plugins @acme/plugin-gift-cards
+```
+
+The scaffolder asks npm for the plugin's newest version and depends on it with a caret range, so
+publish before you tell people to install. Short names, such as `performance`, are only for the
+CMS's own plugins.
 
 ## Private and paid plugins
 

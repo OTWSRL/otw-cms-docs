@@ -100,6 +100,10 @@ fails its test.
 | `reboot()`                     | Starts a fresh kernel on the same database, as the site does after an admin changes something.           |
 | `close()`                      | Closes the database. Call it after each test.                                                            |
 
+The package also exports `TEST_PASSWORD`, the password `signIn()` gives the users it creates, for
+a test that signs in through the form; `TEST_ORIGIN`, the site's address in tests; and
+`createMemoryLogger()`, the logger the test kernel keeps, for code you test without a kernel.
+
 ## Testing admin actions
 
 `request()` sends unsafe requests with this site's `Origin`, as a browser would; `json` and `form`
@@ -235,3 +239,103 @@ For an optional integration, test once with the other plugin and once without.
 Activation and settings changes take effect when the site starts again. In a test, make the change
 (post to the core action, or write the setting), then `await site.reboot()` and check the new
 kernel.
+
+## A development site
+
+Unit tests boot the kernel; some things only show in a browser: a page's layout, a form that
+posts, a client component, what reaches visitors' JavaScript. For those, keep an OTW site inside
+the plugin's repository, in `site/`, and test it with [Playwright](https://playwright.dev). The
+CMS's own plugins work this way.
+
+```
+plugin-greeting/
+  package.json            the plugin, published to npm
+  src/
+  pnpm-workspace.yaml     lists . and site
+  site/
+    package.json          a site that installs the plugin
+    cms.config.json
+    next.config.ts
+    fixture/              a test plugin that uses the plugin's extension points
+    e2e/
+```
+
+Make the site with `create-otw-cms`, then install the plugin from the workspace:
+`"@acme/plugin-greeting": "workspace:*"` in `site/package.json`. Use a pnpm workspace, so the
+plugin and the site share one copy of each CMS package, as a site and its plugins must (see
+[The package](/plugins/publishing#the-package)). List the plugin in `site/cms.config.json`: on a
+site's first start, every plugin listed is active.
+
+The plugin sits outside `site/`, so widen Next.js's root to the repository:
+
+```ts filename="site/next.config.ts"
+import { resolve } from 'node:path'
+import { withCms } from '@otwdesign/next/config'
+
+// The plugin is the repository's root, one level up, so Turbopack's root must hold both.
+const root = resolve(process.cwd(), '..')
+
+export default withCms({ turbopack: { root }, outputFileTracingRoot: root })
+```
+
+### Fixture plugins
+
+To test what other plugins do with yours, put a small plugin in the site that uses your hooks,
+slots and services, as a real one would: `site/fixture`, with a `package.json` whose `exports`
+points at its source, installed as `"greeting-fixture": "link:fixture"` and listed in
+`site/cms.config.json`. Mark it `"private": true`, so it can't be published by mistake. The CMS
+tests itself the same way, with fixture plugins in its own test site.
+
+### End-to-end tests
+
+Playwright builds the site, starts it on a fresh embedded database, and runs the tests in order:
+the first one sets the site up, as a person would.
+
+```ts filename="site/playwright.config.ts"
+import { defineConfig, devices } from '@playwright/test'
+
+const PORT = 3100
+
+export default defineConfig({
+  testDir: './e2e',
+  // One server on one database, set up by the first test.
+  workers: 1,
+  use: { baseURL: `http://localhost:${PORT}` },
+  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+  webServer: {
+    // A fresh database each run, so the first visit sets the site up.
+    command: `node -e "fs.rmSync('.data/e2e', { recursive: true, force: true })" && pnpm build && pnpm start --port ${PORT}`,
+    url: `http://localhost:${PORT}`,
+    reuseExistingServer: !process.env.CI,
+    timeout: 300_000,
+    env: { CMS_DATA_DIR: '.data/e2e', DATABASE_URL: '' },
+  },
+})
+```
+
+```ts filename="site/e2e/greeting.spec.ts"
+import { expect, test } from '@playwright/test'
+
+const ADMIN = { name: 'Ada Admin', email: 'ada@example.com', password: 'a strong e2e password' }
+
+// One site, set up by the first test; the rest build on it.
+test.describe.configure({ mode: 'serial' })
+
+test('the first visit sets up the administrator', async ({ page }) => {
+  await page.goto('/admin')
+  await expect(page).toHaveURL('/admin/setup')
+  await page.getByLabel('Name').fill(ADMIN.name)
+  await page.getByLabel('Email').fill(ADMIN.email)
+  await page.getByLabel('Password').fill(ADMIN.password)
+  await page.getByRole('button', { name: 'Create administrator' }).click()
+  await expect(page.getByRole('status').filter({ hasText: 'Your site is ready.' })).toBeVisible()
+})
+
+test('the greeting page says hello', async ({ page }) => {
+  await page.goto('/hello')
+  await expect(page.getByRole('heading', { name: 'Hello, world!' })).toBeVisible()
+})
+```
+
+Give each repository's tests their own port, so two can run at once. In CI, install the browser
+first (`playwright install --with-deps chromium`) and keep the traces of a failed run.

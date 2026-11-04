@@ -27,8 +27,13 @@ npm create otw-cms@latest my-site -- --plugins performance,@acme/forum
 ```
 
 Each name is a plugin's npm package. A short name means one of the CMS's own: `performance` is
-`@otwdesign/plugin-performance`. You can add plugins later too; see
-[Installing a plugin](/documentation/plugins#installing-a-plugin).
+`@otwdesign/plugin-performance`. Plugins are released apart from the CMS, so the site gets each
+one's newest version on npm, with a caret range (`^1.0.1`), and the CMS's packages at the
+scaffolder's own version. The scaffolder asks npm with your npm settings, so a plugin from a
+private registry in your `.npmrc` works too. A name npm doesn't know stops it before it writes
+anything.
+
+You can add plugins later too; see [Installing a plugin](/documentation/plugins#installing-a-plugin).
 
 > [!NOTE]
 > Of the CMS's own plugins, only [Performance](/documentation/performance) is on npm so far.
@@ -38,7 +43,7 @@ Each name is a plugin's npm package. A short name means one of the CMS's own: `p
 
 | Option             | What it does                                                                |
 | ------------------ | --------------------------------------------------------------------------- |
-| `--plugins <list>` | Plugins to install: their npm packages, comma-separated.                    |
+| `--plugins <list>` | Plugins to install, comma-separated: npm packages, or short names.          |
 | `--no-install`     | Write the files without installing dependencies.                            |
 | `--link <dir>`     | Use the CMS packages from a checkout of the CMS, to try unreleased changes. |
 
