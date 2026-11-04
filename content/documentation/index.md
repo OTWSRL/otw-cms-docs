@@ -17,6 +17,8 @@ databases and deployment.
 
 - **Install a site** in a few minutes, with or without plugins. See
   [Installing OTW CMS](/documentation/getting-started/installing).
+- **Write posts and pages** in the block editor, and sort posts into categories and tags. See
+  [Posts and pages](/documentation/posts-and-pages).
 - **Manage plugins** on the Plugins screen: switch them on and off without rebuilding the site.
   See [Managing plugins](/documentation/plugins).
 - **Add people** and give each a role, such as Administrator or Shop manager. See

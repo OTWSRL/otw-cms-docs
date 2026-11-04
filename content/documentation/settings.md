@@ -1,6 +1,6 @@
 ---
 title: Settings
-description: The site's own settings under Settings › General, the settings plugins add, and settings fixed by the server.
+description: The site's own settings under Settings › General, Reading and Media, the settings plugins add, and settings fixed by the server.
 order: 5
 ---
 
@@ -20,9 +20,32 @@ shop manager can open the shop's pages but not the site's.
 `My Site <hello@example.com>`. Leave it empty to use the mail plugin's own sender. A site needs a
 mail plugin to send email at all: without one, password resets and sign-ups can't reach anyone.
 
+**Anyone can register**, under Membership, lets people sign up on the site at `/account`, as
+Customers; see [Accounts on the site](/documentation/accounts). It's off until you tick it, and
+needs a mail plugin.
+
 Set **Site address** when the site runs behind a proxy or load balancer, or under more than one
 address: it makes links in emails and from payment providers point at the right place. See
 [Behind a reverse proxy](/hosting/reverse-proxy).
+
+## Settings › Reading
+
+As WordPress's: what the home page shows, and how long lists of posts are.
+
+| Setting                     | What it does                                                                                                                                                          |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Your homepage displays**  | **Your latest posts**, the default, or **A static page (choose below)**.                                                                                              |
+| **Homepage**                | With a static page: the page to show at `/`. It must be published; until it is, the home page shows the latest posts.                                                 |
+| **Posts page**              | With a static page: a page whose address lists the latest posts instead of its own content, under its title. Leave it empty if the site doesn't need a list of posts. |
+| **Blog pages show at most** | How many posts each page of a list shows: the latest posts, a category's or a tag's, and plugins' lists such as courses. 1 to 100; 10 by default.                     |
+
+Longer lists go on over more pages, at `?page=2` and so on. The pages chosen here are ordinary
+pages: edit them under Pages, as any other. See
+[Posts and pages on the site](/documentation/posts-and-pages#on-the-site).
+
+A developer can give the site a home page of its own, and a plugin can put one at `/`; either
+shows instead, and these settings don't change it. See
+[Your own pages](/themes/pages#the-home-page).
 
 ## Settings › Media
 
@@ -37,10 +60,6 @@ As WordPress's: the sizes images are copied to when they're uploaded, in pixels.
 
 A 0 leaves that side free; 0 by 0 turns the size off. New sizes apply to images uploaded from then
 on: images already in the library keep the copies they have.
-
-**Anyone can register**, under Membership, lets people sign up on the site at `/account`, as
-Customers; see [Accounts on the site](/documentation/accounts). It's off until you tick it, and
-needs a mail plugin.
 
 ## Settings from plugins
 

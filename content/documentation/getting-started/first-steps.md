@@ -39,5 +39,6 @@ screen sets the site's address and locale; see [Settings](/documentation/setting
 ## Next
 
 - Take [a tour of the admin](/documentation/the-admin).
+- [Write your first post](/documentation/posts-and-pages).
 - Switch on the plugins you need on the [Plugins screen](/documentation/plugins).
 - [Add people](/documentation/users-and-roles) who will help run the site.

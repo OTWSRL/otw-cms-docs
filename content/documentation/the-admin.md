@@ -23,7 +23,7 @@ Plugins or Users. Its sections come in this order:
 
 - **Dashboard**, with **Home** and **Updates**.
 - **Posts**, **Media** and **Pages**: the site's content and its files. See
-  [The media library](/documentation/media).
+  [Posts and pages](/documentation/posts-and-pages) and [The media library](/documentation/media).
 - **One section for each active plugin**, with the plugin's icon, in the order plugins load.
   Commerce, for example, adds Products and Orders.
 - **Plugins**, **Users** and **Settings**.
