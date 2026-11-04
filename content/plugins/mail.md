@@ -112,7 +112,7 @@ it never does: an email's text can hold a password reset link.
 **Mail to files** (`@otwdesign/plugin-mail-file`) is a transport for development and tests: it writes
 each email to a folder as a JSON file, `.data/mail` or
 [`MAIL_FILE_DIR`](/hosting/environment-variables#mail_file_dir), as a mail catcher such as
-Mailpit shows them. Never activate it on a live site: nothing reaches anyone.
+Mailpit shows them. Never activate it on a live site: nothing reaches anyone. It isn't on npm yet.
 
 ## How it differs from WordPress
 

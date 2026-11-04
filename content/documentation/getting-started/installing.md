@@ -23,25 +23,24 @@ A new site has no plugins unless you ask for them. Name them with `--plugins`, s
 commas:
 
 ```bash
-npm create otw-cms@latest my-school -- --plugins lms,performance
+npm create otw-cms@latest my-site -- --plugins @acme/forum,@acme/events
 ```
 
-`lms` and `performance` are the CMS's own Courses and Performance plugins, and `mail-file` writes
-emails to files during development. Any other name is taken as an npm package, so third-party
-plugins install the same way: `--plugins lms,@acme/forum`. You can add plugins later too; see
+Each name is a plugin's npm package. A short name such as `lms` means one of the CMS's own,
+`@otwdesign/plugin-lms`. You can add plugins later too; see
 [Installing a plugin](/documentation/plugins#installing-a-plugin).
 
 > [!NOTE]
-> Commerce and Stripe, the CMS's own shop and its card payments, aren't on npm yet, so they
-> can't be installed for now.
+> The CMS's own plugins (Commerce, Stripe, Courses, Performance and Mail to files) aren't on npm
+> yet, so they can't be installed for now.
 
 ## All the options
 
-| Option             | What it does                                                                         |
-| ------------------ | ------------------------------------------------------------------------------------ |
-| `--plugins <list>` | Plugins to install, comma-separated: `lms`, `performance`, `mail-file`, or packages. |
-| `--no-install`     | Write the files without installing dependencies.                                     |
-| `--link <dir>`     | Use the CMS packages from a checkout of the CMS, to try unreleased changes.          |
+| Option             | What it does                                                                |
+| ------------------ | --------------------------------------------------------------------------- |
+| `--plugins <list>` | Plugins to install: their npm packages, comma-separated.                    |
+| `--no-install`     | Write the files without installing dependencies.                            |
+| `--link <dir>`     | Use the CMS packages from a checkout of the CMS, to try unreleased changes. |
 
 ## What you get
 

@@ -10,6 +10,9 @@ their own. With [Commerce](/documentation/plugins) active, courses can be sold i
 
 ## Installing it
 
+> [!NOTE]
+> Courses isn't on npm yet, so it can't be installed for now.
+
 ```bash
 npm install @otwdesign/plugin-lms
 ```
