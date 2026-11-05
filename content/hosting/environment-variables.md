@@ -18,6 +18,24 @@ every variable the code reads is on this page.
 A PostgreSQL connection string, such as `postgres://user:password@host:5432/db`. Unset, the site
 uses the embedded database. See [Databases](/hosting/database).
 
+### `CMS_DB_POOL_MAX`
+
+The most connections to PostgreSQL that each server, or serverless instance, keeps open. Default:
+`10`, as `pg` has it. Every instance keeps its own, so many at once can reach the database's limit;
+see [Connections](/hosting/database#connections). Unused with the embedded database.
+
+### `CMS_DB_POOL_IDLE_MS`
+
+How long a connection to PostgreSQL may stay unused before it's closed, in milliseconds. Default:
+`10000`. `0` keeps connections open until the site stops.
+
+### `CMS_DB_POOL_MODE`
+
+`transaction` (the default) or `session`. On Supabase's pooler, which serves both modes on one
+host, the site connects in this mode whichever port `DATABASE_URL` names: `6543` for
+transaction, `5432` for session. Other addresses are used as they are. Keep `transaction` unless a
+plugin needs session mode; see [Connections](/hosting/database#connections).
+
 ### `CMS_DATA_DIR`
 
 Where the embedded database lives. Default: `.data/pglite`, in the site's directory. Ignored when

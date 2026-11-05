@@ -50,6 +50,40 @@ Use PostgreSQL when the site runs on several servers or serverless, when you wan
 managed backups, or when the database outgrows one machine. Any current PostgreSQL works,
 including managed ones such as Neon, Supabase, RDS or Cloud SQL.
 
+### Connections
+
+Each server, and each serverless instance, keeps a pool of up to 10 connections, and closes one
+that stays unused for 10 seconds. Many instances at once can reach the database's limit, so the
+site connects through a transaction pooler where there is one. A transaction pooler shares a few
+database connections among many clients, one transaction at a time. The site keeps nothing on a
+connection between transactions (its locks last one transaction), so it works there unchanged.
+
+- **Supabase:** copy either pooler connection string. On the pooler's host, the site connects in
+  transaction mode, port `6543`, even when `DATABASE_URL` says session mode's `5432`. Session mode
+  admits only as many clients as its pool size, such as 15, and then fails with "max clients
+  reached". [`CMS_DB_POOL_MODE=session`](/hosting/environment-variables#cms_db_pool_mode) keeps
+  session mode, for a plugin that needs it. Backups use session mode, as `pg_dump` needs one
+  session. The direct connection, `db.<project>.supabase.co`, is used as it is: it's IPv6 only
+  without Supabase's IPv4 add-on, and many serverless hosts can't reach IPv6.
+- **Neon:** use the pooled connection string, whose host ends in `-pooler`. Neon's dashboard gives
+  it by default.
+- **Elsewhere:** point `DATABASE_URL` at the host's transaction pooler, or at PgBouncer you run with
+  `pool_mode = transaction`. A single long-running server can connect directly.
+- **Size the pool** with [`CMS_DB_POOL_MAX`](/hosting/environment-variables#cms_db_pool_max) and
+  [`CMS_DB_POOL_IDLE_MS`](/hosting/environment-variables#cms_db_pool_idle_ms). Connecting
+  directly, or through a session pooler, keep instances × `CMS_DB_POOL_MAX` under the database's
+  limit.
+
+`pg`, which the site connects with, reads `sslmode=require` as "verify the certificate fully".
+Supabase's is signed by Supabase's own authority, so that fails. Add `uselibpqcompat=true`, and
+`require` means what it means to `psql`: encrypted, without checking who signed the certificate.
+To check it too, add `sslrootcert=` with the path to Supabase's CA certificate. Backups leave
+`uselibpqcompat` out, as `pg_dump` doesn't know it and already reads `require` that way.
+
+```dotenv
+DATABASE_URL=postgres://postgres.abcd:secret@aws-0-eu-central-1.pooler.supabase.com:6543/postgres?uselibpqcompat=true&sslmode=require
+```
+
 ## Backups
 
 `cms migrate` backs up the database before it changes anything:

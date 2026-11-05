@@ -10,7 +10,10 @@ its git repository. That decides four things.
 ## 1. Use PostgreSQL
 
 The embedded database needs a disk that lasts, which serverless hosts don't have. Create a
-PostgreSQL database (Neon, Supabase, or your host's own) and set `DATABASE_URL`.
+PostgreSQL database (Neon, Supabase, or your host's own) and set `DATABASE_URL` to its pooler's
+connection string. Every instance keeps connections of its own, and many instances at once can use
+up the database's, so the site connects to a transaction pooler: on Supabase, it does whichever
+pooler string you copy. See [Connections](/hosting/database#connections).
 
 ## 2. Migrate in the build
 
@@ -43,6 +46,7 @@ the size of an upload.
 | Variable                              | Value                                                     |
 | ------------------------------------- | --------------------------------------------------------- |
 | `DATABASE_URL`                        | Your PostgreSQL connection string.                        |
+| `CMS_DB_POOL_MAX`                     | Optional: fewer connections per instance than 10.         |
 | `CMS_MIGRATIONS`                      | `deploy`                                                  |
 | `SITE_URL`                            | The site's public address, such as `https://example.com`. |
 | `CMS_GITHUB_REPO`, `CMS_GITHUB_TOKEN` | For updates from the admin.                               |
