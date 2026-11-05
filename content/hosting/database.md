@@ -17,6 +17,8 @@ or wherever `CMS_DATA_DIR` points. There's nothing to install or configure.
   file stops a second server, or `cms migrate` beside a running site. So it suits a site on one
   server, not several. The lock records its process's id and when it started, so a container
   that restarts, and hands the same ids out again, takes it over rather than finding it held.
+  A lock from 1.0, which has no start time, is taken over when the process with its id started
+  after the lock was written: a site upgrading from 1.0 into a new container starts as usual.
 - **It looks after itself.** A PostgreSQL server's autovacuum keeps the statistics its query
   planner relies on, and clears out old row versions. The embedded database runs no background
   processes, so the site's server does the same: 30 seconds after it starts, then every five
