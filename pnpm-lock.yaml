@@ -17,6 +17,9 @@ importers:
       '@otwdesign/next':
         specifier: link:../nextjs-cms/packages/next
         version: link:../nextjs-cms/packages/next
+      '@otwdesign/plugin-db':
+        specifier: link:../otw-db/packages/plugin
+        version: link:../otw-db/packages/plugin
       '@otwdesign/plugin-lms':
         specifier: link:../otw-plugin-lms
         version: link:../otw-plugin-lms

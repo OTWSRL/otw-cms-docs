@@ -20,6 +20,7 @@
     "@electric-sql/pglite": "^0.5.13",
     "@otwdesign/admin-ui": "link:../nextjs-cms/packages/admin-ui",
     "@otwdesign/next": "link:../nextjs-cms/packages/next",
+    "@otwdesign/plugin-db": "link:../otw-db/packages/plugin",
     "@otwdesign/plugin-lms": "link:../otw-plugin-lms",
     "@otwdesign/plugin-performance": "link:../otw-plugin-performance",
     "@otwdesign/sdk": "link:../nextjs-cms/packages/sdk",
