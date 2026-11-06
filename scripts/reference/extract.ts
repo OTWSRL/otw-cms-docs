@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process'
 import { existsSync, readdirSync, readFileSync, realpathSync } from 'node:fs'
-import { join, relative, sep } from 'node:path'
+import { dirname, join, relative, sep } from 'node:path'
 import ts from 'typescript'
 import type {
   ApiMember,
@@ -104,6 +104,18 @@ function entriesOf(name: string, dir: string, manifest: Manifest): Map<string, s
 }
 
 /**
+ * Where Node finds `name` from `dir`: the nearest `node_modules` on the way up. An installed
+ * package's dependencies sit beside it (pnpm's store) or in the site's root (npm), not inside it.
+ */
+function locate(name: string, dir: string): string | undefined {
+  for (let at = dir; ; at = dirname(at)) {
+    const candidate = join(at, 'node_modules', ...name.split('/'))
+    if (existsSync(candidate)) return candidate
+    if (dirname(at) === at) return undefined
+  }
+}
+
+/**
  * The `@otwdesign/*` packages the site depends on, and theirs, wherever the package manager put them.
  * Published packages ship their TypeScript source, so linked and installed ones read the same.
  */
@@ -111,8 +123,8 @@ export function findPackages(siteRoot: string): InstalledPackage[] {
   const found = new Map<string, InstalledPackage>()
   const visit = (name: string, from: string) => {
     if (found.has(name)) return
-    const link = join(from, 'node_modules', ...name.split('/'))
-    if (!existsSync(link)) return
+    const link = locate(name, from)
+    if (!link) return
     const dir = realpathSync(link)
     const manifest = readManifest(dir)
     const bin =
@@ -186,10 +198,16 @@ class Extractor {
     this.checker = this.program.getTypeChecker()
   }
 
-  /** The package a file belongs to, or undefined for TypeScript's lib and third-party types. */
+  /**
+   * The package a file belongs to, or undefined for TypeScript's lib and third-party types. Only
+   * the path inside the package counts: one installed from npm is itself under node_modules, while
+   * a linked checkout keeps its own third-party code in a node_modules of its own.
+   */
   private packageOf(fileName: string): InstalledPackage | undefined {
     return this.packages.find(
-      (pkg) => fileName.startsWith(pkg.dir + sep) && !fileName.includes(`${sep}node_modules${sep}`),
+      (pkg) =>
+        fileName.startsWith(pkg.dir + sep) &&
+        !fileName.slice(pkg.dir.length).includes(`${sep}node_modules${sep}`),
     )
   }
 

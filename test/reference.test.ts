@@ -1,8 +1,10 @@
+import { mkdirSync, mkdtempSync, realpathSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
-import { join } from 'node:path'
-import { beforeAll, describe, expect, it } from 'vitest'
+import { tmpdir } from 'node:os'
+import { dirname, join, relative } from 'node:path'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import type { Reference } from '@/docs/reference-types'
-import { extractReference, parseCliUsage } from '../scripts/reference/extract.ts'
+import { extractReference, findPackages, parseCliUsage } from '../scripts/reference/extract.ts'
 
 const ROOT = join(import.meta.dirname, '..')
 
@@ -34,6 +36,105 @@ Options:
       },
     ])
   })
+})
+
+describe('findPackages', () => {
+  const work = mkdtempSync(join(tmpdir(), 'docs-find-packages-'))
+  afterAll(() => rmSync(work, { recursive: true, force: true }))
+
+  const manifest = (dir: string, name: string, dependencies: Record<string, string> = {}) => {
+    mkdirSync(dir, { recursive: true })
+    writeFileSync(
+      join(dir, 'package.json'),
+      JSON.stringify({ name, version: '1.0.0', dependencies }),
+    )
+  }
+  const link = (target: string, path: string) => {
+    mkdirSync(dirname(path), { recursive: true })
+    symlinkSync(relative(dirname(path), target), path)
+  }
+  const PLUGIN = '@otwdesign/plugin-x'
+  const CORE = '@otwdesign/x-core'
+
+  // A plugin installed from npm that depends on another of our packages, as plugin-db does on
+  // db-core. Its dependency isn't inside it: the package manager puts it where Node finds it by
+  // walking up.
+  it('finds an installed package’s own dependencies in pnpm’s store', () => {
+    const site = join(work, 'pnpm')
+    manifest(site, 'site', { [PLUGIN]: '1.0.0' })
+    const store = join(site, 'node_modules/.pnpm')
+    const plugin = join(store, '@otwdesign+plugin-x@1.0.0/node_modules', PLUGIN)
+    const core = join(store, '@otwdesign+x-core@1.0.0/node_modules', CORE)
+    manifest(plugin, PLUGIN, { [CORE]: '1.0.0' })
+    manifest(core, CORE)
+    link(core, join(store, '@otwdesign+plugin-x@1.0.0/node_modules', CORE))
+    link(plugin, join(site, 'node_modules', PLUGIN))
+    expect(findPackages(site).map((pkg) => pkg.name)).toEqual([PLUGIN, CORE])
+  })
+
+  it('finds them hoisted to the site’s node_modules, as npm installs them', () => {
+    const site = join(work, 'npm')
+    manifest(site, 'site', { [PLUGIN]: '1.0.0' })
+    manifest(join(site, 'node_modules', PLUGIN), PLUGIN, { [CORE]: '1.0.0' })
+    manifest(join(site, 'node_modules', CORE), CORE)
+    expect(findPackages(site).map((pkg) => pkg.name)).toEqual([PLUGIN, CORE])
+  })
+})
+
+// A plugin installed from npm lives under node_modules, in pnpm's store or npm's tree; a linked one
+// doesn't. Its exports and extension points are read either way.
+describe('extractReference on a plugin installed from npm', () => {
+  const site = mkdtempSync(join(tmpdir(), 'docs-npm-plugin-'))
+  afterAll(() => rmSync(site, { recursive: true, force: true }))
+
+  it('reads its exports and the extension points it declares', () => {
+    const write = (path: string, content: string) => {
+      mkdirSync(dirname(join(site, path)), { recursive: true })
+      writeFileSync(join(site, path), content)
+    }
+    const PLUGIN = '@otwdesign/plugin-x'
+    write(
+      'package.json',
+      JSON.stringify({ dependencies: { '@otwdesign/sdk': '*', [PLUGIN]: '1.0.0' } }),
+    )
+    mkdirSync(join(site, 'node_modules/@otwdesign'), { recursive: true })
+    symlinkSync(
+      realpathSync(join(ROOT, 'node_modules/@otwdesign/sdk')),
+      join(site, 'node_modules/@otwdesign/sdk'),
+    )
+    write(
+      `node_modules/${PLUGIN}/package.json`,
+      JSON.stringify({
+        name: PLUGIN,
+        version: '1.0.0',
+        exports: { '.': './src/index.ts' },
+        peerDependencies: { '@otwdesign/sdk': '*' },
+      }),
+    )
+    write(
+      `node_modules/${PLUGIN}/src/index.ts`,
+      `/** Says hello. */
+export function hello(): string {
+  return 'hello'
+}
+
+declare module '@otwdesign/sdk' {
+  interface Capabilities {
+    /** Use X. */
+    'x.manage': true
+  }
+}
+`,
+    )
+    const reference = extractReference(site)
+    const plugin = reference.packages.find((pkg) => pkg.name === PLUGIN)
+    expect(plugin?.symbols.map((symbol) => [symbol.name, symbol.description])).toEqual([
+      ['hello', 'Says hello.'],
+    ])
+    const capability = reference.extensions.find((point) => point.name === 'x.manage')
+    expect(capability).toMatchObject({ kind: 'capability', description: 'Use X.' })
+    expect(capability?.source.package).toBe(PLUGIN)
+  }, 60_000)
 })
 
 describe('extractReference', () => {
