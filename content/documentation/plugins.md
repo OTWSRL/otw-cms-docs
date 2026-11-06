@@ -9,8 +9,9 @@ Plugins** lists every plugin installed on the site, active ones highlighted, and
 the **Activate and deactivate plugins** capability (`core.manage_plugins`) switch them on and off.
 
 > [!NOTE]
-> Of the CMS's own plugins, only Performance is on npm so far. These docs use the others
-> (Commerce, Stripe, Courses and Mail to files) as examples, but they can't be installed yet.
+> Of the CMS's own plugins, only Performance and [Database](/documentation/database) are on npm so
+> far. These docs use the others (Commerce, Stripe, Courses and Mail to files) as examples, but they
+> can't be installed yet.
 
 ## Activating and deactivating
 

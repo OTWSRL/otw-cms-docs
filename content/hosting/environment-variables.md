@@ -155,6 +155,21 @@ Plugins document the variables they read. The CMS's own:
 > Commerce, Stripe and Mail to files aren't on npm yet; their variables below apply once they
 > are.
 
+### `DB_ADMIN_SITE_ACCESS`
+
+The [Database](/documentation/database) plugin's access to the site's own database: `read` (the
+default) or `write`.
+
+### `DB_ADMIN_<NAME>_URL`
+
+A connection the [Database](/documentation/database) plugin opens besides the site's:
+`postgres://…`, `mysql://…`, `mariadb://…` or `sqlite:/path/to/file.db`. `DB_ADMIN_SHOP_URL` adds
+the connection `shop`. With it, optionally:
+
+- `DB_ADMIN_<NAME>_ACCESS`: `read` (the default) or `write`.
+- `DB_ADMIN_<NAME>_LABEL`: the name shown instead.
+- `DB_ADMIN_<NAME>_TAG`: `local`, `development`, `testing`, `staging` or `production`, its color.
+
 ### `COMMERCE_CURRENCY`
 
 The shop's currency, as a three-letter code such as `EUR`. Overrides **Settings › Shop ›
