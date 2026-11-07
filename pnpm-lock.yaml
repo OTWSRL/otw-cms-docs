@@ -21,8 +21,8 @@ importers:
         specifier: link:../nextjs-cms/packages/next
         version: link:../nextjs-cms/packages/next
       '@otwdesign/plugin-db':
-        specifier: ^1.0.2
-        version: 1.0.2(@otwdesign/sdk@nextjs-cms+packages+sdk)(react@19.3.1)
+        specifier: ^1.1.0
+        version: 1.1.0(@otwdesign/sdk@nextjs-cms+packages+sdk)(react@19.3.1)
       '@otwdesign/plugin-lms':
         specifier: link:../otw-plugin-lms
         version: link:../otw-plugin-lms
@@ -34,7 +34,7 @@ importers:
         version: link:../nextjs-cms/packages/sdk
       drizzle-orm:
         specifier: ^0.45.4
-        version: 0.45.4(@electric-sql/pglite@0.5.14)(@opentelemetry/api@1.9.1)(pg@8.23.1)
+        version: 0.45.4(@electric-sql/pglite@0.5.14)(@opentelemetry/api@1.9.1)(@types/pg@8.23.1)(pg@8.23.1)
       hast-util-to-string:
         specifier: ^3.0.1
         version: 3.0.1
@@ -597,8 +597,8 @@ packages:
     resolution: {integrity: sha512-E3JkOlMBi3N8OGGkbl7tFyqk2MAS6/lySRZBK3Mu7AzjF1fT8oIChH9ChE48SUWzDn9Kdwta+G/p5LJ4xW4CLQ==}
     engines: {node: '>=14'}
 
-  '@otwdesign/db-core@1.0.2':
-    resolution: {integrity: sha512-A9A0Dq/woOXgO5wE6SJvk1yJCwBMqKkOdz2LR1dFgItNu5m0afLBWCjCEMQwH6lpVI26PY1kLsc6foWiFU0zqQ==}
+  '@otwdesign/db-core@1.1.0':
+    resolution: {integrity: sha512-ajlxoYfn/AmWcHpw0j/If3MvjZkyZjiuGKEydWnwXFbF3ez1NswYGF+5I0ZFVD6NiyuBod+t2LQpVlPJ0Gg/Mg==}
     engines: {node: '>=22.18'}
     peerDependencies:
       mysql2: ^3.11.0
@@ -612,11 +612,11 @@ packages:
       pg-cursor:
         optional: true
 
-  '@otwdesign/db-ui@1.0.2':
-    resolution: {integrity: sha512-sXAEjqNeW/XDkBULndRqs4ATebIxeCxqXtn67hgIQ6XRELJf+UP+ZDUZta6UhSF91XsT52IsZxwy7ogoBP7ugA==}
+  '@otwdesign/db-ui@1.1.0':
+    resolution: {integrity: sha512-Y1Bis8kfVgq4qqFKQoObjcQfkPP277NXjntk8EaQOLRIA5evQrpeKGzpbWNUfcppKg8kGXaeGI4OPXNJbrAsMA==}
 
-  '@otwdesign/plugin-db@1.0.2':
-    resolution: {integrity: sha512-f77tf0eQgZ98I2pcp0qzKw7M4mrTApF+5O7nAMc2NJ2fbGiCu5YH8fo5w71GCdlEn6RmoYhn0dmebZIFHEgUYA==}
+  '@otwdesign/plugin-db@1.1.0':
+    resolution: {integrity: sha512-5qTNApU75W7T3vjGHiyiSAM8ETVuOOSEhuAhZkokwWIsAiQWREY1/qGiT0qwL0U71Pt575EYpeMlezY+DH8OvA==}
     engines: {node: '>=22.18'}
     peerDependencies:
       '@otwdesign/sdk': ^1.1.0
@@ -786,6 +786,12 @@ packages:
 
   '@types/node@24.19.2':
     resolution: {integrity: sha512-93d49wCWJkCyN87MxLpNN6KXPCwFw7bVUg79mGUV1OS40JGWwVCr8n61DXCSqz7CV6/VfPkb7xec7uP2M+QHWQ==}
+
+  '@types/pg-cursor@2.7.2':
+    resolution: {integrity: sha512-m3xT8bVFCvx98LuzbvXyuCdT/Hjdd/v8ml4jL4K1QF70Y8clOfCFdgoaEB1FWdcSwcpoFYZTJQaMD9/GQ27efQ==}
+
+  '@types/pg@8.23.1':
+    resolution: {integrity: sha512-fKVHpikPdg4GKks3JuLEhvwSyvwzF23hnabPy6DD8ljVbC7+6J5dQzdv4arV6jqq57djnMgs1HKBxX4P8aBI3A==}
 
   '@types/react-dom@19.3.0':
     resolution: {integrity: sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==}
@@ -2441,20 +2447,22 @@ snapshots:
 
   '@opentelemetry/semantic-conventions@1.44.0': {}
 
-  '@otwdesign/db-core@1.0.2(pg-cursor@2.22.1(pg@8.23.1))(pg@8.23.1)':
+  '@otwdesign/db-core@1.1.0(pg-cursor@2.22.1(pg@8.23.1))(pg@8.23.1)':
     dependencies:
-      '@otwdesign/db-ui': 1.0.2
+      '@otwdesign/db-ui': 1.1.0
     optionalDependencies:
       pg: 8.23.1
       pg-cursor: 2.22.1(pg@8.23.1)
 
-  '@otwdesign/db-ui@1.0.2': {}
+  '@otwdesign/db-ui@1.1.0': {}
 
-  '@otwdesign/plugin-db@1.0.2(@otwdesign/sdk@nextjs-cms+packages+sdk)(react@19.3.1)':
+  '@otwdesign/plugin-db@1.1.0(@otwdesign/sdk@nextjs-cms+packages+sdk)(react@19.3.1)':
     dependencies:
-      '@otwdesign/db-core': 1.0.2(pg-cursor@2.22.1(pg@8.23.1))(pg@8.23.1)
-      '@otwdesign/db-ui': 1.0.2
+      '@otwdesign/db-core': 1.1.0(pg-cursor@2.22.1(pg@8.23.1))(pg@8.23.1)
+      '@otwdesign/db-ui': 1.1.0
       '@otwdesign/sdk': link:../nextjs-cms/packages/sdk
+      '@types/pg': 8.23.1
+      '@types/pg-cursor': 2.7.2
       pg: 8.23.1
       pg-cursor: 2.22.1(pg@8.23.1)
       react: 19.3.1
@@ -2589,6 +2597,17 @@ snapshots:
   '@types/node@24.19.2':
     dependencies:
       undici-types: 7.24.6
+
+  '@types/pg-cursor@2.7.2':
+    dependencies:
+      '@types/node': 24.19.2
+      '@types/pg': 8.23.1
+
+  '@types/pg@8.23.1':
+    dependencies:
+      '@types/node': 24.19.2
+      pg-protocol: 1.16.1
+      pg-types: 2.2.0
 
   '@types/react-dom@19.3.0(@types/react@19.3.0)':
     dependencies:
@@ -2793,10 +2812,11 @@ snapshots:
     dependencies:
       dequal: 2.0.3
 
-  drizzle-orm@0.45.4(@electric-sql/pglite@0.5.14)(@opentelemetry/api@1.9.1)(pg@8.23.1):
+  drizzle-orm@0.45.4(@electric-sql/pglite@0.5.14)(@opentelemetry/api@1.9.1)(@types/pg@8.23.1)(pg@8.23.1):
     optionalDependencies:
       '@electric-sql/pglite': 0.5.14
       '@opentelemetry/api': 1.9.1
+      '@types/pg': 8.23.1
       pg: 8.23.1
 
   electron-to-chromium@1.5.472: {}
