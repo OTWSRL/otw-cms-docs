@@ -21,8 +21,8 @@ importers:
         specifier: link:../nextjs-cms/packages/next
         version: link:../nextjs-cms/packages/next
       '@otwdesign/plugin-db':
-        specifier: ^1.0.1
-        version: 1.0.1(@otwdesign/sdk@nextjs-cms+packages+sdk)(react@19.3.1)
+        specifier: ^1.0.2
+        version: 1.0.2(@otwdesign/sdk@nextjs-cms+packages+sdk)(react@19.3.1)
       '@otwdesign/plugin-lms':
         specifier: link:../otw-plugin-lms
         version: link:../otw-plugin-lms
@@ -597,8 +597,8 @@ packages:
     resolution: {integrity: sha512-E3JkOlMBi3N8OGGkbl7tFyqk2MAS6/lySRZBK3Mu7AzjF1fT8oIChH9ChE48SUWzDn9Kdwta+G/p5LJ4xW4CLQ==}
     engines: {node: '>=14'}
 
-  '@otwdesign/db-core@1.0.1':
-    resolution: {integrity: sha512-hQ/bztIkSu1FiT8uyCsgAg4M6trg16D4PMv2xyD9AVcb8qcyPhEXxU0Q8gW7T8dwezt4qDqaIgMJ6LhoKmCj0Q==}
+  '@otwdesign/db-core@1.0.2':
+    resolution: {integrity: sha512-A9A0Dq/woOXgO5wE6SJvk1yJCwBMqKkOdz2LR1dFgItNu5m0afLBWCjCEMQwH6lpVI26PY1kLsc6foWiFU0zqQ==}
     engines: {node: '>=22.18'}
     peerDependencies:
       mysql2: ^3.11.0
@@ -612,11 +612,11 @@ packages:
       pg-cursor:
         optional: true
 
-  '@otwdesign/db-ui@1.0.1':
-    resolution: {integrity: sha512-574ke56YuCeeD5YH2xtXefrZqt08TEnWb+GTRE3CYqrT6fRf0kBe8LXGYxo9QzZyeSzvpnu7maOVu3BbuQPmXA==}
+  '@otwdesign/db-ui@1.0.2':
+    resolution: {integrity: sha512-sXAEjqNeW/XDkBULndRqs4ATebIxeCxqXtn67hgIQ6XRELJf+UP+ZDUZta6UhSF91XsT52IsZxwy7ogoBP7ugA==}
 
-  '@otwdesign/plugin-db@1.0.1':
-    resolution: {integrity: sha512-QlvYVanhBkrQ/H9mQrZiuW9o/yRVbsXI5GwVXSmiSK9Cbjzb5+3iq9u1jBdqCyFj+Mb5jr0hqzZIUOYUr6SNoQ==}
+  '@otwdesign/plugin-db@1.0.2':
+    resolution: {integrity: sha512-f77tf0eQgZ98I2pcp0qzKw7M4mrTApF+5O7nAMc2NJ2fbGiCu5YH8fo5w71GCdlEn6RmoYhn0dmebZIFHEgUYA==}
     engines: {node: '>=22.18'}
     peerDependencies:
       '@otwdesign/sdk': ^1.1.0
@@ -2441,19 +2441,19 @@ snapshots:
 
   '@opentelemetry/semantic-conventions@1.44.0': {}
 
-  '@otwdesign/db-core@1.0.1(pg-cursor@2.22.1(pg@8.23.1))(pg@8.23.1)':
+  '@otwdesign/db-core@1.0.2(pg-cursor@2.22.1(pg@8.23.1))(pg@8.23.1)':
     dependencies:
-      '@otwdesign/db-ui': 1.0.1
+      '@otwdesign/db-ui': 1.0.2
     optionalDependencies:
       pg: 8.23.1
       pg-cursor: 2.22.1(pg@8.23.1)
 
-  '@otwdesign/db-ui@1.0.1': {}
+  '@otwdesign/db-ui@1.0.2': {}
 
-  '@otwdesign/plugin-db@1.0.1(@otwdesign/sdk@nextjs-cms+packages+sdk)(react@19.3.1)':
+  '@otwdesign/plugin-db@1.0.2(@otwdesign/sdk@nextjs-cms+packages+sdk)(react@19.3.1)':
     dependencies:
-      '@otwdesign/db-core': 1.0.1(pg-cursor@2.22.1(pg@8.23.1))(pg@8.23.1)
-      '@otwdesign/db-ui': 1.0.1
+      '@otwdesign/db-core': 1.0.2(pg-cursor@2.22.1(pg@8.23.1))(pg@8.23.1)
+      '@otwdesign/db-ui': 1.0.2
       '@otwdesign/sdk': link:../nextjs-cms/packages/sdk
       pg: 8.23.1
       pg-cursor: 2.22.1(pg@8.23.1)
